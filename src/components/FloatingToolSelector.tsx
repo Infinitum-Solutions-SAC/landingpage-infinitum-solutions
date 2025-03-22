@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { getAllSaasTools } from '@/utils/calculatorUtils';
+import { getAllSaasTools, getTopToolsPerCategory } from '@/utils/calculatorUtils';
 import { Check } from 'lucide-react';
 
 interface FloatingToolSelectorProps {
@@ -44,13 +44,13 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
     // Configurar el tamaño inicial
     updateContainerSize();
 
-    // Obtener las herramientas SaaS
-    const tools = getAllSaasTools();
+    // Obtener las herramientas SaaS, asegurando al menos 2 por categoría
+    const tools = getTopToolsPerCategory(2);
     
     // Determinar el número óptimo de iconos basado en el tamaño del contenedor
-    // Para evitar sobrecargar la visualización
+    // Asegurarnos de mostrar una buena cantidad de iconos, pero no demasiados
     const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-    const maxIcons = Math.min(tools.length, Math.floor(containerArea / 15000)); // Ajusta según necesidad
+    const maxIcons = Math.min(tools.length, Math.max(20, Math.floor(containerArea / 10000)));
     const selectedTools = tools.slice(0, maxIcons);
     
     // Organizar inicialmente los iconos en una cuadrícula
@@ -64,7 +64,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
       const row = Math.floor(index / columns);
       
       // Tamaño base más pequeño para dejar más espacio
-      const size = 50 + Math.random() * 15; // Tamaños variables entre 50-65px
+      const size = 45 + Math.random() * 15; // Tamaños variables entre 45-60px
       
       // Posición inicial basada en cuadrícula con ligera aleatoriedad
       const x = (col * cellWidth) + (cellWidth - size) / 2 + (Math.random() - 0.5) * cellWidth * 0.5;
@@ -217,7 +217,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
   }, [icons.length, containerSize]);
 
   // Si hay demasiados iconos, mostrar solo una selección y añadir un botón para mostrar todos
-  const shouldShowGrid = icons.length > 15; // Umbral para cambiar a vista de cuadrícula
+  const shouldShowGrid = icons.length > 30; // Umbral para cambiar a vista de cuadrícula
   
   return (
     <div className="relative w-full h-[400px] bg-transparent rounded-lg overflow-hidden" ref={containerRef}>
@@ -227,7 +227,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
         return (
           <motion.div
             key={icon.name}
-            className="absolute cursor-pointer flex flex-col items-center"
+            className="absolute cursor-pointer flex flex-col items-center z-10"
             style={{
               left: icon.x,
               top: icon.y,
@@ -245,7 +245,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
               rotate: { duration: 0.3, ease: "easeInOut" }
             }}
             onClick={() => onToolToggle(icon.name)}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, zIndex: 20 }}
             whileTap={{ scale: 0.95 }}
           >
             <div 

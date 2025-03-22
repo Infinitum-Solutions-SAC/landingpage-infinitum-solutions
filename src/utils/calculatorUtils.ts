@@ -36,6 +36,38 @@ export const getAllSaasTools = (): { name: string; icon: string; cost?: number }
   return allTools;
 };
 
+// Obtener las N primeras herramientas de cada categoría
+export const getTopToolsPerCategory = (count: number = 2): { name: string; icon: string; cost?: number }[] => {
+  const topTools: { name: string; icon: string; cost?: number }[] = [];
+  
+  // Primero incluir las herramientas seleccionadas por defecto para asegurar que aparezcan
+  const defaultTools = getDefaultSelectedTools();
+  const defaultToolsObjects: { name: string; icon: string; cost?: number }[] = [];
+  
+  // Recorrer todas las categorías
+  Object.values(toolsData.tools).forEach(category => {
+    // Filtrar primero las herramientas por defecto
+    const defaultInCategory = category.SaaS.filter(tool => defaultTools.includes(tool.name));
+    defaultInCategory.forEach(tool => {
+      const icon = tool.icon || `/tool-icons/${tool.name.toLowerCase().replace(/ /g, '-')}.png`;
+      defaultToolsObjects.push({name: tool.name, icon: icon, cost: tool.cost});
+    });
+    
+    // Luego seleccionar las N primeras herramientas que no están en las predeterminadas
+    const otherTools = category.SaaS
+      .filter(tool => !defaultTools.includes(tool.name))
+      .slice(0, count);
+    
+    otherTools.forEach(tool => {
+      const icon = tool.icon || `/tool-icons/${tool.name.toLowerCase().replace(/ /g, '-')}.png`;
+      topTools.push({name: tool.name, icon: icon, cost: tool.cost});
+    });
+  });
+  
+  // Combinar las herramientas predeterminadas al principio y luego el resto
+  return [...defaultToolsObjects, ...topTools];
+};
+
 // Obtener alternativas de código abierto para las herramientas seleccionadas
 export const getOpenSourceAlternatives = (selectedTools: string[]) => {
   const alternatives: Record<string, any[]> = {};
