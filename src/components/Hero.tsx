@@ -1,4 +1,3 @@
-
 import { ArrowRight, Server, Database, Shield } from 'lucide-react';
 
 const Hero = () => {
@@ -60,12 +59,12 @@ const Hero = () => {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float" style={{ animationDelay: '1s' }}></div>
             
             <div className="glass-card p-8 rounded-2xl h-full flex flex-col justify-center relative z-10 animate-fade-in-up">
-              <div className="absolute -top-5 -right-5 bg-costwise-blue/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
-                <div className="text-2xl font-bold text-costwise-blue mb-1">100%</div>
-                <div className="text-sm text-gray-600 whitespace-nowrap">reducción en costos IT</div>
+              <div className="absolute md:-top-5 md:-right-5 -top-12 right-0 bg-costwise-blue/10 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-white/20">
+                <div className="text-xl md:text-2xl font-bold text-costwise-blue mb-1">100%</div>
+                <div className="text-xs md:text-sm text-gray-600 whitespace-nowrap">reducción en costos IT</div>
               </div>
               
-              <div className="mb-6">
+              <div className="mb-6 mt-12 md:mt-0">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-500">Antes</span>
                   <span className="text-sm font-medium">~$300/mes</span>
