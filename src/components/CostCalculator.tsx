@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent,
@@ -12,10 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, ArrowRight, Check } from "lucide-react";
+import { DollarSign, ArrowRight, Check, ArrowDown } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import FloatingIcons from "./FloatingIcons";
 
 type ToolCategory = {
   SaaS: { name: string; icon: string }[];
@@ -262,6 +263,7 @@ const CostCalculator = () => {
   const [userCount, setUserCount] = useState<number>(1);
   const [currentCategory, setCurrentCategory] = useState<string>(Object.keys(toolsData.tools)[0]);
   const [pricePerUser] = useState<number>(6); // $6 por usuario según especificaciones
+  const [showSavings, setShowSavings] = useState<boolean>(false);
   
   // Calcular costos totales
   const totalMonthlyCost = selectedTools.length * userCount * pricePerUser;
@@ -281,6 +283,21 @@ const CostCalculator = () => {
       setUserCount(count);
     }
   };
+  
+  // Effect to show savings animation when tools change
+  useEffect(() => {
+    if (selectedTools.length > 0) {
+      // Reset the animation trigger
+      setShowSavings(false);
+      
+      // Trigger animation after a short delay
+      const timer = setTimeout(() => {
+        setShowSavings(true);
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [selectedTools]);
   
   // Obtener alternativas de código abierto para las herramientas seleccionadas
   const getOpenSourceAlternatives = () => {
@@ -308,8 +325,19 @@ const CostCalculator = () => {
   
   const openSourceAlternatives = getOpenSourceAlternatives();
 
+  // Get all SaaS tools for floating icons
+  const getAllSaasTools = () => {
+    const allTools: { name: string; icon: string }[] = [];
+    Object.values(toolsData.tools).forEach(category => {
+      category.SaaS.forEach(tool => {
+        allTools.push(tool);
+      });
+    });
+    return allTools;
+  };
+
   return (
-    <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray">
+    <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-20">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-3">
@@ -322,31 +350,51 @@ const CostCalculator = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Floating Icons Animation */}
+        <FloatingIcons tools={getAllSaasTools().slice(0, 12)} />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
           {/* Formulario de selección de herramientas */}
           <div className="lg:col-span-7">
-            <Card className="shadow-md">
-              <CardHeader>
+            <Card className="shadow-md overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-costwise-blue/10 to-transparent">
                 <CardTitle>Selecciona tus herramientas actuales</CardTitle>
                 <CardDescription>
                   Elige las aplicaciones SaaS que utilizas en tu empresa
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 pt-6">
                 <div className="space-y-4">
-                  <Label htmlFor="userCount">Número de usuarios</Label>
-                  <Input
-                    id="userCount"
-                    type="number"
-                    min="1"
-                    value={userCount}
-                    onChange={(e) => handleUserCountChange(e.target.value)}
-                    className="w-full"
-                  />
+                  <Label htmlFor="userCount" className="text-base font-medium">Número de usuarios</Label>
+                  <div className="flex items-center space-x-3">
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      onClick={() => userCount > 1 && setUserCount(userCount - 1)}
+                      disabled={userCount <= 1}
+                    >
+                      -
+                    </Button>
+                    <Input
+                      id="userCount"
+                      type="number"
+                      min="1"
+                      value={userCount}
+                      onChange={(e) => handleUserCountChange(e.target.value)}
+                      className="text-center text-lg font-semibold"
+                    />
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      onClick={() => setUserCount(userCount + 1)}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
                 
                 <div className="space-y-4">
-                  <Label>Categoría de herramientas</Label>
+                  <Label className="text-base font-medium">Categoría de herramientas</Label>
                   <div className="overflow-x-auto pb-2">
                     <ToggleGroup 
                       type="single" 
@@ -364,37 +412,49 @@ const CostCalculator = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  <Label>Selecciona las herramientas de pago ({currentCategory})</Label>
+                  <Label className="text-base font-medium">Selecciona las herramientas de pago ({currentCategory})</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {toolsData.tools[currentCategory].SaaS.map((tool) => (
-                      <div 
-                        key={tool.name} 
-                        className={`flex items-center space-x-3 p-3 rounded-md border cursor-pointer transition-colors ${
-                          selectedTools.includes(tool.name) 
-                            ? 'border-primary bg-primary/10' 
-                            : 'border-gray-200 hover:border-primary/50'
-                        }`}
-                        onClick={() => handleToolToggle(tool.name)}
+                    <AnimatePresence mode="wait">
+                      <motion.div 
+                        key={currentCategory}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full"
                       >
-                        <Checkbox 
-                          checked={selectedTools.includes(tool.name)}
-                          onCheckedChange={() => handleToolToggle(tool.name)}
-                        />
-                        <span>{tool.name}</span>
-                      </div>
-                    ))}
+                        {toolsData.tools[currentCategory].SaaS.map((tool) => (
+                          <motion.div 
+                            key={tool.name} 
+                            className={`flex items-center space-x-3 p-3 rounded-md border cursor-pointer transition-colors ${
+                              selectedTools.includes(tool.name) 
+                                ? 'border-primary bg-primary/10' 
+                                : 'border-gray-200 hover:border-primary/50'
+                            }`}
+                            onClick={() => handleToolToggle(tool.name)}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <Checkbox 
+                              checked={selectedTools.includes(tool.name)}
+                              onCheckedChange={() => handleToolToggle(tool.name)}
+                            />
+                            <span className="font-medium">{tool.name}</span>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="border-t pt-6">
+              <CardFooter className="border-t pt-6 bg-gray-50">
                 <div className="w-full">
                   <div className="flex flex-col space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">Herramientas seleccionadas:</span>
+                      <span className="text-gray-500">Herramientas seleccionadas:</span>
                       <span className="font-semibold">{selectedTools.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">Número de usuarios:</span>
+                      <span className="text-gray-500">Número de usuarios:</span>
                       <span className="font-semibold">{userCount}</span>
                     </div>
                   </div>
@@ -405,8 +465,8 @@ const CostCalculator = () => {
           
           {/* Cálculo de costos y alternativas */}
           <div className="lg:col-span-5">
-            <Card className="shadow-md mb-6">
-              <CardHeader className="bg-costwise-navy text-white rounded-t-lg">
+            <Card className="shadow-md mb-6 overflow-hidden">
+              <CardHeader className="bg-costwise-navy text-white">
                 <CardTitle>Costos de SaaS</CardTitle>
                 <CardDescription className="text-gray-200">
                   Cálculo basado en tus selecciones
@@ -418,9 +478,15 @@ const CostCalculator = () => {
                     <span className="text-lg text-gray-500">Gasto mensual estimado</span>
                     <div className="flex items-center">
                       <DollarSign className="text-costwise-blue h-8 w-8" />
-                      <span className="text-4xl font-bold text-costwise-navy">
+                      <motion.span 
+                        className="text-4xl font-bold text-costwise-navy"
+                        key={totalMonthlyCost}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                      >
                         {totalMonthlyCost.toLocaleString()}
-                      </span>
+                      </motion.span>
                     </div>
                     <span className="text-sm text-gray-500">por mes</span>
                   </div>
@@ -429,9 +495,15 @@ const CostCalculator = () => {
                     <span className="text-lg text-gray-500">Gasto anual estimado</span>
                     <div className="flex items-center">
                       <DollarSign className="text-costwise-blue h-8 w-8" />
-                      <span className="text-4xl font-bold text-costwise-navy">
+                      <motion.span 
+                        className="text-4xl font-bold text-costwise-navy"
+                        key={totalYearlyCost}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                      >
                         {totalYearlyCost.toLocaleString()}
-                      </span>
+                      </motion.span>
                     </div>
                     <span className="text-sm text-gray-500">por año</span>
                   </div>
@@ -440,8 +512,8 @@ const CostCalculator = () => {
             </Card>
             
             {selectedTools.length > 0 && (
-              <Card className="shadow-md bg-gradient-to-br from-white to-green-50 border-green-200">
-                <CardHeader className="border-b">
+              <Card className="shadow-md bg-gradient-to-br from-white to-green-50 border-green-200 overflow-hidden">
+                <CardHeader className="border-b bg-green-500/10">
                   <CardTitle className="flex items-center gap-2">
                     <Check className="text-green-500" />
                     Alternativas Open Source
@@ -452,41 +524,73 @@ const CostCalculator = () => {
                 </CardHeader>
                 <CardContent className="pt-6">
                   <div className="space-y-6">
-                    {Object.entries(openSourceAlternatives).map(([category, items]) => (
-                      <div key={category} className="space-y-4">
-                        <h4 className="font-medium text-lg text-costwise-navy">{category}</h4>
-                        {items.map((item, index) => (
-                          <div key={index} className="border rounded-lg p-4 bg-white">
-                            <div className="flex justify-between items-center mb-3">
-                              <div className="font-medium">{item.saas.name}</div>
-                              <ArrowRight className="h-4 w-4 text-gray-400" />
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {item.alternatives.slice(0, 2).map((alt, altIndex) => (
-                                <a 
-                                  key={altIndex} 
-                                  href={alt.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-sm px-3 py-2 rounded-md bg-green-50 text-green-700 hover:bg-green-100 transition-colors flex items-center justify-between"
-                                >
-                                  {alt.name}
-                                  <Check className="h-4 w-4" />
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
+                    <AnimatePresence>
+                      {Object.entries(openSourceAlternatives).map(([category, items]) => (
+                        <motion.div 
+                          key={category} 
+                          className="space-y-4"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                        >
+                          <h4 className="font-medium text-lg text-costwise-navy">{category}</h4>
+                          {items.map((item, index) => (
+                            <motion.div 
+                              key={index} 
+                              className="border rounded-lg p-4 bg-white"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                            >
+                              <div className="flex justify-between items-center mb-3">
+                                <div className="font-medium">{item.saas.name}</div>
+                                <ArrowRight className="h-4 w-4 text-gray-400" />
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {item.alternatives.slice(0, 2).map((alt, altIndex) => (
+                                  <a 
+                                    key={altIndex} 
+                                    href={alt.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-sm px-3 py-2 rounded-md bg-green-50 text-green-700 hover:bg-green-100 transition-colors flex items-center justify-between"
+                                  >
+                                    {alt.name}
+                                    <Check className="h-4 w-4" />
+                                  </a>
+                                ))}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                     
                     <div className="flex justify-center pt-4">
-                      <div className="p-4 bg-green-50 rounded-lg text-center">
-                        <p className="font-semibold text-green-700">Ahorro potencial anual</p>
-                        <div className="text-3xl font-bold text-green-600 mt-1">
-                          ${totalYearlyCost.toLocaleString()}
+                      <motion.div 
+                        className="p-4 bg-green-50 rounded-lg text-center w-full"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ 
+                          opacity: showSavings ? 1 : 0, 
+                          scale: showSavings ? 1 : 0.9,
+                          y: showSavings ? [20, 0] : 20 
+                        }}
+                        transition={{ 
+                          duration: 0.5,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                      >
+                        <div className="flex flex-col items-center">
+                          <ArrowDown className="h-8 w-8 text-green-500 mb-2 animate-bounce" />
+                          <p className="font-semibold text-green-700">Ahorro potencial anual</p>
+                          <div className="text-3xl font-bold text-green-600 mt-1">
+                            ${totalYearlyCost.toLocaleString()}
+                          </div>
+                          <p className="text-sm text-green-600 mt-1">¡100% de reducción de costos!</p>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
                 </CardContent>
