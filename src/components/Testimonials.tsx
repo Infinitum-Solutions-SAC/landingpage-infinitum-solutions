@@ -30,7 +30,7 @@ const Testimonials = () => {
   
   const testimonials = [
     {
-      quote: "Gracias a CostWise reducimos nuestros gastos en tecnología en más de un 60%. La transición fue suave y su equipo nos guió en cada paso del proceso.",
+      quote: "Gracias a Infinitum Solutions reducimos nuestros gastos en tecnología en más de un 60%. La transición fue suave y su equipo nos guió en cada paso del proceso.",
       author: "María Rodríguez",
       position: "Gerente de Operaciones",
       company: "Innova Designs",

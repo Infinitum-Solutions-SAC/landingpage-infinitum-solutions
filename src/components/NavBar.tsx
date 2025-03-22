@@ -30,7 +30,7 @@ const NavBar = () => {
       <div className="container-custom flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <span className="text-2xl font-semibold text-costwise-navy">CostWise</span>
+          <span className="text-2xl font-semibold text-costwise-navy">Infinitum Solutions</span>
           <span className="text-costwise-blue text-2xl">.</span>
         </div>
 

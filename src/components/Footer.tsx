@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center mb-4">
-              <span className="text-2xl font-semibold text-costwise-navy">CostWise</span>
+              <span className="text-2xl font-semibold text-costwise-navy">Infinitum Solutions</span>
               <span className="text-costwise-blue text-2xl">.</span>
             </div>
             <p className="text-gray-600 mb-6">
@@ -63,7 +63,7 @@ const Footer = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-100">
           <div className="text-gray-500 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} CostWise. Todos los derechos reservados.
+            © {new Date().getFullYear()} Infinitum Solutions. Todos los derechos reservados.
           </div>
           
           <div className="flex items-center gap-2">

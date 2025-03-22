@@ -77,7 +77,7 @@ const Hero = () => {
               
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-500">Con CostWise</span>
+                  <span className="text-sm text-gray-500">Con Infinitum Solutions</span>
                   <span className="text-sm font-medium">$480/mes</span>
                 </div>
                 <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">

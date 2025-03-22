@@ -127,7 +127,7 @@ const Services = () => {
                     <div className="border-t border-gray-200 my-4"></div>
                     
                     <div className="flex items-center justify-between font-semibold">
-                      <span className="text-costwise-blue">Solución CostWise</span>
+                      <span className="text-costwise-blue">Solución Infinitum Solutions</span>
                       <span className="text-costwise-blue">$50-100/mes</span>
                     </div>
                     
@@ -172,7 +172,7 @@ const Services = () => {
                     <div className="border-t border-gray-200 my-4"></div>
                     
                     <div className="flex items-center justify-between font-semibold">
-                      <span className="text-costwise-blue">Solución CostWise</span>
+                      <span className="text-costwise-blue">Solución Infinitum Solutions</span>
                       <span className="text-costwise-blue">$300-800/mes</span>
                     </div>
                     
