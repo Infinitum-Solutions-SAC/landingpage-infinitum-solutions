@@ -20,7 +20,7 @@ const CostDisplay = ({ monthlyCost, yearlyCost }: CostDisplayProps) => {
   
   return (
     <Card className="shadow-md mb-6 overflow-hidden">
-      <CardHeader className="bg-costwise-navy text-white">
+      <CardHeader className="bg-costwise-blue text-white">
         <div className="flex items-center justify-between">
           <CardTitle>Coste de Herramientas SaaS</CardTitle>
           <Tabs 

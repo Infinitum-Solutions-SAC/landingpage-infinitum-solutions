@@ -17,7 +17,7 @@ const Index = () => {
       <Hero />
       <Services />
       <CostCalculator />
-      <CostComparison />
+      {/* <CostComparison /> */}
       <Hardware />
       <Testimonials />
       <OpenSource />

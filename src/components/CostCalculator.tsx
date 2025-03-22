@@ -20,7 +20,7 @@ import {
 
 const CostCalculator = () => {
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
-  const [userCount, setUserCount] = useState<number>(10);
+  const [userCount, setUserCount] = useState<number>(1);
   const [showSavings, setShowSavings] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>("floating");
   
