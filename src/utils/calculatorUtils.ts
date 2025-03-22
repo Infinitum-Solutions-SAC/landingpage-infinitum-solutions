@@ -1,4 +1,3 @@
-
 import { SaaSTool, toolsData } from "../data/toolsData";
 
 // Calcular el costo mensual basado en herramientas y número de usuarios
@@ -57,4 +56,21 @@ export const getOpenSourceAlternatives = (selectedTools: string[]) => {
   });
   
   return alternatives;
+};
+
+// Obtener una lista predeterminada de herramientas populares
+export const getDefaultSelectedTools = (): string[] => {
+  // Seleccionar algunas herramientas populares por defecto
+  return ['Slack', 'Microsoft 365', 'Zoom'];
+};
+
+// Obtener el costo total de una herramienta para un número de usuarios
+export const getToolCost = (toolName: string, userCount: number): number => {
+  for (const category of Object.values(toolsData.tools)) {
+    const tool = category.SaaS.find(t => t.name === toolName);
+    if (tool) {
+      return tool.cost * userCount;
+    }
+  }
+  return 0;
 };
