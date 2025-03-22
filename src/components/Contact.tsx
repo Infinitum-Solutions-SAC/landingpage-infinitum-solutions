@@ -75,7 +75,7 @@ const Contact = () => {
                 <div>
                   <h4 className="font-medium text-costwise-navy">Teléfono</h4>
                   <a href="tel:+525512345678" className="text-gray-600 hover:text-costwise-blue transition-colors">
-                    +52 55 1234 5678
+                    +51 111 222 333
                   </a>
                 </div>
               </div>
@@ -87,7 +87,7 @@ const Contact = () => {
                 <div>
                   <h4 className="font-medium text-costwise-navy">Oficina central</h4>
                   <p className="text-gray-600">
-                    Av. Tecnológica 123, CDMX, México
+                    Lima, Perú 
                   </p>
                 </div>
               </div>
