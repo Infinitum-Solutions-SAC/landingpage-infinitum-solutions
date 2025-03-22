@@ -61,14 +61,14 @@ const Hero = () => {
             
             <div className="glass-card p-8 rounded-2xl h-full flex flex-col justify-center relative z-10 animate-fade-in-up">
               <div className="absolute -top-5 -right-5 bg-costwise-blue/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
-                <div className="text-2xl font-bold text-costwise-blue mb-1">60%</div>
+                <div className="text-2xl font-bold text-costwise-blue mb-1">100%</div>
                 <div className="text-sm text-gray-600 whitespace-nowrap">reducción en costos IT</div>
               </div>
               
               <div className="mb-6">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-500">Antes</span>
-                  <span className="text-sm font-medium">$1,200/mes</span>
+                  <span className="text-sm font-medium">~$300/mes</span>
                 </div>
                 <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                   <div className="h-full bg-gray-400 rounded-full" style={{ width: '100%' }}></div>
@@ -78,21 +78,21 @@ const Hero = () => {
               <div>
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-500">Con Infinitum Solutions</span>
-                  <span className="text-sm font-medium">$480/mes</span>
+                  <span className="text-sm font-medium">$0/mes</span>
                 </div>
                 <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-costwise-blue rounded-full" style={{ width: '40%' }}></div>
+                  <div className="h-full bg-costwise-blue rounded-full" style={{ width: '2%' }}></div>
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-6 mt-10">
                 <div>
-                  <div className="text-3xl font-bold text-costwise-navy">80%</div>
+                  <div className="text-3xl font-bold text-costwise-navy">100%</div>
                   <div className="text-sm text-gray-600">Ahorro en licencias</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-costwise-navy">50%</div>
-                  <div className="text-sm text-gray-600">Menos tiempo inactivo</div>
+                  <div className="text-3xl font-bold text-costwise-navy">100%</div>
+                  <div className="text-sm text-gray-600">Control de tus datos</div>
                 </div>
               </div>
             </div>

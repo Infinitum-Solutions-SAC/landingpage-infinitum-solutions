@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Server, Users, Code, Lightbulb, ArrowRight, Check } from 'lucide-react';
 
@@ -113,27 +112,27 @@ const Services = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Hosting/VPS tradicional</span>
-                      <span className="text-gray-800 font-medium">$20-50/mes</span>
+                      <span className="text-red-600 font-medium">$20-50/mes</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Licencias de software</span>
-                      <span className="text-gray-800 font-medium">$100-300/mes</span>
+                      <span className="text-red-600 font-medium">$100-300/mes</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Servicios en la nube</span>
-                      <span className="text-gray-800 font-medium">$50-150/mes</span>
+                      <span className="text-red-600 font-medium">$50-150/mes</span>
                     </div>
                     
                     <div className="border-t border-gray-200 my-4"></div>
                     
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-costwise-blue">$50-100/mes</span>
+                      <span className="text-green-600">$499-999 pago único</span>
                     </div>
                     
                     <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">
                       <p className="text-sm text-gray-700">
-                        Ahorra hasta un <span className="font-semibold">80%</span> en costos mensuales
+                        Ahorra hasta un <span className="font-semibold">100%</span> en costos mensuales
                         con nuestra solución para emprendedores.
                       </p>
                     </div>
@@ -158,27 +157,27 @@ const Services = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Servicios cloud actuales</span>
-                      <span className="text-gray-800 font-medium">$500-2000/mes</span>
+                      <span className="text-red-600 font-medium">$500-2000/mes</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Licencias por usuario</span>
-                      <span className="text-gray-800 font-medium">$100-250/usuario</span>
+                      <span className="text-red-600 font-medium">$100-250/usuario</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Mantenimiento externo</span>
-                      <span className="text-gray-800 font-medium">$200-500/mes</span>
+                      <span className="text-red-600 font-medium">$200-500/mes</span>
                     </div>
                     
                     <div className="border-t border-gray-200 my-4"></div>
                     
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-costwise-blue">$300-800/mes</span>
+                      <span className="text-green-600">$899-1999 pago único</span>
                     </div>
                     
                     <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">
                       <p className="text-sm text-gray-700">
-                        Reducción del <span className="font-semibold">40-70%</span> en gastos IT totales
+                        Reducción del <span className="font-semibold">100%</span> en gastos IT totales
                         con nuestras soluciones personalizadas.
                       </p>
                     </div>

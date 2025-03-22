@@ -66,7 +66,8 @@ const CostCalculator = () => {
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Explora nuestra visualización interactiva para seleccionar herramientas, 
-            indica el número de usuarios y descubre cuánto podrías ahorrar 
+            indica el número de usuarios y descubre 
+            <span className="font-semibold text-[20px] text-green-600"> cuánto podrías ahorrar </span>  
             con alternativas open source.
           </p>
         </div>
