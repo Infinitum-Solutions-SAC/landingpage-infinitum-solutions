@@ -7,14 +7,13 @@ import {
   CardContent 
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ThreeDToolSelector from "./ThreeDToolSelector";
+import FloatingToolSelector from "./FloatingToolSelector";
 import ToolSelector from "./calculator/ToolSelector";
 import CostDisplay from "./calculator/CostDisplay";
 import OpenSourceAlternatives from "./calculator/OpenSourceAlternatives";
 import { 
   calculateMonthlyCost, 
   calculateYearlyCost, 
-  getAllSaasTools, 
   getOpenSourceAlternatives,
   getDefaultSelectedTools 
 } from "@/utils/calculatorUtils";
@@ -23,7 +22,7 @@ const CostCalculator = () => {
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
   const [userCount, setUserCount] = useState<number>(10);
   const [showSavings, setShowSavings] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<string>("3d");
+  const [activeView, setActiveView] = useState<string>("floating");
   
   // Calcular costos basados en precios reales de las herramientas
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
@@ -63,25 +62,25 @@ const CostCalculator = () => {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-3">
-            Calculadora de Costos IT en 3D
+            Calculadora de Costos IT
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Explora nuestra visualización interactiva 3D para seleccionar herramientas, 
+            Explora nuestra visualización interactiva para seleccionar herramientas, 
             indica el número de usuarios y descubre cuánto podrías ahorrar 
             con alternativas open source.
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
-          {/* Visualización de herramientas (3D o lista) */}
+          {/* Visualización de herramientas (flotantes o lista) */}
           <div className="lg:col-span-7">
             <Card className="shadow-md overflow-hidden">
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span>Selección de Herramientas</span>
-                  <Tabs defaultValue="3d" value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
                     <TabsList>
-                      <TabsTrigger value="3d">Vista 3D</TabsTrigger>
+                      <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
                       <TabsTrigger value="list">Lista</TabsTrigger>
                     </TabsList>
                   </Tabs>
@@ -92,8 +91,8 @@ const CostCalculator = () => {
               </CardHeader>
               <CardContent className="p-0">
                 <Tabs value={activeView} className="w-full">
-                  <TabsContent value="3d" className="m-0">
-                    <ThreeDToolSelector 
+                  <TabsContent value="floating" className="m-0">
+                    <FloatingToolSelector 
                       selectedTools={selectedTools}
                       onToolToggle={handleToolToggle}
                     />

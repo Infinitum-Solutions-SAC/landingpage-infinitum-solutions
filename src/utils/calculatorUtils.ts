@@ -28,7 +28,9 @@ export const getAllSaasTools = (): { name: string; icon: string; cost?: number }
   const allTools: { name: string; icon: string; cost?: number }[] = [];
   Object.values(toolsData.tools).forEach(category => {
     category.SaaS.forEach(tool => {
-      allTools.push({name: tool.name, icon: tool.icon, cost: tool.cost});
+      // Asegurarse de que cada herramienta tenga un icono o asignar un valor por defecto
+      const icon = tool.icon || `/tool-icons/${tool.name.toLowerCase().replace(/ /g, '-')}.png`;
+      allTools.push({name: tool.name, icon: icon, cost: tool.cost});
     });
   });
   return allTools;
