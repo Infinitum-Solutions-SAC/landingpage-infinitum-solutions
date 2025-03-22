@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 type Tool = {
   name: string;
   icon: string;
+  cost?: number;
 };
 
 type FloatingIconsProps = {

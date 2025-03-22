@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { 
   Card, 
@@ -97,9 +96,9 @@ const toolsData: ToolsData = {
     },
     "Monitorización y Observabilidad": {
       "SaaS": [
-        {"name": "Datadog", "icon": "icon/example.png"},
-        {"name": "New Relic", "icon": "icon/example.png"},
-        {"name": "Splunk", "icon": "icon/example.png"}
+        {"name": "Datadog", "cost": 15, "icon": "icon/example.png", "details": "Monitorización de infraestructura y aplicaciones en la nube."},
+        {"name": "New Relic", "cost": 12.50, "icon": "icon/example.png", "details": "Análisis de rendimiento de aplicaciones en tiempo real."},
+        {"name": "Splunk", "cost": 25, "icon": "icon/example.png", "details": "Plataforma para análisis y monitorización de datos masivos."}
       ],
       "OpenSource": [
         {"name": "Grafana", "url": "https://grafana.com/", "icon": "icon/example.png"},
@@ -110,9 +109,9 @@ const toolsData: ToolsData = {
     },
     "Comunicación de Equipos": {
       "SaaS": [
-        {"name": "Slack", "icon": "icon/example.png"},
-        {"name": "Microsoft Teams", "icon": "icon/example.png"},
-        {"name": "Discord", "icon": "icon/example.png"}
+        {"name": "Slack", "cost": 6.67, "icon": "icon/example.png", "details": "Mensajería en tiempo real para equipos con integraciones."},
+        {"name": "Microsoft Teams", "cost": 4, "icon": "icon/example.png", "details": "Colaboración y videoconferencia integrada con Microsoft 365."},
+        {"name": "Discord", "cost": 9.99, "icon": "icon/example.png", "details": "Comunicación por voz, video y texto, popular en equipos técnicos."}
       ],
       "OpenSource": [
         {"name": "Mattermost", "url": "https://mattermost.com/", "icon": "icon/example.png"},
@@ -123,9 +122,9 @@ const toolsData: ToolsData = {
     },
     "Almacenamiento y Compartición de Archivos": {
       "SaaS": [
-        {"name": "Dropbox", "icon": "icon/example.png"},
-        {"name": "Google Drive", "icon": "icon/example.png"},
-        {"name": "OneDrive", "icon": "icon/example.png"}
+        {"name": "Dropbox", "cost": 9.99, "icon": "icon/example.png", "details": "Almacenamiento en la nube y compartición de archivos."},
+        {"name": "Google Drive", "cost": 1.99, "icon": "icon/example.png", "details": "Almacenamiento y colaboración en documentos en la nube."},
+        {"name": "OneDrive", "cost": 1.99, "icon": "icon/example.png", "details": "Almacenamiento en la nube integrado con Microsoft 365."}
       ],
       "OpenSource": [
         {"name": "OwnCloud", "url": "https://owncloud.com/", "icon": "icon/example.png"},
@@ -135,9 +134,9 @@ const toolsData: ToolsData = {
     },
     "Automatización de Flujos de Trabajo": {
       "SaaS": [
-        {"name": "Zapier", "icon": "icon/example.png"},
-        {"name": "IFTTT", "icon": "icon/example.png"},
-        {"name": "Make (Integromat)", "icon": "icon/example.png"}
+        {"name": "Zapier", "cost": 19.99, "icon": "icon/example.png", "details": "Automatización de integraciones entre aplicaciones web."},
+        {"name": "IFTTT", "cost": 2.50, "icon": "icon/example.png", "details": "Automatización simple para dispositivos y apps."},
+        {"name": "Make (Integromat)", "cost": 9, "icon": "icon/example.png", "details": "Automatización avanzada de flujos de trabajo."}
       ],
       "OpenSource": [
         {"name": "n8n", "url": "https://n8n.io/", "icon": "icon/example.png"},
@@ -147,8 +146,8 @@ const toolsData: ToolsData = {
     },
     "Monitorización de Sistemas": {
       "SaaS": [
-        {"name": "Pingdom", "icon": "icon/example.png"},
-        {"name": "UptimeRobot", "icon": "icon/example.png"}
+        {"name": "Pingdom", "cost": 10, "icon": "icon/example.png", "details": "Monitorización de disponibilidad y rendimiento de sitios web."},
+        {"name": "UptimeRobot", "cost": 4.50, "icon": "icon/example.png", "details": "Monitorización de tiempo de actividad de sitios y servidores."}
       ],
       "OpenSource": [
         {"name": "Netdata", "url": "https://www.netdata.cloud/", "icon": "icon/example.png"},
@@ -159,8 +158,8 @@ const toolsData: ToolsData = {
     },
     "Soluciones NAS": {
       "SaaS": [
-        {"name": "AWS S3", "icon": "icon/example.png"},
-        {"name": "Google Cloud Storage", "icon": "icon/example.png"}
+        {"name": "AWS S3", "cost": 5, "icon": "icon/example.png", "details": "Almacenamiento en la nube escalable."},
+        {"name": "Google Cloud Storage", "cost": 5, "icon": "icon/example.png", "details": "Almacenamiento en la nube de alta disponibilidad."}
       ],
       "OpenSource": [
         {"name": "OpenMediaVault", "url": "https://www.openmediavault.org/", "icon": "icon/example.png"},
@@ -170,8 +169,8 @@ const toolsData: ToolsData = {
     },
     "Analítica Web": {
       "SaaS": [
-        {"name": "Google Analytics", "icon": "icon/example.png"},
-        {"name": "Mixpanel", "icon": "icon/example.png"}
+        {"name": "Google Analytics", "cost": 0, "icon": "icon/example.png", "details": "Análisis gratuito de tráfico y comportamiento web."},
+        {"name": "Mixpanel", "cost": 25, "icon": "icon/example.png", "details": "Análisis de comportamiento de usuarios en aplicaciones."}
       ],
       "OpenSource": [
         {"name": "Fathom", "url": "https://usefathom.com/", "icon": "icon/example.png"},
@@ -181,9 +180,9 @@ const toolsData: ToolsData = {
     },
     "CRM y Ventas": {
       "SaaS": [
-        {"name": "Salesforce", "icon": "icon/example.png"},
-        {"name": "HubSpot", "icon": "icon/example.png"},
-        {"name": "Pipedrive", "icon": "icon/example.png"}
+        {"name": "Salesforce", "cost": 25, "icon": "icon/example.png", "details": "CRM líder para gestión de ventas y clientes."},
+        {"name": "HubSpot", "cost": 18, "icon": "icon/example.png", "details": "CRM y marketing con plan gratuito y opciones premium."},
+        {"name": "Pipedrive", "cost": 14.90, "icon": "icon/example.png", "details": "CRM enfocado en ventas y gestión de pipelines."}
       ],
       "OpenSource": [
         {"name": "Odoo", "url": "https://www.odoo.com/", "icon": "icon/example.png"},
@@ -193,8 +192,8 @@ const toolsData: ToolsData = {
     },
     "Marketing por Email": {
       "SaaS": [
-        {"name": "Mailchimp", "icon": "icon/example.png"},
-        {"name": "Constant Contact", "icon": "icon/example.png"}
+        {"name": "Mailchimp", "cost": 13, "icon": "icon/example.png", "details": "Plataforma de email marketing y automatización."},
+        {"name": "Constant Contact", "cost": 20, "icon": "icon/example.png", "details": "Email marketing para pequeñas empresas."}
       ],
       "OpenSource": [
         {"name": "Listmonk", "url": "https://listmonk.app/", "icon": "icon/example.png"},
@@ -204,8 +203,8 @@ const toolsData: ToolsData = {
     },
     "Web Building": {
       "SaaS": [
-        {"name": "Webflow", "icon": "icon/example.png"},
-        {"name": "Wix", "icon": "icon/example.png"}
+        {"name": "Webflow", "cost": 12, "icon": "icon/example.png", "details": "Diseño web sin código con control avanzado."},
+        {"name": "Wix", "cost": 14, "icon": "icon/example.png", "details": "Creador de sitios web fácil para principiantes."}
       ],
       "OpenSource": [
         {"name": "Webstudio", "url": "https://webstudio.is/", "icon": "icon/example.png"},
@@ -214,7 +213,7 @@ const toolsData: ToolsData = {
     },
     "Base de Datos No-Code": {
       "SaaS": [
-        {"name": "Airtable", "icon": "icon/example.png"}
+        {"name": "Airtable", "cost": 10, "icon": "icon/example.png", "details": "Base de datos visual y colaborativa sin código."}
       ],
       "OpenSource": [
         {"name": "Rowy", "url": "https://rowy.io/", "icon": "icon/example.png"},
@@ -223,8 +222,8 @@ const toolsData: ToolsData = {
     },
     "Solución Backend": {
       "SaaS": [
-        {"name": "Firebase", "icon": "icon/example.png"},
-        {"name": "Supabase", "icon": "icon/example.png"}
+        {"name": "Firebase", "cost": 5, "icon": "icon/example.png", "details": "Backend como servicio con plan gratuito y uso escalable."},
+        {"name": "Supabase", "cost": 5, "icon": "icon/example.png", "details": "Backend open-source con nivel gratuito."}
       ],
       "OpenSource": [
         {"name": "Pocketbase", "url": "https://pocketbase.io/", "icon": "icon/example.png"},
@@ -233,8 +232,8 @@ const toolsData: ToolsData = {
     },
     "Plataforma de Ventas": {
       "SaaS": [
-        {"name": "Shopify", "icon": "icon/example.png"},
-        {"name": "WooCommerce", "icon": "icon/example.png"}
+        {"name": "Shopify", "cost": 29, "icon": "icon/example.png", "details": "Plataforma de comercio electrónico todo en uno."},
+        {"name": "WooCommerce", "cost": 5, "icon": "icon/example.png", "details": "Plugin de e-commerce para WordPress."}
       ],
       "OpenSource": [
         {"name": "Spree", "url": "https://spreecommerce.org/", "icon": "icon/example.png"},
@@ -243,7 +242,7 @@ const toolsData: ToolsData = {
     },
     "Notas": {
       "SaaS": [
-        {"name": "Evernote", "icon": "icon/example.png"}
+        {"name": "Evernote", "cost": 7.99, "icon": "icon/example.png", "details": "Aplicación para tomar notas y organizar ideas."}
       ],
       "OpenSource": [
         {"name": "Notesnook", "url": "https://notesnook.com/", "icon": "icon/example.png"},
@@ -252,8 +251,8 @@ const toolsData: ToolsData = {
     },
     "Base de Conocimiento": {
       "SaaS": [
-        {"name": "Notion", "icon": "icon/example.png"},
-        {"name": "Confluence", "icon": "icon/example.png"}
+        {"name": "Notion", "cost": 8, "icon": "icon/example.png", "details": "Espacio de trabajo todo en uno para notas y wikis."},
+        {"name": "Confluence", "cost": 5.75, "icon": "icon/example.png", "details": "Documentación colaborativa para equipos."}
       ],
       "OpenSource": [
         {"name": "Outline", "url": "https://www.getoutline.com/", "icon": "icon/example.png"},
@@ -262,8 +261,8 @@ const toolsData: ToolsData = {
     },
     "Rastreo de Tiempo": {
       "SaaS": [
-        {"name": "RescueTime", "icon": "icon/example.png"},
-        {"name": "Toggl Track", "icon": "icon/example.png"}
+        {"name": "RescueTime", "cost": 6, "icon": "icon/example.png", "details": "Rastreo automático de tiempo y productividad."},
+        {"name": "Toggl Track", "cost": 9, "icon": "icon/example.png", "details": "Seguimiento manual de tiempo para equipos."}
       ],
       "OpenSource": [
         {"name": "ActivityWatch", "url": "https://activitywatch.net/", "icon": "icon/example.png"},
@@ -272,8 +271,8 @@ const toolsData: ToolsData = {
     },
     "Gestión de Recursos Humanos": {
       "SaaS": [
-        {"name": "BambooHR", "icon": "icon/example.png"},
-        {"name": "Gusto", "icon": "icon/example.png"}
+        {"name": "BambooHR", "cost": 6, "icon": "icon/example.png", "details": "Gestión de RRHH para contratación y datos de empleados."},
+        {"name": "Gusto", "cost": 40, "icon": "icon/example.png", "details": "Nóminas y beneficios para pequeñas empresas."}
       ],
       "OpenSource": [
         {"name": "OrangeHRM", "url": "https://www.orangehrm.com/", "icon": "icon/example.png"},
@@ -282,8 +281,8 @@ const toolsData: ToolsData = {
     },
     "Videoconferencia": {
       "SaaS": [
-        {"name": "Zoom", "icon": "icon/example.png"},
-        {"name": "Google Meet", "icon": "icon/example.png"}
+        {"name": "Zoom", "cost": 14.99, "icon": "icon/example.png", "details": "Videoconferencias y webinars para equipos."},
+        {"name": "Google Meet", "cost": 6, "icon": "icon/example.png", "details": "Videoconferencias integradas con Google Workspace."}
       ],
       "OpenSource": [
         {"name": "Jitsi", "url": "https://jitsi.org/", "icon": "icon/example.png"},
@@ -379,10 +378,10 @@ const CostCalculator = () => {
 
   // Get all SaaS tools for floating icons
   const getAllSaasTools = () => {
-    const allTools: { name: string; icon: string }[] = [];
+    const allTools: { name: string; icon: string; cost?: number }[] = [];
     Object.values(toolsData.tools).forEach(category => {
       category.SaaS.forEach(tool => {
-        allTools.push({name: tool.name, icon: tool.icon});
+        allTools.push({name: tool.name, icon: tool.icon, cost: tool.cost});
       });
     });
     return allTools;
@@ -614,145 +613,4 @@ const CostCalculator = () => {
                   <CardTitle className="flex items-center gap-2">
                     <Check className="text-green-500" />
                     Alternativas Open Source
-                  </CardTitle>
-                  <CardDescription>
-                    Opciones gratuitas para reemplazar tus herramientas actuales
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-6">
-                    <AnimatePresence>
-                      {Object.entries(openSourceAlternatives).map(([category, items]) => (
-                        <motion.div 
-                          key={category} 
-                          className="space-y-4"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
-                        >
-                          <h4 className="font-medium text-lg text-costwise-navy">{category}</h4>
-                          {items.map((item, index) => (
-                            <motion.div 
-                              key={index} 
-                              className="border rounded-lg p-4 bg-white"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                            >
-                              <div className="flex justify-between items-center mb-3">
-                                <div className="font-medium flex items-center gap-2">
-                                  {item.saas.name}
-                                  <span className="text-sm text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
-                                    ${item.saas.cost}/usuario
-                                  </span>
-                                </div>
-                                <ArrowRight className="h-4 w-4 text-gray-400" />
-                              </div>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {item.alternatives.slice(0, 2).map((alt, altIndex) => (
-                                  <a 
-                                    key={altIndex} 
-                                    href={alt.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sm px-3 py-2 rounded-md bg-green-50 text-green-700 hover:bg-green-100 transition-colors flex items-center justify-between"
-                                  >
-                                    {alt.name}
-                                    <Check className="h-4 w-4" />
-                                  </a>
-                                ))}
-                              </div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                    
-                    <div className="flex justify-center pt-4">
-                      <motion.div 
-                        className="p-4 bg-green-50 rounded-lg text-center w-full"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ 
-                          opacity: showSavings ? 1 : 0, 
-                          scale: showSavings ? 1 : 0.9,
-                          y: showSavings ? [20, 0] : 20 
-                        }}
-                        transition={{ 
-                          duration: 0.5,
-                          type: "spring",
-                          stiffness: 200,
-                          damping: 15
-                        }}
-                      >
-                        <div className="flex flex-col items-center">
-                          <ArrowDown className="h-8 w-8 text-green-500 mb-2 animate-bounce" />
-                          <p className="font-semibold text-green-700">Ahorro potencial anual</p>
-                          <div className="text-3xl font-bold text-green-600 mt-1">
-                            ${totalYearlyCost.toFixed(2)}
-                          </div>
-                          <p className="text-sm text-green-600 mt-1">¡100% de reducción de costos!</p>
-                        </div>
-                      </motion.div>
-                    </div>
-                    
-                    {/* Tabla detallada de costos */}
-                    {selectedTools.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="mt-6 border-t pt-6"
-                      >
-                        <h4 className="font-medium text-lg text-costwise-navy mb-4">Desglose detallado de costos</h4>
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Herramienta</TableHead>
-                              <TableHead className="text-right">Costo/Usuario</TableHead>
-                              <TableHead className="text-right">Usuarios</TableHead>
-                              <TableHead className="text-right">Total/Mes</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {selectedTools.map(toolName => {
-                              // Find the tool in all categories
-                              let tool: SaaSTool | undefined;
-                              for (const category of Object.values(toolsData.tools)) {
-                                tool = category.SaaS.find(t => t.name === toolName);
-                                if (tool) break;
-                              }
-                              
-                              if (!tool) return null;
-                              
-                              return (
-                                <TableRow key={toolName}>
-                                  <TableCell>{toolName}</TableCell>
-                                  <TableCell className="text-right">${tool.cost.toFixed(2)}</TableCell>
-                                  <TableCell className="text-right">{userCount}</TableCell>
-                                  <TableCell className="text-right font-medium">${(tool.cost * userCount).toFixed(2)}</TableCell>
-                                </TableRow>
-                              );
-                            })}
-                            <TableRow className="bg-muted/50">
-                              <TableCell colSpan={3} className="font-bold">Total Mensual</TableCell>
-                              <TableCell className="text-right font-bold">${totalMonthlyCost.toFixed(2)}</TableCell>
-                            </TableRow>
-                            <TableRow className="bg-green-50">
-                              <TableCell colSpan={3} className="font-bold text-green-700">Ahorro Anual con Open Source</TableCell>
-                              <TableCell className="text-right font-bold text-green-700">${totalYearlyCost.toFixed(2)}</TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </motion.div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default CostCalculator;
+                  </
