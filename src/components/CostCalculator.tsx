@@ -14,13 +14,48 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, ArrowRight, Check, ArrowDown } from "lucide-react";
+import { 
+  DollarSign, 
+  ArrowRight, 
+  Check, 
+  ArrowDown, 
+  Info, 
+  HelpCircle 
+} from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import FloatingIcons from "./FloatingIcons";
 
+type SaaSTool = {
+  name: string;
+  cost: number;
+  icon: string;
+  details?: string;
+};
+
+type OpenSourceTool = {
+  name: string;
+  url: string;
+  icon: string;
+};
+
 type ToolCategory = {
-  SaaS: { name: string; icon: string }[];
-  OpenSource: { name: string; url: string; icon: string }[];
+  SaaS: SaaSTool[];
+  OpenSource: OpenSourceTool[];
 };
 
 type ToolsData = {
@@ -32,11 +67,11 @@ const toolsData: ToolsData = {
   tools: {
     "Gestión de Proyectos": {
       "SaaS": [
-        {"name": "Microsoft Project", "icon": "icon/example.png"},
-        {"name": "Jira", "icon": "icon/example.png"},
-        {"name": "Trello", "icon": "icon/example.png"},
-        {"name": "Asana", "icon": "icon/example.png"},
-        {"name": "Monday.com", "icon": "icon/example.png"}
+        {"name": "Microsoft Project", "cost": 10, "icon": "icon/example.png", "details": "Herramienta avanzada para planificación y gestión de proyectos complejos."},
+        {"name": "Jira", "cost": 7.75, "icon": "icon/example.png", "details": "Gestión de proyectos ágiles, especialmente para desarrollo de software."},
+        {"name": "Trello", "cost": 5, "icon": "icon/example.png", "details": "Gestión visual de tareas con tableros Kanban."},
+        {"name": "Asana", "cost": 10.99, "icon": "icon/example.png", "details": "Gestión de tareas y proyectos con múltiples vistas."},
+        {"name": "Monday.com", "cost": 8, "icon": "icon/example.png", "details": "Plataforma flexible para gestionar equipos y flujos de trabajo."}
       ],
       "OpenSource": [
         {"name": "Taiga", "url": "https://taiga.io/", "icon": "icon/example.png"},
@@ -49,9 +84,9 @@ const toolsData: ToolsData = {
     },
     "Acceso Remoto": {
       "SaaS": [
-        {"name": "LogMeIn", "icon": "icon/example.png"},
-        {"name": "TeamViewer", "icon": "icon/example.png"},
-        {"name": "AnyDesk", "icon": "icon/example.png"}
+        {"name": "LogMeIn", "cost": 30, "icon": "icon/example.png", "details": "Solución de acceso remoto para soporte y gestión de dispositivos."},
+        {"name": "TeamViewer", "cost": 24.90, "icon": "icon/example.png", "details": "Software de acceso remoto y colaboración en tiempo real."},
+        {"name": "AnyDesk", "cost": 10.99, "icon": "icon/example.png", "details": "Acceso remoto ligero y rápido para escritorios."}
       ],
       "OpenSource": [
         {"name": "Apache Guacamole", "url": "https://guacamole.apache.org/", "icon": "icon/example.png"},
@@ -262,11 +297,28 @@ const CostCalculator = () => {
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
   const [userCount, setUserCount] = useState<number>(1);
   const [currentCategory, setCurrentCategory] = useState<string>(Object.keys(toolsData.tools)[0]);
-  const [pricePerUser] = useState<number>(6); // $6 por usuario según especificaciones
   const [showSavings, setShowSavings] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
   
-  // Calcular costos totales
-  const totalMonthlyCost = selectedTools.length * userCount * pricePerUser;
+  // Calculate costs based on actual tool prices
+  const calculateMonthlyCost = () => {
+    let totalCost = 0;
+    
+    selectedTools.forEach(toolName => {
+      // Find the tool and its cost
+      for (const category of Object.values(toolsData.tools)) {
+        const tool = category.SaaS.find(t => t.name === toolName);
+        if (tool) {
+          totalCost += tool.cost * userCount;
+          break;
+        }
+      }
+    });
+    
+    return totalCost;
+  };
+  
+  const totalMonthlyCost = calculateMonthlyCost();
   const totalYearlyCost = totalMonthlyCost * 12;
   
   const handleToolToggle = (toolName: string) => {
@@ -330,7 +382,7 @@ const CostCalculator = () => {
     const allTools: { name: string; icon: string }[] = [];
     Object.values(toolsData.tools).forEach(category => {
       category.SaaS.forEach(tool => {
-        allTools.push(tool);
+        allTools.push({name: tool.name, icon: tool.icon});
       });
     });
     return allTools;
@@ -394,7 +446,18 @@ const CostCalculator = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  <Label className="text-base font-medium">Categoría de herramientas</Label>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-base font-medium">Categoría de herramientas</Label>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setShowDetails(!showDetails)}
+                      className="flex items-center gap-1 text-sm"
+                    >
+                      {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
+                      <Info className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
                   <div className="overflow-x-auto pb-2">
                     <ToggleGroup 
                       type="single" 
@@ -425,7 +488,7 @@ const CostCalculator = () => {
                         {toolsData.tools[currentCategory].SaaS.map((tool) => (
                           <motion.div 
                             key={tool.name} 
-                            className={`flex items-center space-x-3 p-3 rounded-md border cursor-pointer transition-colors ${
+                            className={`flex flex-col p-3 rounded-md border cursor-pointer transition-colors ${
                               selectedTools.includes(tool.name) 
                                 ? 'border-primary bg-primary/10' 
                                 : 'border-gray-200 hover:border-primary/50'
@@ -434,11 +497,45 @@ const CostCalculator = () => {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                           >
-                            <Checkbox 
-                              checked={selectedTools.includes(tool.name)}
-                              onCheckedChange={() => handleToolToggle(tool.name)}
-                            />
-                            <span className="font-medium">{tool.name}</span>
+                            <div className="flex items-center space-x-3 justify-between">
+                              <div className="flex items-center space-x-3">
+                                <Checkbox 
+                                  checked={selectedTools.includes(tool.name)}
+                                  onCheckedChange={() => handleToolToggle(tool.name)}
+                                />
+                                <span className="font-medium">{tool.name}</span>
+                              </div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <HelpCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p className="w-64">{tool.details}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            
+                            <AnimatePresence>
+                              {(showDetails || selectedTools.includes(tool.name)) && (
+                                <motion.div 
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  className="mt-2 pt-2 border-t text-sm"
+                                >
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-gray-500">Precio mensual:</span>
+                                    <span className="font-semibold text-costwise-blue">${tool.cost}/usuario</span>
+                                  </div>
+                                  <div className="flex justify-between items-center mt-1">
+                                    <span className="text-gray-500">Total mensual:</span>
+                                    <span className="font-semibold">${(tool.cost * userCount).toFixed(2)}</span>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
                           </motion.div>
                         ))}
                       </motion.div>
@@ -485,7 +582,7 @@ const CostCalculator = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: "spring", stiffness: 200, damping: 10 }}
                       >
-                        {totalMonthlyCost.toLocaleString()}
+                        {totalMonthlyCost.toFixed(2)}
                       </motion.span>
                     </div>
                     <span className="text-sm text-gray-500">por mes</span>
@@ -502,7 +599,7 @@ const CostCalculator = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: "spring", stiffness: 200, damping: 10 }}
                       >
-                        {totalYearlyCost.toLocaleString()}
+                        {totalYearlyCost.toFixed(2)}
                       </motion.span>
                     </div>
                     <span className="text-sm text-gray-500">por año</span>
@@ -543,7 +640,12 @@ const CostCalculator = () => {
                               transition={{ delay: index * 0.1 }}
                             >
                               <div className="flex justify-between items-center mb-3">
-                                <div className="font-medium">{item.saas.name}</div>
+                                <div className="font-medium flex items-center gap-2">
+                                  {item.saas.name}
+                                  <span className="text-sm text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
+                                    ${item.saas.cost}/usuario
+                                  </span>
+                                </div>
                                 <ArrowRight className="h-4 w-4 text-gray-400" />
                               </div>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -586,12 +688,62 @@ const CostCalculator = () => {
                           <ArrowDown className="h-8 w-8 text-green-500 mb-2 animate-bounce" />
                           <p className="font-semibold text-green-700">Ahorro potencial anual</p>
                           <div className="text-3xl font-bold text-green-600 mt-1">
-                            ${totalYearlyCost.toLocaleString()}
+                            ${totalYearlyCost.toFixed(2)}
                           </div>
                           <p className="text-sm text-green-600 mt-1">¡100% de reducción de costos!</p>
                         </div>
                       </motion.div>
                     </div>
+                    
+                    {/* Tabla detallada de costos */}
+                    {selectedTools.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="mt-6 border-t pt-6"
+                      >
+                        <h4 className="font-medium text-lg text-costwise-navy mb-4">Desglose detallado de costos</h4>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Herramienta</TableHead>
+                              <TableHead className="text-right">Costo/Usuario</TableHead>
+                              <TableHead className="text-right">Usuarios</TableHead>
+                              <TableHead className="text-right">Total/Mes</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {selectedTools.map(toolName => {
+                              // Find the tool in all categories
+                              let tool: SaaSTool | undefined;
+                              for (const category of Object.values(toolsData.tools)) {
+                                tool = category.SaaS.find(t => t.name === toolName);
+                                if (tool) break;
+                              }
+                              
+                              if (!tool) return null;
+                              
+                              return (
+                                <TableRow key={toolName}>
+                                  <TableCell>{toolName}</TableCell>
+                                  <TableCell className="text-right">${tool.cost.toFixed(2)}</TableCell>
+                                  <TableCell className="text-right">{userCount}</TableCell>
+                                  <TableCell className="text-right font-medium">${(tool.cost * userCount).toFixed(2)}</TableCell>
+                                </TableRow>
+                              );
+                            })}
+                            <TableRow className="bg-muted/50">
+                              <TableCell colSpan={3} className="font-bold">Total Mensual</TableCell>
+                              <TableCell className="text-right font-bold">${totalMonthlyCost.toFixed(2)}</TableCell>
+                            </TableRow>
+                            <TableRow className="bg-green-50">
+                              <TableCell colSpan={3} className="font-bold text-green-700">Ahorro Anual con Open Source</TableCell>
+                              <TableCell className="text-right font-bold text-green-700">${totalYearlyCost.toFixed(2)}</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </motion.div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
