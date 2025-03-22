@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -165,11 +164,11 @@ const ToolSelector = ({
                         >
                           <div className="flex justify-between items-center">
                             <span className="text-gray-500">Precio mensual:</span>
-                            <span className="font-semibold text-costwise-blue">${tool.cost}/usuario</span>
+                            <span className="font-semibold text-red-500">${tool.cost}/usuario</span>
                           </div>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-gray-500">Total mensual:</span>
-                            <span className="font-semibold">${(tool.cost * userCount).toFixed(2)}</span>
+                            <span className="font-semibold text-red-500">${(tool.cost * userCount).toFixed(2)}</span>
                           </div>
                         </motion.div>
                       )}

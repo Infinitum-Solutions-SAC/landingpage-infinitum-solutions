@@ -27,26 +27,37 @@ export const toolsData: ToolsData = {
   tools: {
     "Gestión de Proyectos": {
       "SaaS": [
-        {"name": "Microsoft Project", "cost": 10, "icon": "icon/example.png", "details": "Herramienta avanzada para planificación y gestión de proyectos complejos."},
-        {"name": "Jira", "cost": 7.75, "icon": "icon/example.png", "details": "Gestión de proyectos ágiles, especialmente para desarrollo de software."},
-        {"name": "Trello", "cost": 5, "icon": "icon/example.png", "details": "Gestión visual de tareas con tableros Kanban."},
+        {"name": "Microsoft Project", "cost": 10, "icon": "https://images.icon-icons.com/3010/PNG/512/project_office_logo_icon_188518.png", "details": "Herramienta avanzada para planificación y gestión de proyectos complejos."},
+        {"name": "Jira", "cost": 7.75, "icon": "https://images.icon-icons.com/2429/PNG/512/jira_logo_icon_147274.png", "details": "Gestión de proyectos ágiles, especialmente para desarrollo de software."},
+        {"name": "Trello", "cost": 5, "icon": "https://images.icon-icons.com/836/PNG/512/Trello_icon-icons.com_66775.png", "details": "Gestión visual de tareas con tableros Kanban."},
         {"name": "Asana", "cost": 10.99, "icon": "icon/example.png", "details": "Gestión de tareas y proyectos con múltiples vistas."},
         {"name": "Monday.com", "cost": 8, "icon": "icon/example.png", "details": "Plataforma flexible para gestionar equipos y flujos de trabajo."}
       ],
       "OpenSource": [
-        {"name": "Taiga", "url": "https://taiga.io/", "icon": "icon/example.png"},
         {"name": "OpenProject", "url": "https://www.openproject.org/", "icon": "icon/example.png"},
-        {"name": "Redmine", "url": "https://www.redmine.org/", "icon": "icon/example.png"},
-        {"name": "ProjectLibre", "url": "https://www.projectlibre.com/", "icon": "icon/example.png"},
         {"name": "Focalboard", "url": "https://www.focalboard.com/", "icon": "icon/example.png"},
-        {"name": "Kanboard", "url": "https://kanboard.org/", "icon": "icon/example.png"}
+        {"name": "Taiga", "url": "https://taiga.io/", "icon": "icon/example.png"},
+        // {"name": "Redmine", "url": "https://www.redmine.org/", "icon": "icon/example.png"},
+        // {"name": "ProjectLibre", "url": "https://www.projectlibre.com/", "icon": "icon/example.png"}
+      ]
+    },
+    "Ofimática": {
+      "SaaS": [
+        {"name": "Microsoft 365", "cost": 6, "icon": "icon/example.png", "details": "Suite de ofimática con Word, Excel y PowerPoint en la nube."},
+        {"name": "Google Workspace", "cost": 6, "icon": "icon/example.png", "details": "Documentos, hojas de cálculo y presentaciones colaborativas."},
+        {"name": "Zoho Office", "cost": 3, "icon": "icon/example.png", "details": "Suite de ofimática en la nube para pequeñas empresas."}
+      ],
+      "OpenSource": [
+        {"name": "ONLYOFFICE", "url": "https://www.onlyoffice.com/", "icon": "icon/example.png"},
+        {"name": "Collabora Online (LibreOffice)", "url": "https://www.collaboraoffice.com/", "icon": "icon/example.png"},
+        // {"name": "CryptPad", "url": "https://cryptpad.fr/", "icon": "icon/example.png"}
       ]
     },
     "Acceso Remoto": {
       "SaaS": [
         {"name": "LogMeIn", "cost": 30, "icon": "icon/example.png", "details": "Solución de acceso remoto para soporte y gestión de dispositivos."},
         {"name": "TeamViewer", "cost": 24.90, "icon": "icon/example.png", "details": "Software de acceso remoto y colaboración en tiempo real."},
-        {"name": "AnyDesk", "cost": 10.99, "icon": "icon/example.png", "details": "Acceso remoto ligero y rápido para escritorios."}
+        {"name": "AnyDesk", "cost": 10.99, "icon": "https://images.icon-icons.com/2407/PNG/512/anydesk_icon_146231.png", "details": "Acceso remoto ligero y rápido para escritorios."}
       ],
       "OpenSource": [
         {"name": "Apache Guacamole", "url": "https://guacamole.apache.org/", "icon": "icon/example.png"},

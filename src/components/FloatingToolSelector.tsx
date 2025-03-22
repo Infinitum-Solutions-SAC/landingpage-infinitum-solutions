@@ -232,7 +232,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
               left: icon.x,
               top: icon.y,
               width: icon.size,
-              height: icon.size + 25 // Añadir altura para el texto
+              height: icon.size + 30 // Aumentar un poco la altura para el precio
             }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ 
@@ -249,7 +249,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
             whileTap={{ scale: 0.95 }}
           >
             <div 
-              className={`relative rounded-full p-2 flex items-center justify-center bg-white/90 shadow-lg 
+              className={`relative rounded-full p-1 flex items-center justify-center bg-white/90 shadow-lg 
                 ${isSelected ? 'ring-4 ring-blue-500 shadow-blue-200' : 'hover:ring-2 hover:ring-blue-300'}`}
               style={{ width: icon.size, height: icon.size }}
             >
@@ -257,7 +257,7 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
                 <img 
                   src={icon.icon} 
                   alt={icon.name} 
-                  className="w-full h-full object-contain p-2"
+                  className="w-[85%] h-[85%] object-contain"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
@@ -268,6 +268,13 @@ const FloatingToolSelector = ({ selectedTools, onToolToggle }: FloatingToolSelec
               {isSelected && (
                 <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1 shadow-md">
                   <Check className="h-3 w-3 text-white" />
+                </div>
+              )}
+              
+              {/* Precio en dólares */}
+              {icon.cost && (
+                <div className="absolute -bottom-2 -right-2 bg-red-500 rounded-full px-1 h-[18px] shadow-md flex items-center justify-center">
+                  <span className="text-[10px] text-white font-bold">${icon.cost}</span>
                 </div>
               )}
             </div>
