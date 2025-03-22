@@ -8,6 +8,7 @@ import Testimonials from "@/components/Testimonials";
 import OpenSource from "@/components/OpenSource";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CostCalculator from "@/components/CostCalculator";
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
       <NavBar />
       <Hero />
       <Services />
+      <CostCalculator />
       <CostComparison />
       <Hardware />
       <Testimonials />
