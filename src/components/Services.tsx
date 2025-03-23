@@ -127,7 +127,7 @@ const Services = () => {
                     
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-green-600">$499-999 pago único</span>
+                      <span className="text-green-600">desde $499 | pago único</span>
                     </div>
                     
                     <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">
@@ -172,7 +172,7 @@ const Services = () => {
                     
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-green-600">$899-1999 pago único</span>
+                      <span className="text-green-600">desde $899 | pago único</span>
                     </div>
                     
                     <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">

@@ -62,12 +62,11 @@ const CostCalculator = () => {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-3">
-            Calculadora de Costos IT
+            Lo que horrarías
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Explora nuestra visualización interactiva para seleccionar herramientas, 
-            indica el número de usuarios y descubre 
-            <span className="font-semibold text-[20px] text-green-600"> cuánto podrías ahorrar </span>  
+            ¿Qué herramientas usa tu empresa? <br /> 
+             <span className="font-semibold text-[20px] text-green-600"> cuánto podrías ahorrar </span>  
             con alternativas open source.
           </p>
         </div>
@@ -78,7 +77,7 @@ const CostCalculator = () => {
             <Card className="shadow-md overflow-hidden">
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                  <span>Selección de Herramientas</span>
+                    <span>Busca alternativas!</span>
                   <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
                     <TabsList>
                       <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
@@ -87,7 +86,7 @@ const CostCalculator = () => {
                   </Tabs>
                 </CardTitle>
                 <CardDescription>
-                  Selecciona las herramientas de pago que utilizas actualmente
+                  Selecciona las herramientas que utilizas o pensabas usar
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
