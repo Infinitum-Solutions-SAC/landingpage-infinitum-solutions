@@ -1,4 +1,3 @@
-
 import { SaaSTool, toolsData } from "../data/toolsData";
 // Importamos los SVGs directamente para asegurar que Vite los procese correctamente
 import jiraIcon from "../assets/images/icons-saas/jira.svg";
@@ -118,7 +117,7 @@ export const getOpenSourceAlternatives = (selectedTools: string[]) => {
 // Obtener una lista predeterminada de herramientas populares
 export const getDefaultSelectedTools = (): string[] => {
   // Seleccionar algunas herramientas populares por defecto
-  return ['Slack', 'Microsoft 365', 'Zoom'];
+  return ['Jira', 'Microsoft 365'];
 };
 
 // Obtener el costo total de una herramienta para un número de usuarios
