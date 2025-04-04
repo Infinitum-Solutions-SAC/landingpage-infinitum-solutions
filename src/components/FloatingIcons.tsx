@@ -1,6 +1,7 @@
 
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { getToolIcon } from '@/utils/calculatorUtils';
 
 type Tool = {
   name: string;
@@ -50,9 +51,17 @@ const FloatingIcons = ({ tools }: FloatingIconsProps) => {
             top: '50%',
           }}
         >
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-            <span className="text-xs text-center font-medium text-gray-700">{item.tool.name.split(' ')[0]}</span>
-          </div>
+          {item.tool.icon ? (
+            <img 
+              src={item.tool.icon} 
+              alt={item.tool.name} 
+              className="w-10 h-10 object-contain"
+            />
+          ) : (
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+              <span className="text-xs text-center font-medium text-gray-700">{item.tool.name.split(' ')[0]}</span>
+            </div>
+          )}
         </motion.div>
       ))}
     </div>
