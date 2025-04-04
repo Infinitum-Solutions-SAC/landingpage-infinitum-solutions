@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { calculateMonthlyCost } from "@/utils/calculatorUtils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
@@ -37,6 +38,8 @@ const OpenSourceAlternatives = ({
   alternatives, 
   showSavings 
 }: OpenSourceAlternativesProps) => {
+  const isMobile = useIsMobile();
+  
   if (selectedTools.length === 0) {
     return null;
   }
@@ -70,7 +73,7 @@ const OpenSourceAlternatives = ({
                     Reemplazando herramientas SaaS con alternativas Open Source
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
                   <div className="flex items-center text-xl font-bold text-green-700">
                     <DollarSign className="h-5 w-5" />
                     <span>{totalMonthlyCost.toFixed(2)}</span>
@@ -94,52 +97,54 @@ const OpenSourceAlternatives = ({
             {Object.entries(alternatives).map(([category, toolGroups]) => (
               <div key={category} className="mb-6">
                 <h4 className="text-base font-medium bg-green-50 p-2 rounded">{category}</h4>
-                <Table className="mt-2">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[180px]">Herramienta SaaS</TableHead>
-                      <TableHead className="w-[100px]"></TableHead>
-                      <TableHead>Alternativas Open Source</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {toolGroups.map((group, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell className="font-medium">
-                          <div>
-                            {group.saas.name}
-                            <div className="text-sm text-costwise-blue font-medium mt-1">
-                              ${(group.saas.cost * userCount).toFixed(2)}/mes
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <ArrowRight className="mx-auto text-gray-400" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-2">
-                            {group.alternatives.map((alt: any, altIdx: number) => (
-                              <a
-                                key={altIdx}
-                                href={alt.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Button 
-                                  size="sm" 
-                                  variant="outline"
-                                  className="border-green-200 bg-green-50 hover:bg-green-100 text-green-700"
-                                >
-                                  {alt.name}
-                                </Button>
-                              </a>
-                            ))}
-                          </div>
-                        </TableCell>
+                <div className="overflow-x-auto -mx-6 px-6">
+                  <Table className="mt-2 w-full">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className={isMobile ? "w-[120px]" : "w-[180px]"}>Herramienta SaaS</TableHead>
+                        <TableHead className="w-[40px]"></TableHead>
+                        <TableHead>Alternativas Open Source</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {toolGroups.map((group, idx) => (
+                        <TableRow key={idx}>
+                          <TableCell className="font-medium">
+                            <div>
+                              {group.saas.name}
+                              <div className="text-sm text-costwise-blue font-medium mt-1">
+                                ${(group.saas.cost * userCount).toFixed(2)}/mes
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-1 md:px-4">
+                            <ArrowRight className="mx-auto text-gray-400" size={isMobile ? 16 : 24} />
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1 md:gap-2">
+                              {group.alternatives.map((alt: any, altIdx: number) => (
+                                <a
+                                  key={altIdx}
+                                  href={alt.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <Button 
+                                    size={isMobile ? "sm" : "default"}
+                                    variant="outline"
+                                    className="border-green-200 bg-green-50 hover:bg-green-100 text-green-700 text-xs md:text-sm py-1 h-auto md:h-9"
+                                  >
+                                    {alt.name}
+                                  </Button>
+                                </a>
+                              ))}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             ))}
           </div>
