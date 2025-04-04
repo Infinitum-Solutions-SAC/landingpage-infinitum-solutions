@@ -98,7 +98,6 @@ const OpenSourceAlternatives = ({
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[180px]">Herramienta SaaS</TableHead>
-                      <TableHead className="w-[100px] text-right">Costo Mensual</TableHead>
                       <TableHead className="w-[100px]"></TableHead>
                       <TableHead>Alternativas Open Source</TableHead>
                     </TableRow>
@@ -106,9 +105,13 @@ const OpenSourceAlternatives = ({
                   <TableBody>
                     {toolGroups.map((group, idx) => (
                       <TableRow key={idx}>
-                        <TableCell className="font-medium">{group.saas.name}</TableCell>
-                        <TableCell className="text-right text-costwise-blue">
-                          ${(group.saas.cost * userCount).toFixed(2)}
+                        <TableCell className="font-medium">
+                          <div>
+                            {group.saas.name}
+                            <div className="text-sm text-costwise-blue font-medium mt-1">
+                              ${(group.saas.cost * userCount).toFixed(2)}/mes
+                            </div>
+                          </div>
                         </TableCell>
                         <TableCell>
                           <ArrowRight className="mx-auto text-gray-400" />
