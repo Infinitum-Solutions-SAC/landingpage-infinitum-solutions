@@ -1,13 +1,16 @@
 
-import { ArrowUp, Github, Linkedin, Twitter } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Twitter, BookOpen, MessageCircle } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Footer = () => {
+  const isMobile = useIsMobile();
+  
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
   return (
-    <footer className="bg-white py-16 border-t border-gray-100">
+    <footer className="bg-white py-16 border-t border-gray-100 relative">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
           <div className="col-span-1 md:col-span-1">
@@ -57,6 +60,16 @@ const Footer = () => {
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Términos y condiciones</a></li>
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Privacidad</a></li>
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Cookies</a></li>
+              <li>
+                <a 
+                  href="#" 
+                  className="inline-flex items-center gap-2 text-gray-600 hover:text-costwise-blue transition-colors"
+                >
+                  <BookOpen size={16} />
+                  <span>Libro de reclamaciones</span>
+                  <span className="bg-gray-100 text-xs px-2 py-1 rounded-full">Implementación</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -77,6 +90,17 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      
+      {/* WhatsApp flotante */}
+      <a 
+        href="https://wa.me/51940937600" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="fixed bottom-6 left-6 z-50 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all"
+        aria-label="Contactar por WhatsApp"
+      >
+        <MessageCircle size={isMobile ? 24 : 30} />
+      </a>
     </footer>
   );
 };
