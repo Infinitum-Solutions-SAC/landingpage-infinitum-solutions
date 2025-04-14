@@ -1,10 +1,12 @@
+
 import { useState, useEffect } from 'react';
 import { 
   Card, 
   CardHeader, 
   CardTitle, 
   CardDescription,
-  CardContent 
+  CardContent,
+  CardFooter
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FloatingToolSelector from "./FloatingToolSelector";
@@ -92,10 +94,28 @@ const CostCalculator = () => {
               <CardContent className="p-0">
                 <Tabs value={activeView} className="w-full">
                   <TabsContent value="floating" className="m-0">
-                    <FloatingToolSelector 
-                      selectedTools={selectedTools}
-                      onToolToggle={handleToolToggle}
-                    />
+                    <div className="flex flex-col">
+                      <FloatingToolSelector 
+                        selectedTools={selectedTools}
+                        onToolToggle={handleToolToggle}
+                      />
+                      
+                      {/* Control de usuarios integrado en la vista flotante */}
+                      <CardFooter className="border-t p-4">
+                        <div className="flex items-center justify-center gap-4 w-full">
+                          <span className="text-sm md:text-base font-medium whitespace-nowrap">Número de usuarios:</span>
+                          <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            value={userCount}
+                            onChange={(e) => setUserCount(parseInt(e.target.value))}
+                            className="flex-grow h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                          <span className="text-base md:text-lg font-semibold min-w-[40px] text-center">{userCount}</span>
+                        </div>
+                      </CardFooter>
+                    </div>
                   </TabsContent>
                   <TabsContent value="list" className="m-0">
                     <div className="p-6">
@@ -108,24 +128,6 @@ const CostCalculator = () => {
                     </div>
                   </TabsContent>
                 </Tabs>
-              </CardContent>
-            </Card>
-            
-            {/* Control de usuarios */}
-            <Card className="shadow-md mt-6">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-medium">Número de usuarios:</span>
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={userCount}
-                    onChange={(e) => setUserCount(parseInt(e.target.value))}
-                    className="flex-grow h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <span className="text-xl font-semibold min-w-[50px] text-center">{userCount}</span>
-                </div>
               </CardContent>
             </Card>
           </div>
