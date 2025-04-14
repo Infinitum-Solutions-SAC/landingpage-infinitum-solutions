@@ -76,18 +76,18 @@ const CostCalculator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
           {/* Visualización de herramientas (flotantes o lista) */}
           <div className="lg:col-span-7">
-            <Card className="shadow-md overflow-hidden">
+            <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                    <span>Busca alternativas!</span>
+                    <span className="dark:text-white">Busca alternativas!</span>
                   <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
-                    <TabsList>
-                      <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
-                      <TabsTrigger value="list">Lista</TabsTrigger>
+                    <TabsList className="dark:bg-gray-700">
+                      <TabsTrigger value="floating" className="dark:data-[state=active]:bg-costwise-blue dark:data-[state=active]:text-white">Vista Flotante</TabsTrigger>
+                      <TabsTrigger value="list" className="dark:data-[state=active]:bg-costwise-blue dark:data-[state=active]:text-white">Lista</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="dark:text-gray-300">
                   Selecciona las herramientas que utilizas o pensabas usar
                 </CardDescription>
               </CardHeader>
@@ -101,9 +101,9 @@ const CostCalculator = () => {
                       />
                       
                       {/* Control de usuarios integrado en la vista flotante */}
-                      <CardFooter className="border-t p-4">
+                      <CardFooter className="border-t dark:border-gray-700 p-4">
                         <div className="flex items-center justify-center gap-4 w-full">
-                          <span className="text-sm md:text-base font-medium whitespace-nowrap">Número de usuarios:</span>
+                          <span className="text-sm md:text-base font-medium whitespace-nowrap dark:text-gray-300">Número de usuarios:</span>
                           <input
                             type="range"
                             min="1"
@@ -112,7 +112,7 @@ const CostCalculator = () => {
                             onChange={(e) => setUserCount(parseInt(e.target.value))}
                             className="flex-grow h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
                           />
-                          <span className="text-base md:text-lg font-semibold min-w-[40px] text-center">{userCount}</span>
+                          <span className="text-base md:text-lg font-semibold min-w-[40px] text-center dark:text-white">{userCount}</span>
                         </div>
                       </CardFooter>
                     </div>

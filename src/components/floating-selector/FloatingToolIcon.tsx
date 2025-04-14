@@ -49,8 +49,8 @@ const FloatingToolIcon = ({
       whileTap={{ scale: 0.95 }}
     >
       <div 
-        className={`relative rounded-full p-1 flex items-center justify-center bg-white/90 shadow-lg 
-          ${isSelected ? 'ring-4 ring-blue-500 shadow-blue-200' : 'hover:ring-2 hover:ring-blue-300'}`}
+        className={`relative rounded-full p-1 flex items-center justify-center bg-white/90 dark:bg-gray-800/90 shadow-lg 
+          ${isSelected ? 'ring-4 ring-blue-500 dark:ring-costwise-blue shadow-blue-200 dark:shadow-blue-900' : 'hover:ring-2 hover:ring-blue-300 dark:hover:ring-blue-500'}`}
         style={{ width: size, height: size }}
       >
         {icon ? (
@@ -60,7 +60,7 @@ const FloatingToolIcon = ({
             className="w-[85%] h-[85%] object-contain"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
+          <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full">
             {name.substring(0, 2)}
           </div>
         )}
@@ -80,7 +80,7 @@ const FloatingToolIcon = ({
       
       <div 
         className={`mt-1 px-2 py-0.5 text-xs font-medium rounded-full shadow-sm max-w-full overflow-hidden text-ellipsis whitespace-nowrap
-          ${isSelected ? 'bg-blue-500 text-white' : 'bg-white/80 text-gray-800'}`}
+          ${isSelected ? 'bg-blue-500 text-white' : 'bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-gray-200'}`}
         style={{ maxWidth: size * 1.5 }}
       >
         {name}
