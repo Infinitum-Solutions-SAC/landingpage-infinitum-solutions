@@ -60,15 +60,15 @@ const CostCalculator = () => {
   const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
 
   return (
-    <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-20">
+    <section id="calculadora" className="section bg-gradient-to-b from-white dark:from-gray-900 to-costwise-gray dark:to-gray-800 py-20">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-3">
             Lo que horrarías
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             ¿Qué herramientas usa tu empresa? <br /> 
-             <span className="font-semibold text-[20px] text-green-600"> cuánto podrías ahorrar </span>  
+             <span className="font-semibold text-[20px] text-green-600 dark:text-green-400"> cuánto podrías ahorrar </span>  
             con alternativas open source.
           </p>
         </div>
@@ -110,7 +110,7 @@ const CostCalculator = () => {
                             max="100"
                             value={userCount}
                             onChange={(e) => setUserCount(parseInt(e.target.value))}
-                            className="flex-grow h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            className="flex-grow h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
                           />
                           <span className="text-base md:text-lg font-semibold min-w-[40px] text-center">{userCount}</span>
                         </div>
