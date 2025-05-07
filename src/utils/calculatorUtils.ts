@@ -1,14 +1,8 @@
 import { SaaSTool, toolsData } from "../data/toolsData";
-// Importamos los SVGs directamente para asegurar que Vite los procese correctamente
-import jiraIcon from "../assets/images/icons-saas/jira.svg";
-import microsoft365Icon from "../assets/images/icons-saas/microsoft365.svg";
+// Eliminamos las importaciones de SVGs individuales
 
 // Mapeo de nombres de herramientas a sus iconos importados
-const iconMap: Record<string, string> = {
-  "Jira": jiraIcon,
-  "Microsoft 365": microsoft365Icon,
-  // Aquí puedes agregar más iconos cuando estén disponibles
-};
+const iconMap: Record<string, string> = {};
 
 // Calcular el costo mensual basado en herramientas y número de usuarios
 export const calculateMonthlyCost = (selectedTools: string[], userCount: number): number => {
@@ -38,9 +32,8 @@ export const getAllSaasTools = (): { name: string; icon: string; cost?: number }
   const allTools: { name: string; icon: string; cost?: number }[] = [];
   Object.values(toolsData.tools).forEach(category => {
     category.SaaS.forEach(tool => {
-      // Usar el icono del mapa si existe, o un fallback
-      const icon = getToolIcon(tool.name);
-      allTools.push({name: tool.name, icon, cost: tool.cost});
+      // Usar el icono directamente desde el JSON
+      allTools.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
     });
   });
   return allTools;
@@ -59,8 +52,7 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
     // Filtrar primero las herramientas por defecto
     const defaultInCategory = category.SaaS.filter(tool => defaultTools.includes(tool.name));
     defaultInCategory.forEach(tool => {
-      const icon = getToolIcon(tool.name);
-      defaultToolsObjects.push({name: tool.name, icon, cost: tool.cost});
+      defaultToolsObjects.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
     });
     
     // Luego seleccionar las N primeras herramientas que no están en las predeterminadas
@@ -69,8 +61,7 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
       .slice(0, count);
     
     otherTools.forEach(tool => {
-      const icon = getToolIcon(tool.name);
-      topTools.push({name: tool.name, icon, cost: tool.cost});
+      topTools.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
     });
   });
   
@@ -80,13 +71,12 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
 
 // Helper para obtener el icono de una herramienta
 export const getToolIcon = (toolName: string): string => {
-  // Si existe en nuestro mapa de iconos, retornarlo
-  if (iconMap[toolName]) {
-    return iconMap[toolName];
+  for (const category of Object.values(toolsData.tools)) {
+    const tool = category.SaaS.find(t => t.name === toolName);
+    if (tool) {
+      return tool.icon;
+    }
   }
-  
-  // Si no, intentar generar una ruta genérica (esto será un fallback, idealmente todos deberían estar en el mapa)
-  // En producción, esto probablemente no funcionará, pero es mejor que nada
   return `/placeholder.svg`;
 };
 
