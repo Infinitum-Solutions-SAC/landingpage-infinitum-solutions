@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -119,7 +120,7 @@
   }
   
   .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-md;
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-white/20 dark:border-white/10 shadow-md;
   }
   
   .btn-primary {
@@ -129,8 +130,8 @@
   }
   
   .btn-secondary {
-    @apply bg-transparent border border-costwise-blue text-costwise-blue px-6 py-3 rounded-lg font-medium
-           transition-all duration-300 hover:bg-costwise-blue/5 hover:shadow-sm
+    @apply bg-transparent border border-costwise-blue text-costwise-blue dark:text-costwise-blue px-6 py-3 rounded-lg font-medium
+           transition-all duration-300 hover:bg-costwise-blue/5 dark:hover:bg-costwise-blue/10 hover:shadow-sm
            active:bg-costwise-blue/10 active:translate-y-0.5;
   }
   
