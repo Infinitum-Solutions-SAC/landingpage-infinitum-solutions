@@ -54,7 +54,7 @@ export const toolsData: ToolsData = {
     },
     "Acceso Remoto": {
       "SaaS": [
-        {"name": "AnyDesk", "cost": 10.99, "icon": "/src/assets/images/icons-opensource/anydesk.svg", "details": "Acceso remoto ligero y rápido para escritorios."},
+        {"name": "AnyDesk", "cost": 10.99, "icon": "/src/assets/images/icons-saas/anydesk.svg", "details": "Acceso remoto ligero y rápido para escritorios."},
         {"name": "TeamViewer", "cost": 24.90, "icon": "/src/assets/images/icons-saas/teamviewer.svg", "details": "Software de acceso remoto y colaboración en tiempo real."},
         {"name": "LogMeIn", "cost": 30, "icon": "/src/assets/images/icons-saas/logmein.svg", "details": "Solución de acceso remoto para soporte y gestión de dispositivos."},
       ],
@@ -93,9 +93,9 @@ export const toolsData: ToolsData = {
     },
     "Almacenamiento y Compartición de Archivos": {
       "SaaS": [
-        {"name": "Google Drive", "cost": 1.99, "icon": "/src/assets/images/icons-saas/googledrive.svg", "details": "Almacenamiento y colaboración en documentos en la nube."},
-        {"name": "OneDrive", "cost": 1.99, "icon": "/src/assets/images/icons-saas/onedrive.svg", "details": "Almacenamiento en la nube integrado con Microsoft 365."},
         {"name": "Dropbox", "cost": 9.99, "icon": "/src/assets/images/icons-saas/dropbox.svg", "details": "Almacenamiento en la nube y compartición de archivos."},
+        {"name": "OneDrive", "cost": 1.99, "icon": "/src/assets/images/icons-saas/onedrive.svg", "details": "Almacenamiento en la nube integrado con Microsoft 365."},
+        {"name": "Google Drive", "cost": 1.99, "icon": "/src/assets/images/icons-saas/googledrive.svg", "details": "Almacenamiento y colaboración en documentos en la nube."},
       ],
       "OpenSource": [
         {"name": "OwnCloud", "url": "https://owncloud.com/", "icon": "/src/assets/images/icons-opensource/owncloud.svg"},
@@ -140,8 +140,8 @@ export const toolsData: ToolsData = {
     },
     "Analítica Web": {
       "SaaS": [
+        {"name": "Mixpanel", "cost": 25, "icon": "/src/assets/images/icons-saas/mixpanel.svg", "details": "Análisis de comportamiento de usuarios en aplicaciones."},
         {"name": "Google Analytics", "cost": 0, "icon": "/src/assets/images/icons-saas/googleanalytics.svg", "details": "Análisis gratuito de tráfico y comportamiento web."},
-        {"name": "Mixpanel", "cost": 25, "icon": "/src/assets/images/icons-saas/mixpanel.svg", "details": "Análisis de comportamiento de usuarios en aplicaciones."}
       ],
       "OpenSource": [
         {"name": "Fathom", "url": "https://usefathom.com/", "icon": "/src/assets/images/icons-opensource/fathom.svg"},

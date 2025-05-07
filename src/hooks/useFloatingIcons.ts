@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { getTopToolsPerCategory } from '@/utils/calculatorUtils';
 
@@ -8,6 +7,8 @@ export interface FloatingIcon {
   cost?: number;
   x: number;
   y: number;
+  initialX: number; // Nueva propiedad
+  initialY: number; // Nueva propiedad
   dirX: number;
   dirY: number;
   speed: number;
@@ -43,11 +44,11 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     updateContainerSize();
 
     // Obtener las herramientas SaaS, asegurando al menos 2 por categoría
-    const tools = getTopToolsPerCategory(2);
+    const tools = getTopToolsPerCategory(1);
     
     // Determinar el número óptimo de iconos basado en el tamaño del contenedor
     const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-    const maxIcons = Math.min(tools.length, Math.max(20, Math.floor(containerArea / 10000)));
+    const maxIcons = Math.min(tools.length, Math.max(20,Math.floor(containerArea / 10000)));
     const selectedTools = tools.slice(0, maxIcons);
     
     // Organizar inicialmente los iconos en una cuadrícula
@@ -64,15 +65,20 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
       const size = 45 + Math.random() * 15; // Tamaños variables entre 45-60px
       
       // Posición inicial basada en cuadrícula con ligera aleatoriedad
-      const x = (col * cellWidth) + (cellWidth - size) / 2 + (Math.random() - 0.5) * cellWidth * 0.5;
-      const y = (row * cellHeight) + (cellHeight - size) / 2 + (Math.random() - 0.5) * cellHeight * 0.5;
+      const initialXPos = (col * cellWidth) + (cellWidth - size) / 2 + (Math.random() - 0.5) * cellWidth * 0.5;
+      const initialYPos = (row * cellHeight) + (cellHeight - size) / 2 + (Math.random() - 0.5) * cellHeight * 0.5;
+      
+      const x = Math.max(0, Math.min(initialXPos, containerRef.current.clientWidth - size));
+      const y = Math.max(0, Math.min(initialYPos, containerRef.current.clientHeight - size));
       
       return {
         name: tool.name,
         icon: tool.icon,
         cost: tool.cost,
-        x: Math.max(0, Math.min(x, containerRef.current.clientWidth - size)),
-        y: Math.max(0, Math.min(y, containerRef.current.clientHeight - size)),
+        x: x,
+        y: y,
+        initialX: x, // Guardar posición inicial
+        initialY: y, // Guardar posición inicial
         dirX: (Math.random() - 0.5) * 1.2, // Velocidad horizontal reducida
         dirY: (Math.random() - 0.5) * 1.2, // Velocidad vertical reducida
         speed: 0.3 + Math.random() * 0.3, // Velocidad general más lenta
@@ -165,21 +171,50 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
       setIcons(prevIcons => {
         // Primera pasada: actualizar posiciones
         const updatedIcons = prevIcons.map(icon => {
-          let { x, y, dirX, dirY, speed, size } = icon;
+          let { x, y, dirX, dirY, speed, size, initialX, initialY } = icon;
+          const movementRadius = 10; // Radio de movimiento permitido
           
-          // Actualizar posición
-          x += dirX * speed;
-          y += dirY * speed;
+          // Actualizar posición tentativa
+          let nextX = x + dirX * speed;
+          let nextY = y + dirY * speed;
           
-          // Comprobar colisiones con los bordes
-          if (x <= 0 || x >= containerSize.width - size) {
+          // Comprobar límites de movimiento alrededor de la posición inicial
+          if (nextX < initialX - movementRadius) {
+            nextX = initialX - movementRadius;
             dirX *= -1;
-            x = x <= 0 ? 0 : containerSize.width - size;
+          } else if (nextX > initialX + movementRadius) {
+            nextX = initialX + movementRadius;
+            dirX *= -1;
           }
           
-          if (y <= 0 || y >= containerSize.height - size) {
+          if (nextY < initialY - movementRadius) {
+            nextY = initialY - movementRadius;
             dirY *= -1;
-            y = y <= 0 ? 0 : containerSize.height - size;
+          } else if (nextY > initialY + movementRadius) {
+            nextY = initialY + movementRadius;
+            dirY *= -1;
+          }
+
+          // Asignar la nueva posición
+          x = nextX;
+          y = nextY;
+          
+          // Comprobar colisiones con los bordes del contenedor (además de la restricción de movimiento)
+          // Esto es para asegurar que si initialX/Y está cerca del borde, no se salga.
+          if (x <= 0) {
+            x = 0;
+            dirX = Math.abs(dirX); // Asegurar que se aleje del borde
+          } else if (x >= containerSize.width - size) {
+            x = containerSize.width - size;
+            dirX = -Math.abs(dirX); // Asegurar que se aleje del borde
+          }
+          
+          if (y <= 0) {
+            y = 0;
+            dirY = Math.abs(dirY); // Asegurar que se aleje del borde
+          } else if (y >= containerSize.height - size) {
+            y = containerSize.height - size;
+            dirY = -Math.abs(dirY); // Asegurar que se aleje del borde
           }
           
           // Añadir un pequeño grado de aleatoriedad al movimiento para evitar patrones repetitivos
