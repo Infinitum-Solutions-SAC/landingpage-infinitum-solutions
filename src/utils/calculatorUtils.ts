@@ -1,8 +1,5 @@
 import { SaaSTool, toolsData } from "../data/toolsData";
-// Eliminamos las importaciones de SVGs individuales
-
-// Mapeo de nombres de herramientas a sus iconos importados
-const iconMap: Record<string, string> = {};
+// Eliminamos las importaciones de SVGs individuales y el iconMap
 
 // Calcular el costo mensual basado en herramientas y número de usuarios
 export const calculateMonthlyCost = (selectedTools: string[], userCount: number): number => {
@@ -32,8 +29,8 @@ export const getAllSaasTools = (): { name: string; icon: string; cost?: number }
   const allTools: { name: string; icon: string; cost?: number }[] = [];
   Object.values(toolsData.tools).forEach(category => {
     category.SaaS.forEach(tool => {
-      // Usar el icono directamente desde el JSON
-      allTools.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
+      // Usar getToolIcon para obtener la ruta del icono procesada
+      allTools.push({ name: tool.name, icon: getToolIcon(tool.name), cost: tool.cost });
     });
   });
   return allTools;
@@ -52,7 +49,8 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
     // Filtrar primero las herramientas por defecto
     const defaultInCategory = category.SaaS.filter(tool => defaultTools.includes(tool.name));
     defaultInCategory.forEach(tool => {
-      defaultToolsObjects.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
+      // Usar getToolIcon para obtener la ruta del icono procesada
+      defaultToolsObjects.push({ name: tool.name, icon: getToolIcon(tool.name), cost: tool.cost });
     });
     
     // Luego seleccionar las N primeras herramientas que no están en las predeterminadas
@@ -61,7 +59,8 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
       .slice(0, count);
     
     otherTools.forEach(tool => {
-      topTools.push({ name: tool.name, icon: tool.icon, cost: tool.cost });
+      // Usar getToolIcon para obtener la ruta del icono procesada
+      topTools.push({ name: tool.name, icon: getToolIcon(tool.name), cost: tool.cost });
     });
   });
   
@@ -73,11 +72,15 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
 export const getToolIcon = (toolName: string): string => {
   for (const category of Object.values(toolsData.tools)) {
     const tool = category.SaaS.find(t => t.name === toolName);
-    if (tool) {
-      return tool.icon;
+    if (tool && tool.icon) {
+      // Devuelve la ruta del icono directamente desde toolsData.
+      // Esta ruta debe ser accesible públicamente (ej: /assets/images/icons-saas/tool.svg)
+      return tool.icon; 
     }
   }
-  return `/placeholder.svg`;
+  // Fallback a un placeholder si no se encuentra.
+  // Asegúrate de que este placeholder exista en tu carpeta `public` (ej: public/placeholder.svg)
+  return `/placeholder.svg`; 
 };
 
 // Obtener alternativas de código abierto para las herramientas seleccionadas
