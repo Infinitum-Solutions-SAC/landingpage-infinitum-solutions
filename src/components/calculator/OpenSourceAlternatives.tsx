@@ -235,17 +235,34 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                             <div key={`${category}-${index}`} className="pt-2 pb-4">
                               <div className="flex items-center justify-between mb-2">
                                 <h4 className="font-medium text-sm flex items-center">
-                                  {item.saas?.icon && (
+                                  {item.saas?.icon && getToolIcon(item.saas.name) ? (
                                     <img 
                                       src={getToolIcon(item.saas.name)} 
-                                      alt={item.saas.name} 
-                                      className="w-5 h-5 mr-2"
+                                      alt={saasName} 
+                                      title={saasName} // Añadido title para tooltip
+                                      className="w-5 h-5" // Eliminado mr-2
                                       onError={(e) => {
                                         e.currentTarget.style.display = 'none';
+                                        // Opcional: Mostrar iniciales como fallback si la imagen falla
+                                        const parent = e.currentTarget.parentElement;
+                                        if (parent && saasName && !parent.querySelector('.fallback-initials-saas')) {
+                                            const fallbackSpan = document.createElement('span');
+                                            fallbackSpan.className = 'font-medium w-5 h-5 flex items-center justify-center text-xs fallback-initials-saas';
+                                            fallbackSpan.textContent = saasName.substring(0,2);
+                                            fallbackSpan.title = saasName;
+                                            parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                        }
                                       }}
                                     />
+                                  ) : (
+                                    // Fallback a iniciales si no hay icono para SaaS
+                                    item.saas?.name && (
+                                      <span className="font-medium w-5 h-5 flex items-center justify-center text-xs" title={saasName}>
+                                        {saasName.substring(0,2)}
+                                      </span>
+                                    )
                                   )}
-                                  {saasName}
+                                  {/* {saasName} // Eliminado */}
                                 </h4>
                                 <div className="flex items-center">
                                   <span className="text-xs text-gray-500 mr-2">Costo mensual:</span>
@@ -263,7 +280,32 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                       <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
                                         <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
                                           <div className="flex items-center justify-between mb-2">
-                                            <h6 className="font-medium truncate">{alt.name}</h6>
+                                            <div className="flex items-center min-w-0" title={alt.name}>
+                                              {alt.icon ? (
+                                                <img 
+                                                  src={`/assets/images/icons-opensource/${alt.icon}`}
+                                                  alt={alt.name}
+                                                  className="w-5 h-5" 
+                                                  onError={(e) => { 
+                                                      e.currentTarget.style.display = 'none'; 
+                                                      // Fallback a iniciales si la imagen del icono OS falla
+                                                      const parent = e.currentTarget.parentElement;
+                                                      if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
+                                                          const fallbackSpan = document.createElement('span');
+                                                          fallbackSpan.className = 'font-medium truncate w-5 h-5 flex items-center justify-center text-xs fallback-initials-alt';
+                                                          fallbackSpan.textContent = alt.name.substring(0,2);
+                                                          parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                                      }
+                                                  }}
+                                                />
+                                              ) : (
+                                                // Fallback a iniciales si no hay alt.icon
+                                                <span className="font-medium truncate w-5 h-5 flex items-center justify-center text-xs">
+                                                  {alt.name.substring(0,2)}
+                                                </span>
+                                              )}
+                                              {/* <h6 className="font-medium truncate">{alt.name}</h6> // Eliminado */}
+                                            </div>
                                             <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
                                               Gratis
                                             </Badge>
