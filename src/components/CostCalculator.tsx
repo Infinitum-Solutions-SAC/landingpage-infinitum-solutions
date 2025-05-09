@@ -11,7 +11,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FloatingToolSelector from "./FloatingToolSelector";
 import ToolSelector from "./calculator/ToolSelector";
-import CostDisplay from "./calculator/CostDisplay";
 import OpenSourceAlternatives from "./calculator/OpenSourceAlternatives";
 import { 
   calculateMonthlyCost, 
@@ -132,18 +131,15 @@ const CostCalculator = () => {
             </Card>
           </div>
           
-          {/* Cálculo de costos y alternativas */}
+          {/* Alternativas de código abierto */}
           <div className="lg:col-span-5">
-            <CostDisplay 
-              monthlyCost={totalMonthlyCost}
-              yearlyCost={totalYearlyCost}
-            />
-            
             <OpenSourceAlternatives
               selectedTools={selectedTools}
               userCount={userCount}
               alternatives={openSourceAlternatives}
               showSavings={showSavings}
+              monthlyCost={totalMonthlyCost}
+              yearlyCost={totalYearlyCost}
             />
           </div>
         </div>
