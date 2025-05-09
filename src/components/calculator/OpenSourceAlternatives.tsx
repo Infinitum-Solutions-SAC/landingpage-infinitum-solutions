@@ -112,7 +112,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
               <div className="flex flex-wrap gap-2">
                 {selectedToolsForDisplay.map((tool, index) => (
                   <div key={tool.name} className="flex items-center bg-white dark:bg-gray-800 rounded-full p-1 shadow-sm">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-700">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-700" title={tool.name}>
                       {tool.icon ? (
                         <img 
                           src={tool.icon} 
@@ -126,7 +126,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                         <span className="text-xs font-medium">{tool.name.substring(0, 2)}</span>
                       )}
                     </div>
-                    <span className="text-xs font-medium px-2">{tool.name}</span>
+                    {/* Se elimina el texto, dejando solo el icono */}
                   </div>
                 ))}
               </div>
