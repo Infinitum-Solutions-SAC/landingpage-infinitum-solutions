@@ -19,6 +19,9 @@ import {
 } from "@/utils/calculatorUtils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+// Importamos los íconos necesarios para el switch de visualización
+import { Grid, List, LayoutGrid } from "lucide-react";
+
 const CostCalculator = () => {
   const isMobile = useIsMobile();
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
@@ -94,26 +97,54 @@ const CostCalculator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
           {/* Visualización de herramientas (flotantes o lista) */}
           <div className="lg:col-span-7">
-            <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex justify-between items-center">
-                  <span>Busca alternativas!</span>
-                  <Tabs defaultValue={isMobile ? "list" : "floating"} value={activeView} onValueChange={handleViewChange} className="w-auto relative">
-                    <TabsList>
-                      <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
-                      <TabsTrigger value="list">Lista</TabsTrigger>
+            <Card className="shadow-md overflow-hidden dark:bg-gray-800/50 relative">
+              <div className="absolute top-3 right-3 z-10">
+                <div className="flex items-center">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mr-2 hidden sm:block">
+                    Vista:
+                  </div>
+                  <Tabs 
+                    defaultValue={isMobile ? "list" : "floating"} 
+                    value={activeView} 
+                    onValueChange={handleViewChange} 
+                    className="relative"
+                  >
+                    <TabsList className="h-8 p-1">
+                      <TabsTrigger 
+                        value="floating" 
+                        className="flex items-center gap-1.5 px-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        <LayoutGrid className="h-4 w-4" />
+                        <span className="hidden sm:inline">Flotante</span>
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="list" 
+                        className="flex items-center gap-1.5 px-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        <List className="h-4 w-4" />
+                        <span className="hidden sm:inline">Lista</span>
+                      </TabsTrigger>
                     </TabsList>
                     {isMobile && showNewModeBanner && (
-                      <span className="absolute -top-3.5 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-wave transform-gpu">
-                        Nuevo modo
+                      <span className="absolute -top-2 -left-8 bg-green-500 text-white text-xs font-bold px-1 py-0.5 rounded-full animate-pulse">
+                        Nuevo
                       </span>
                     )}
                   </Tabs>
-                </CardTitle>
-                <CardDescription>
-                  Selecciona las herramientas que utilizas o pensabas usar
-                </CardDescription>
+                </div>
+              </div>
+              
+              <CardHeader className="pb-3 pr-24">
+                <div className="flex-col flex">
+                  <CardTitle className="text-xl sm:text-2xl font-bold">
+                    Busca alternativas
+                  </CardTitle>
+                  <CardDescription className="mt-1">
+                    Selecciona las herramientas que utilizas o pensabas usar
+                  </CardDescription>
+                </div>
               </CardHeader>
+              
               <CardContent className="p-0">
                 <Tabs value={activeView} className="w-full">
                   <TabsContent value="floating" className="m-0">

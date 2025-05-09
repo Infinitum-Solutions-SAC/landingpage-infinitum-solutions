@@ -54,8 +54,8 @@ const ToolSelector = ({
     const rowHeight = 40; // Altura aproximada por fila
     
     const calculatedHeight = baseHeight + (estimatedRows * rowHeight);
-    // Limitar altura máxima a 200px
-    const newHeight = Math.min(Math.max(90, calculatedHeight), 200);
+    // Limitar altura máxima a 100px
+    const newHeight = Math.min(Math.max(90, calculatedHeight), 100);
     
     setSelectedToolsHeight(newHeight);
   }, [selectedTools.length]);
