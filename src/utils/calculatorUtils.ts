@@ -1,4 +1,3 @@
-
 import { SaaSTool, toolsData } from "../data/toolsData";
 // Eliminamos las importaciones de SVGs individuales y el iconMap
 
@@ -75,40 +74,37 @@ export const getToolIcon = (toolName: string): string => {
     const tool = category.SaaS.find(t => t.name === toolName);
     if (tool && tool.icon) {
       // Devuelve la ruta del icono directamente desde toolsData.
+      // Esta ruta debe ser accesible públicamente (ej: /assets/images/icons-saas/tool.svg)
       return tool.icon; 
     }
   }
   // Fallback a un placeholder si no se encuentra.
+  // Asegúrate de que este placeholder exista en tu carpeta `public` (ej: public/placeholder.svg)
   return `/placeholder.svg`; 
 };
 
 // Obtener alternativas de código abierto para las herramientas seleccionadas
-export const getOpenSourceAlternatives = (selectedTools: string[]): any[] => {
-  const alternativesList: any[] = [];
+export const getOpenSourceAlternatives = (selectedTools: string[]) => {
+  const alternatives: Record<string, any[]> = {};
   
   selectedTools.forEach(toolName => {
     // Encontrar la categoría a la que pertenece la herramienta
     for (const [category, tools] of Object.entries(toolsData.tools)) {
       const saasToolIndex = tools.SaaS.findIndex(tool => tool.name === toolName);
       if (saasToolIndex !== -1) {
-        const saasName = tools.SaaS[saasToolIndex].name;
-        // Añadir cada alternativa de código abierto como una entrada separada en la lista
-        tools.OpenSource.forEach(openSourceTool => {
-          alternativesList.push({
-            saas: saasName,
-            openSource: openSourceTool.name,
-            description: openSourceTool.description || '',
-            features: openSourceTool.features || [],
-            migrationComplexity: openSourceTool.migrationComplexity || 3,
-            url: openSourceTool.url || ''
-          });
+        if (!alternatives[category]) {
+          alternatives[category] = [];
+        }
+        alternatives[category].push({
+          saas: tools.SaaS[saasToolIndex],
+          alternatives: tools.OpenSource
         });
         break;
       }
     }
   });
   
-  return alternativesList;
+  return alternatives;
 };
 
 // Obtener una lista predeterminada de herramientas populares
