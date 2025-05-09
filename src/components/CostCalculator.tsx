@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { 
   Card, 
@@ -26,6 +25,11 @@ const CostCalculator = () => {
   const [userCount, setUserCount] = useState<number>(1);
   const [showSavings, setShowSavings] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>(isMobile ? "list" : "floating");
+  const [showNewModeBanner, setShowNewModeBanner] = useState<boolean>(() => {
+    // Check session storage to see if the banner was dismissed
+    const bannerDismissed = sessionStorage.getItem("newModeBannerDismissed");
+    return !bannerDismissed;
+  });
   
   // Calcular costos basados en precios reales de las herramientas
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
@@ -65,6 +69,14 @@ const CostCalculator = () => {
   // Obtener alternativas de código abierto para las herramientas seleccionadas
   const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
 
+  const handleViewChange = (view: string) => {
+    setActiveView(view);
+    if (showNewModeBanner) {
+      setShowNewModeBanner(false);
+      sessionStorage.setItem("newModeBannerDismissed", "true");
+    }
+  };
+
   return (
     <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-16 dark:from-gray-900 dark:to-gray-950">
       <div className="container-custom">
@@ -86,11 +98,16 @@ const CostCalculator = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="flex justify-between items-center">
                   <span>Busca alternativas!</span>
-                  <Tabs defaultValue={isMobile ? "list" : "floating"} value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <Tabs defaultValue={isMobile ? "list" : "floating"} value={activeView} onValueChange={handleViewChange} className="w-auto relative">
                     <TabsList>
                       <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
                       <TabsTrigger value="list">Lista</TabsTrigger>
                     </TabsList>
+                    {isMobile && showNewModeBanner && (
+                      <span className="absolute -top-3.5 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-wave transform-gpu">
+                        Nuevo modo
+                      </span>
+                    )}
                   </Tabs>
                 </CardTitle>
                 <CardDescription>
