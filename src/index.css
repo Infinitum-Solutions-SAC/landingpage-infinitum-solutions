@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -76,6 +75,28 @@
   }
 }
 
+@layer components {
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-costwise-blue text-white rounded-lg font-medium transition-all hover:bg-costwise-blue/90 focus:outline-none focus:ring-2 focus:ring-costwise-blue focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-costwise-navy border border-gray-200 rounded-lg font-medium transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-costwise-blue focus:ring-offset-2;
+  }
+
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-sm border border-white/20 shadow-xl;
+  }
+
+  .section {
+    @apply py-12 md:py-16 lg:py-24;
+  }
+}
+
 /* Estilos para carrusel con sombras en extremos */
 .mask-x-edges {
   mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
@@ -113,4 +134,38 @@
   0%, 100% { transform: translateY(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateY(-1px); }
   20%, 40%, 60%, 80% { transform: translateY(1px); }
+}
+
+/* Animaciones */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.7s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
 }
