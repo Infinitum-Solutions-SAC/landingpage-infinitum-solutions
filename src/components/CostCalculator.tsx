@@ -60,26 +60,26 @@ const CostCalculator = () => {
   const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
 
   return (
-    <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-20">
+    <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-16 dark:from-gray-900 dark:to-gray-950">
       <div className="container-custom">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-3">
-            Lo que horrarías
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-2 dark:text-white">
+            Lo que ahorrarías
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto dark:text-gray-400">
             ¿Qué herramientas usa tu empresa? <br /> 
-             <span className="font-semibold text-[20px] text-green-600"> cuánto podrías ahorrar </span>  
+             <span className="font-semibold text-[20px] text-green-600 dark:text-green-400"> cuánto podrías ahorrar </span>  
             con alternativas open source.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
           {/* Visualización de herramientas (flotantes o lista) */}
           <div className="lg:col-span-7">
-            <Card className="shadow-md overflow-hidden">
-              <CardHeader>
+            <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
+              <CardHeader className="pb-3">
                 <CardTitle className="flex justify-between items-center">
-                    <span>Busca alternativas!</span>
+                  <span>Busca alternativas!</span>
                   <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
                     <TabsList>
                       <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
@@ -110,7 +110,7 @@ const CostCalculator = () => {
                             max="100"
                             value={userCount}
                             onChange={(e) => setUserCount(parseInt(e.target.value))}
-                            className="flex-grow h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            className="flex-grow h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
                           />
                           <span className="text-base md:text-lg font-semibold min-w-[40px] text-center">{userCount}</span>
                         </div>
@@ -118,7 +118,7 @@ const CostCalculator = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="list" className="m-0">
-                    <div className="p-6">
+                    <div className="p-4">
                       <ToolSelector 
                         selectedTools={selectedTools}
                         setSelectedTools={setSelectedTools}

@@ -7,23 +7,22 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { 
   Check, 
   ArrowRight, 
-  DollarSign 
+  DollarSign,
+  Sparkles 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { calculateMonthlyCost } from "@/utils/calculatorUtils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Badge } from "@/components/ui/badge";
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
@@ -45,83 +44,89 @@ const OpenSourceAlternatives = ({
   }
 
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
+  const annualSavings = totalMonthlyCost * 12;
   
   return (
-    <Card className="shadow-md bg-gradient-to-br from-white to-green-50 border-green-200 overflow-hidden">
-      <CardHeader className="border-b bg-green-500/10">
-        <CardTitle className="flex items-center gap-2">
-          <Check className="text-green-500" />
-          Alternativas Open Source
-        </CardTitle>
-        <CardDescription>
-          Herramientas gratuitas que puedes usar como alternativa
+    <Card className="shadow-md bg-gradient-to-br from-white to-green-50 border-green-200 overflow-hidden dark:from-gray-800 dark:to-gray-900 dark:border-green-900">
+      <CardHeader className="border-b bg-green-500/10 dark:bg-green-900/30 py-4">
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Sparkles className="text-green-500 dark:text-green-400" size={18} />
+            Alternativas Open Source
+          </CardTitle>
+          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200 dark:bg-green-900 dark:text-green-300 dark:border-green-700">
+            Gratuitas
+          </Badge>
+        </div>
+        <CardDescription className="text-gray-600 dark:text-gray-400">
+          Herramientas sin costo para reemplazar servicios de pago
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6">
-        <div className="space-y-6">
+      <CardContent className="pt-4">
+        <div className="space-y-4">
           <AnimatePresence>
             {showSavings && (
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="p-4 bg-green-50 rounded-md border border-green-200 flex flex-col sm:flex-row justify-between items-center gap-4"
+                className="p-4 rounded-xl bg-gradient-to-r from-green-50 to-green-100 border border-green-200 shadow-inner dark:from-green-900/30 dark:to-green-800/20 dark:border-green-800"
               >
-                <div className="text-center sm:text-left">
-                  <p className="text-lg font-semibold text-green-700">¡Ahorra hasta un 100%!</p>
-                  <p className="text-sm text-green-600">
-                    Reemplazando herramientas SaaS con alternativas Open Source
-                  </p>
+                <div className="text-center mb-2">
+                  <h3 className="text-xl font-semibold text-green-700 dark:text-green-400">
+                    Ahorra hasta
+                  </h3>
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
-                  <div className="flex items-center text-xl font-bold text-green-700">
-                    <DollarSign className="h-5 w-5" />
-                    <span>{totalMonthlyCost.toFixed(2)}</span>
+                
+                <div className="flex flex-col items-center justify-center">
+                  <div className="flex items-center text-3xl font-bold text-green-700 dark:text-green-400 mb-1">
+                    <DollarSign className="h-6 w-6" />
+                    <span className="tracking-tight">{annualSavings.toFixed(2)}</span>
                   </div>
-                  <span className="px-2">×</span>
-                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">
-                    12 meses
-                  </span>
-                  <span className="px-2">=</span>
-                  <div className="flex items-center text-xl font-bold text-green-700">
-                    <DollarSign className="h-5 w-5" />
-                    <span>{(totalMonthlyCost * 12).toFixed(2)}</span>
-                  </div>
+                  <span className="text-sm font-medium text-green-600 dark:text-green-500">al año con alternativas Open Source</span>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Alternativas por categoría</h3>
-            {Object.entries(alternatives).map(([category, toolGroups]) => (
-              <div key={category} className="mb-6">
-                <h4 className="text-base font-medium bg-green-50 p-2 rounded">{category}</h4>
-                <div className="overflow-x-auto -mx-6 px-6">
-                  <Table className="mt-2 w-full">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className={isMobile ? "w-[120px]" : "w-[180px]"}>Herramienta SaaS</TableHead>
-                        <TableHead className="w-[40px]"></TableHead>
-                        <TableHead>Alternativas Open Source</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
+            <Accordion type="multiple" defaultValue={Object.keys(alternatives)} className="space-y-2">
+              {Object.entries(alternatives).map(([category, toolGroups]) => (
+                <AccordionItem 
+                  key={category} 
+                  value={category}
+                  className="border-b-0 bg-white/80 rounded-lg shadow-sm dark:bg-gray-800/40 overflow-hidden"
+                >
+                  <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{category}</span>
+                      <Badge variant="outline" className="ml-2 text-xs">
+                        {toolGroups.length}
+                      </Badge>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4">
+                    <div className="space-y-3">
                       {toolGroups.map((group, idx) => (
-                        <TableRow key={idx}>
-                          <TableCell className="font-medium">
-                            <div>
+                        <div 
+                          key={idx}
+                          className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm dark:bg-gray-800 dark:border-gray-700"
+                        >
+                          <div className="flex-shrink-0 min-w-[120px]">
+                            <div className="font-medium text-gray-900 dark:text-gray-200">
                               {group.saas.name}
-                              <div className="text-sm text-costwise-blue font-medium mt-1">
-                                ${(group.saas.cost * userCount).toFixed(2)}/mes
-                              </div>
                             </div>
-                          </TableCell>
-                          <TableCell className="px-1 md:px-4">
-                            <ArrowRight className="mx-auto text-gray-400" size={isMobile ? 16 : 24} />
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex flex-wrap gap-1 md:gap-2">
+                            <div className="text-sm text-red-500 font-medium mt-1">
+                              ${(group.saas.cost * userCount).toFixed(2)}/mes
+                            </div>
+                          </div>
+                          
+                          <div className="hidden sm:flex self-center">
+                            <ArrowRight className="mx-2 text-gray-400" size={isMobile ? 16 : 20} />
+                          </div>
+                          
+                          <div className="flex-1 w-full">
+                            <div className="flex flex-wrap gap-2">
                               {group.alternatives.map((alt: any, altIdx: number) => (
                                 <a
                                   key={altIdx}
@@ -132,21 +137,22 @@ const OpenSourceAlternatives = ({
                                   <Button 
                                     size={isMobile ? "sm" : "default"}
                                     variant="outline"
-                                    className="border-green-200 bg-green-50 hover:bg-green-100 text-green-700 text-xs md:text-sm py-1 h-auto md:h-9"
+                                    className="border-green-200 bg-green-50 hover:bg-green-100 text-green-700 text-xs md:text-sm py-1 h-auto md:h-9 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-800/40"
                                   >
+                                    <Check className="mr-1 h-3 w-3" />
                                     {alt.name}
                                   </Button>
                                 </a>
                               ))}
                             </div>
-                          </TableCell>
-                        </TableRow>
+                          </div>
+                        </div>
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
       </CardContent>

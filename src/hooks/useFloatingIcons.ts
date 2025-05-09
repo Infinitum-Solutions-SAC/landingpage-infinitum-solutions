@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { getTopToolsPerCategory } from '@/utils/calculatorUtils';
 
@@ -7,8 +8,8 @@ export interface FloatingIcon {
   cost?: number;
   x: number;
   y: number;
-  initialX: number; // Nueva propiedad
-  initialY: number; // Nueva propiedad
+  initialX: number;
+  initialY: number;
   dirX: number;
   dirY: number;
   speed: number;
@@ -23,7 +24,9 @@ interface ContainerSize {
 
 export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) => {
   const [icons, setIcons] = useState<FloatingIcon[]>([]);
+  const [allTools, setAllTools] = useState<any[]>([]);
   const [containerSize, setContainerSize] = useState<ContainerSize>({ width: 0, height: 0 });
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const animationRef = useRef<number>();
   const lastUpdateTimeRef = useRef<number>(0);
 
@@ -43,50 +46,16 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     // Configurar el tamaño inicial
     updateContainerSize();
 
-    // Obtener las herramientas SaaS, asegurando al menos 2 por categoría
+    // Obtener las herramientas SaaS
     const tools = getTopToolsPerCategory(1);
+    setAllTools(tools);
     
     // Determinar el número óptimo de iconos basado en el tamaño del contenedor
     const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
     const maxIcons = Math.min(tools.length, Math.max(20,Math.floor(containerArea / 10000)));
     const selectedTools = tools.slice(0, maxIcons);
     
-    // Organizar inicialmente los iconos en una cuadrícula
-    const columns = Math.ceil(Math.sqrt(selectedTools.length));
-    const cellWidth = containerRef.current.clientWidth / columns;
-    const cellHeight = containerRef.current.clientHeight / Math.ceil(selectedTools.length / columns);
-    
-    // Crear iconos flotantes con posiciones en cuadrícula y añadir aleatoriedad
-    const newIcons = selectedTools.map((tool, index) => {
-      const col = index % columns;
-      const row = Math.floor(index / columns);
-      
-      // Tamaño base más pequeño para dejar más espacio
-      const size = 45 + Math.random() * 15; // Tamaños variables entre 45-60px
-      
-      // Posición inicial basada en cuadrícula con ligera aleatoriedad
-      const initialXPos = (col * cellWidth) + (cellWidth - size) / 2 + (Math.random() - 0.5) * cellWidth * 0.5;
-      const initialYPos = (row * cellHeight) + (cellHeight - size) / 2 + (Math.random() - 0.5) * cellHeight * 0.5;
-      
-      const x = Math.max(0, Math.min(initialXPos, containerRef.current.clientWidth - size));
-      const y = Math.max(0, Math.min(initialYPos, containerRef.current.clientHeight - size));
-      
-      return {
-        name: tool.name,
-        icon: tool.icon,
-        cost: tool.cost,
-        x: x,
-        y: y,
-        initialX: x, // Guardar posición inicial
-        initialY: y, // Guardar posición inicial
-        dirX: (Math.random() - 0.5) * 1.2, // Velocidad horizontal reducida
-        dirY: (Math.random() - 0.5) * 1.2, // Velocidad vertical reducida
-        speed: 0.3 + Math.random() * 0.3, // Velocidad general más lenta
-        size
-      };
-    });
-
-    setIcons(newIcons);
+    createFloatingIcons(selectedTools, containerRef.current);
 
     const handleResize = () => {
       updateContainerSize();
@@ -101,6 +70,65 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
       }
     };
   }, []);
+
+  // Efecto para el término de búsqueda
+  useEffect(() => {
+    if (!containerRef.current || !allTools.length) return;
+
+    if (!searchTerm) {
+      // Si no hay término de búsqueda, mostrar iconos predeterminados
+      const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
+      const maxIcons = Math.min(allTools.length, Math.max(20, Math.floor(containerArea / 10000)));
+      const defaultTools = allTools.slice(0, maxIcons);
+      createFloatingIcons(defaultTools, containerRef.current);
+    } else {
+      // Filtrar herramientas basadas en el término de búsqueda
+      const matchedTools = allTools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      createFloatingIcons(matchedTools, containerRef.current);
+    }
+  }, [searchTerm, allTools]);
+
+  // Función para crear iconos flotantes
+  const createFloatingIcons = (tools: any[], container: HTMLDivElement) => {
+    // Organizar inicialmente los iconos en una cuadrícula
+    const columns = Math.ceil(Math.sqrt(tools.length));
+    const cellWidth = container.clientWidth / columns;
+    const cellHeight = container.clientHeight / Math.ceil(tools.length / columns);
+    
+    // Crear iconos flotantes con posiciones en cuadrícula y añadir aleatoriedad
+    const newIcons = tools.map((tool, index) => {
+      const col = index % columns;
+      const row = Math.floor(index / columns);
+      
+      // Tamaño base más pequeño para dejar más espacio
+      const size = 45 + Math.random() * 15; // Tamaños variables entre 45-60px
+      
+      // Posición inicial basada en cuadrícula con ligera aleatoriedad
+      const initialXPos = (col * cellWidth) + (cellWidth - size) / 2 + (Math.random() - 0.5) * cellWidth * 0.5;
+      const initialYPos = (row * cellHeight) + (cellHeight - size) / 2 + (Math.random() - 0.5) * cellHeight * 0.5;
+      
+      const x = Math.max(0, Math.min(initialXPos, container.clientWidth - size));
+      const y = Math.max(0, Math.min(initialYPos, container.clientHeight - size));
+      
+      return {
+        name: tool.name,
+        icon: tool.icon,
+        cost: tool.cost,
+        x: x,
+        y: y,
+        initialX: x,
+        initialY: y,
+        dirX: (Math.random() - 0.5) * 1.2,
+        dirY: (Math.random() - 0.5) * 1.2,
+        speed: 0.3 + Math.random() * 0.3,
+        size
+      };
+    });
+
+    setIcons(newIcons);
+  };
 
   // Función para manejar colisiones
   const handleCollision = (icon1Index: number, icon2Index: number, updatedIcons: FloatingIcon[]) => {
@@ -253,5 +281,5 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     };
   }, [icons.length, containerSize]);
 
-  return { icons, setIcons };
+  return { icons, setIcons, setSearchTerm };
 };

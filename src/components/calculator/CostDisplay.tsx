@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Card, 
   CardHeader, 
-  CardContent, 
+  CardContent,
   CardTitle, 
   CardDescription 
 } from "@/components/ui/card";
@@ -19,53 +20,53 @@ const CostDisplay = ({ monthlyCost, yearlyCost }: CostDisplayProps) => {
   const [timeframe, setTimeframe] = useState<string>('yearly');
   
   return (
-    <Card className="shadow-md mb-6 overflow-hidden">
-      <CardHeader className="bg-costwise-blue text-white">
+    <Card className="shadow-md mb-4 overflow-hidden dark:bg-gray-800/50">
+      <CardHeader className="bg-costwise-blue text-white dark:bg-blue-900 py-3">
         <div className="flex items-center justify-between">
-          <CardTitle>Coste de Herramientas SaaS</CardTitle>
+          <CardTitle className="text-base md:text-lg">Coste de Herramientas SaaS</CardTitle>
           <Tabs 
             defaultValue={timeframe} 
             value={timeframe} 
             onValueChange={setTimeframe} 
             className="w-auto"
           >
-            <TabsList>
-              <TabsTrigger value="monthly">Mensual</TabsTrigger>
-              <TabsTrigger value="yearly">Anual</TabsTrigger>
+            <TabsList className="h-7">
+              <TabsTrigger value="monthly" className="text-xs px-2 py-1">Mensual</TabsTrigger>
+              <TabsTrigger value="yearly" className="text-xs px-2 py-1">Anual</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
-        <CardDescription className="text-gray-200">
+        <CardDescription className="text-gray-200 text-xs">
           Cálculo basado en tus selecciones
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent className="pt-3 pb-3">
         <Tabs value={timeframe}>
           <TabsContent value="monthly" className="mt-0">
-            <div className="flex flex-col items-center py-6">
-              <span className="text-xl text-gray-500 mb-3">Coste mensual actual</span>
+            <div className="flex items-center justify-center py-2">
               <motion.div
                 key={`monthly-${monthlyCost}`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex items-baseline"
               >
-                <span className="text-4xl font-bold text-red-500">${monthlyCost.toFixed(2)}</span>
-                <span className="text-lg text-gray-400 ml-2">/mes</span>
+                <DollarSign className="h-5 w-5 text-red-500" />
+                <span className="text-2xl md:text-3xl font-bold text-red-500">{monthlyCost.toFixed(2)}</span>
+                <span className="text-sm text-gray-400 dark:text-gray-500 ml-1">/mes</span>
               </motion.div>
             </div>
           </TabsContent>
           <TabsContent value="yearly" className="mt-0">
-            <div className="flex flex-col items-center py-6">
-              <span className="text-xl text-gray-500 mb-3">Coste anual actual</span>
+            <div className="flex items-center justify-center py-2">
               <motion.div
                 key={`yearly-${yearlyCost}`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex items-baseline"
               >
-                <span className="text-4xl font-bold text-red-500">${yearlyCost.toFixed(2)}</span>
-                <span className="text-lg text-gray-400 ml-2">/año</span>
+                <DollarSign className="h-5 w-5 text-red-500" />
+                <span className="text-2xl md:text-3xl font-bold text-red-500">{yearlyCost.toFixed(2)}</span>
+                <span className="text-sm text-gray-400 dark:text-gray-500 ml-1">/año</span>
               </motion.div>
             </div>
           </TabsContent>
