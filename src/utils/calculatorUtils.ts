@@ -70,17 +70,15 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
 };
 
 // Helper para obtener el icono de una herramienta
-export const getToolIcon = (toolName: string, type: string = 'saas'): string => {
+export const getToolIcon = (toolName: string): string => {
   for (const category of Object.values(toolsData.tools)) {
     const tool = category.SaaS.find(t => t.name === toolName);
     if (tool && tool.icon) {
       // Devuelve la ruta del icono directamente desde toolsData.
-      // Esta ruta debe ser accesible públicamente (ej: /assets/images/icons-saas/tool.svg)
       return tool.icon; 
     }
   }
   // Fallback a un placeholder si no se encuentra.
-  // Asegúrate de que este placeholder exista en tu carpeta `public` (ej: public/placeholder.svg)
   return `/placeholder.svg`; 
 };
 

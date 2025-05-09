@@ -64,7 +64,7 @@ const CostCalculator = () => {
     });
   };
   
-  // Get open source alternatives for selected tools
+  // Get open source alternatives for selected tools - ensuring it's an array
   const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
 
   return (

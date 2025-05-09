@@ -129,7 +129,7 @@ const OpenSourceAlternatives = ({
           </div>
           
           <Accordion type="multiple" className="space-y-2 w-full">
-            {alternatives.map((alternative, index) => (
+            {Array.isArray(alternatives) && alternatives.map((alternative, index) => (
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
@@ -138,11 +138,15 @@ const OpenSourceAlternatives = ({
                 <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/80">
                   <div className="flex items-center space-x-3 text-left">
                     <div className="relative flex-shrink-0 w-10 h-10">
-                      {/* Using getToolIcon with a single parameter instead of two */}
                       <img 
                         src={getToolIcon(alternative.openSource)} 
                         alt={alternative.openSource}
                         className="w-full h-full object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = '/placeholder.svg';
+                        }}
                       />
                     </div>
                     <div>
@@ -158,7 +162,7 @@ const OpenSourceAlternatives = ({
                     <p className="text-sm text-gray-600 dark:text-gray-400">{alternative.description}</p>
                     
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {alternative.features && alternative.features.map((feature: string, i: number) => (
+                      {Array.isArray(alternative.features) && alternative.features.map((feature: string, i: number) => (
                         <span 
                           key={i} 
                           className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full dark:bg-green-900/30 dark:text-green-300"
