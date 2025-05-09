@@ -100,9 +100,6 @@ const CostCalculator = () => {
             <Card className="shadow-md overflow-hidden dark:bg-gray-800/50 relative">
               <div className="absolute top-3 right-3 z-10">
                 <div className="flex items-center">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mr-2 hidden sm:block">
-                    Vista:
-                  </div>
                   <Tabs 
                     defaultValue={isMobile ? "list" : "floating"} 
                     value={activeView} 

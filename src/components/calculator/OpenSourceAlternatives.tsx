@@ -63,9 +63,6 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
     <Card className="shadow-md h-full flex flex-col dark:bg-gray-800/50 relative">
       <div className="absolute top-3 right-3 z-10">
         <div className="flex items-center">
-          <div className="text-sm text-gray-500 dark:text-gray-400 mr-2 hidden sm:block">
-            Vista:
-          </div>
           <Tabs 
             defaultValue="mensual" 
             value={activeView} 
@@ -231,43 +228,46 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                       <AccordionContent>
                         {uniqueAlternatives.map((item, index) => {
                           const saasName = item.saas?.name || 'Herramienta';
+                          const saasIconPath = item.saas?.name ? getToolIcon(item.saas.name) : undefined;
+
                           return (
                             <div key={`${category}-${index}`} className="pt-2 pb-4">
                               <div className="flex items-center justify-between mb-2">
                                 <h4 className="font-medium text-sm flex items-center">
-                                  {item.saas?.icon && getToolIcon(item.saas.name) ? (
+                                  {saasIconPath ? (
                                     <img 
-                                      src={getToolIcon(item.saas.name)} 
-                                      alt={saasName} 
-                                      title={saasName} // Añadido title para tooltip
-                                      className="w-5 h-5" // Eliminado mr-2
+                                      src={saasIconPath} 
+                                      alt={item.saas?.name} 
+                                      title={item.saas?.name}
+                                      className="w-5 h-5"
                                       onError={(e) => {
                                         e.currentTarget.style.display = 'none';
-                                        // Opcional: Mostrar iniciales como fallback si la imagen falla
                                         const parent = e.currentTarget.parentElement;
-                                        if (parent && saasName && !parent.querySelector('.fallback-initials-saas')) {
+                                        if (parent && item.saas?.name && !parent.querySelector('.fallback-initials-saas')) {
                                             const fallbackSpan = document.createElement('span');
                                             fallbackSpan.className = 'font-medium w-5 h-5 flex items-center justify-center text-xs fallback-initials-saas';
-                                            fallbackSpan.textContent = saasName.substring(0,2);
-                                            fallbackSpan.title = saasName;
+                                            fallbackSpan.textContent = item.saas.name.substring(0,2);
+                                            fallbackSpan.title = item.saas.name;
                                             parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
                                         }
                                       }}
                                     />
                                   ) : (
-                                    // Fallback a iniciales si no hay icono para SaaS
                                     item.saas?.name && (
-                                      <span className="font-medium w-5 h-5 flex items-center justify-center text-xs" title={saasName}>
-                                        {saasName.substring(0,2)}
+                                      <span className="font-medium w-5 h-5 flex items-center justify-center text-xs" title={item.saas.name}>
+                                        {item.saas.name.substring(0,2)}
                                       </span>
                                     )
                                   )}
-                                  {/* {saasName} // Eliminado */}
                                 </h4>
                                 <div className="flex items-center">
-                                  <span className="text-xs text-gray-500 mr-2">Costo mensual:</span>
+                                  <span className="text-xs text-gray-500 mr-2">
+                                    {activeView === 'anual' ? 'Costo anual:' : 'Costo mensual:'}
+                                  </span>
                                   <span className="line-through decoration-red-500 decoration-2">
-                                    ${(item.saas?.cost * userCount).toFixed(2)}
+                                    ${activeView === 'anual'
+                                      ? ((item.saas?.cost || 0) * userCount * 12).toFixed(2)
+                                      : ((item.saas?.cost || 0) * userCount).toFixed(2)}
                                   </span>
                                 </div>
                               </div>
