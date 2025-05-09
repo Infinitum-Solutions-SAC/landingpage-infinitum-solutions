@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -16,7 +15,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import FloatingIcons from "../FloatingIcons";
 import {
   Carousel,
   CarouselContent,
@@ -51,7 +49,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   // Para prevenir el error de n.map, asegurarse de que alternativesArray es un array
   const safeAlternativesArray = Array.isArray(alternativesArray) ? alternativesArray : [];
   
-  // Tomar herramientas seleccionadas para mostrarlas en el carrusel
+  // Tomar herramientas seleccionadas para mostrarlas
   const selectedToolsForDisplay = selectedTools.map(toolName => ({
     name: toolName,
     icon: getToolIcon(toolName),
@@ -77,11 +75,31 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
       
       <CardContent className="flex-grow">
         <div className="space-y-6">
-          {/* Desplegar herramientas seleccionadas como carrusel */}
+          {/* Mostrar herramientas seleccionadas en línea horizontal */}
           {selectedToolsForDisplay.length > 0 && (
             <div className="mb-4">
               <h4 className="text-sm font-medium text-gray-500 mb-2">Herramientas seleccionadas</h4>
-              <FloatingIcons tools={selectedToolsForDisplay} />
+              <div className="flex flex-wrap gap-2">
+                {selectedToolsForDisplay.map((tool, index) => (
+                  <div key={tool.name} className="flex items-center bg-white dark:bg-gray-800 rounded-full p-1 shadow-sm">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-700">
+                      {tool.icon ? (
+                        <img 
+                          src={tool.icon} 
+                          alt={tool.name} 
+                          className="w-6 h-6 object-contain"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <span className="text-xs font-medium">{tool.name.substring(0, 2)}</span>
+                      )}
+                    </div>
+                    <span className="text-xs font-medium px-2">{tool.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           
@@ -163,80 +181,93 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
           <div className="space-y-2">
             {hasAlternatives ? (
               <Accordion type="single" collapsible className="w-full">
-                {safeAlternativesArray.map(([category, categoryAlternatives]) => (
-                  <AccordionItem key={category} value={category}>
-                    <AccordionTrigger className="text-base font-semibold hover:no-underline">
-                      {category}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      {Array.isArray(categoryAlternatives) && categoryAlternatives.map((item, index) => {
-                        const saasName = item.saas?.name || 'Herramienta';
-                        return (
-                          <div key={`${category}-${index}`} className="pt-2 pb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-medium text-sm flex items-center">
-                                {item.saas?.icon && (
-                                  <img 
-                                    src={getToolIcon(item.saas.name)} 
-                                    alt={item.saas.name} 
-                                    className="w-5 h-5 mr-2"
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = 'none';
-                                    }}
-                                  />
-                                )}
-                                {saasName}
-                              </h4>
-                              <div className="flex items-center">
-                                <span className="text-xs text-gray-500 mr-2">Costo mensual:</span>
-                                <span className="line-through decoration-red-500 decoration-2">
-                                  ${(item.saas?.cost * userCount).toFixed(2)}
-                                </span>
+                {safeAlternativesArray.map(([category, categoryAlternatives]) => {
+                  // Eliminar duplicados basados en las alternativas
+                  const uniqueAlternatives = categoryAlternatives.reduce((acc, current) => {
+                    const exists = acc.find(item => 
+                      JSON.stringify(item.alternatives) === JSON.stringify(current.alternatives)
+                    );
+                    if (!exists) {
+                      acc.push(current);
+                    }
+                    return acc;
+                  }, []);
+
+                  return (
+                    <AccordionItem key={category} value={category}>
+                      <AccordionTrigger className="text-base font-semibold hover:no-underline">
+                        {category}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {uniqueAlternatives.map((item, index) => {
+                          const saasName = item.saas?.name || 'Herramienta';
+                          return (
+                            <div key={`${category}-${index}`} className="pt-2 pb-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="font-medium text-sm flex items-center">
+                                  {item.saas?.icon && (
+                                    <img 
+                                      src={getToolIcon(item.saas.name)} 
+                                      alt={item.saas.name} 
+                                      className="w-5 h-5 mr-2"
+                                      onError={(e) => {
+                                        e.currentTarget.style.display = 'none';
+                                      }}
+                                    />
+                                  )}
+                                  {saasName}
+                                </h4>
+                                <div className="flex items-center">
+                                  <span className="text-xs text-gray-500 mr-2">Costo mensual:</span>
+                                  <span className="line-through decoration-red-500 decoration-2">
+                                    ${(item.saas?.cost * userCount).toFixed(2)}
+                                  </span>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded">
+                                <h5 className="text-sm font-medium mb-2">Alternativas Open Source:</h5>
+                                <Carousel className="w-full">
+                                  <CarouselContent>
+                                    {Array.isArray(item.alternatives) && item.alternatives.map((alt) => (
+                                      <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
+                                        <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
+                                          <div className="flex items-center justify-between mb-2">
+                                            <h6 className="font-medium truncate">{alt.name}</h6>
+                                            <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
+                                              Gratis
+                                            </Badge>
+                                          </div>
+                                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
+                                            {alt.details || "Alternativa de código abierto."}
+                                          </p>
+                                          <div className="flex justify-end">
+                                            {alt.url && (
+                                              <a 
+                                                href={alt.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                              >
+                                                Más información
+                                              </a>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </CarouselItem>
+                                    ))}
+                                  </CarouselContent>
+                                  <CarouselPrevious className="left-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
+                                  <CarouselNext className="right-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
+                                </Carousel>
                               </div>
                             </div>
-                            
-                            <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded">
-                              <h5 className="text-sm font-medium mb-2">Alternativas Open Source:</h5>
-                              <Carousel className="w-full">
-                                <CarouselContent>
-                                  {Array.isArray(item.alternatives) && item.alternatives.map((alt) => (
-                                    <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
-                                      <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
-                                        <div className="flex items-center justify-between mb-2">
-                                          <h6 className="font-medium truncate">{alt.name}</h6>
-                                          <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
-                                            Gratis
-                                          </Badge>
-                                        </div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
-                                          {alt.details || "Alternativa de código abierto."}
-                                        </p>
-                                        <div className="flex justify-end">
-                                          {alt.url && (
-                                            <a 
-                                              href={alt.url} 
-                                              target="_blank" 
-                                              rel="noopener noreferrer"
-                                              className="text-xs text-blue-600 hover:underline dark:text-blue-400"
-                                            >
-                                              Más información
-                                            </a>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </CarouselItem>
-                                  ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="left-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
-                                <CarouselNext className="right-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
-                              </Carousel>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
+                          );
+                        })}
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
               </Accordion>
             ) : (
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
