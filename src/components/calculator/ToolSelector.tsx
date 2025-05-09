@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Card, 
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Info, HelpCircle, Search } from "lucide-react";
+import { Info, HelpCircle, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toolsData } from '@/data/toolsData';
+import { getToolIcon } from "@/utils/calculatorUtils";
 
 type ToolSelectorProps = {
   selectedTools: string[];
@@ -37,6 +38,8 @@ const ToolSelector = ({
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredTools, setFilteredTools] = useState<any[]>([]);
+  const [isScrollable, setIsScrollable] = useState<boolean>(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!searchQuery) {
@@ -51,6 +54,30 @@ const ToolSelector = ({
       setFilteredTools(filtered);
     }
   }, [searchQuery, currentCategory]);
+
+  // Verificar si el carrusel de categorías es desplazable
+  useEffect(() => {
+    const checkScrollable = () => {
+      if (categoryRef.current) {
+        const { scrollWidth, clientWidth } = categoryRef.current;
+        setIsScrollable(scrollWidth > clientWidth);
+      }
+    };
+
+    checkScrollable();
+    window.addEventListener('resize', checkScrollable);
+    return () => window.removeEventListener('resize', checkScrollable);
+  }, []);
+
+  const scrollCategories = (direction: 'left' | 'right') => {
+    if (categoryRef.current) {
+      const scrollAmount = direction === 'left' ? -200 : 200;
+      categoryRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const handleToolToggle = (toolName: string) => {
     if (selectedTools.includes(toolName)) {
@@ -124,19 +151,44 @@ const ToolSelector = ({
                   <Info className="h-4 w-4 ml-1" />
                 </Button>
               </div>
-              <div className="overflow-x-auto pb-2 mt-2">
-                <ToggleGroup 
-                  type="single" 
-                  className="flex flex-nowrap overflow-x-auto pb-2 no-scroll"
-                  value={currentCategory} 
-                  onValueChange={(value) => value && setCurrentCategory(value)}
+              <div className="relative">
+                {isScrollable && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute left-0 top-1/2 z-10 transform -translate-y-1/2 bg-gradient-to-r from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent h-full rounded-none"
+                      onClick={() => scrollCategories('left')}
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-1/2 z-10 transform -translate-y-1/2 bg-gradient-to-l from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent h-full rounded-none"
+                      onClick={() => scrollCategories('right')}
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </Button>
+                  </>
+                )}
+                <div
+                  ref={categoryRef}
+                  className="relative overflow-x-auto pb-2 mt-2 mask-x-edges scrollbar-hide scroll-smooth"
                 >
-                  {Object.keys(toolsData.tools).map((category) => (
-                    <ToggleGroupItem key={category} value={category} className="whitespace-nowrap">
-                      {category}
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
+                  <ToggleGroup 
+                    type="single" 
+                    className="flex flex-nowrap overflow-x-auto pb-2 no-scroll"
+                    value={currentCategory} 
+                    onValueChange={(value) => value && setCurrentCategory(value)}
+                  >
+                    {Object.keys(toolsData.tools).map((category) => (
+                      <ToggleGroupItem key={category} value={category} className="whitespace-nowrap">
+                        {category}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                </div>
               </div>
             </div>
           )}
@@ -173,16 +225,31 @@ const ToolSelector = ({
                     >
                       <div className="flex items-center space-x-3 justify-between">
                         <div className="flex items-center space-x-3">
-                          <Checkbox 
-                            checked={selectedTools.includes(tool.name)}
-                            onCheckedChange={() => handleToolToggle(tool.name)}
-                          />
-                          <span className="font-medium">{tool.name}</span>
+                          <div className="flex-shrink-0">
+                            <Checkbox 
+                              checked={selectedTools.includes(tool.name)}
+                              onCheckedChange={() => handleToolToggle(tool.name)}
+                              className="mr-1"
+                            />
+                          </div>
+                          {tool.icon && (
+                            <div className="flex-shrink-0 w-6 h-6 relative">
+                              <img 
+                                src={getToolIcon(tool.name)} 
+                                alt={tool.name} 
+                                className="w-6 h-6 object-contain" 
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                          <span className="font-medium truncate">{tool.name}</span>
                         </div>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <HelpCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                              <HelpCircle className="h-4 w-4 text-gray-400 hover:text-gray-600 flex-shrink-0" />
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="w-64">{tool.details}</p>

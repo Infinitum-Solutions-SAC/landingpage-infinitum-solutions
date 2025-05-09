@@ -1,34 +1,31 @@
 
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { 
   Card, 
   CardHeader, 
-  CardContent, 
-  CardTitle,
-  CardDescription
+  CardTitle, 
+  CardDescription, 
+  CardContent,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { 
-  Check, 
-  ArrowRight, 
-  DollarSign,
-  Sparkles, 
-  Search,
-  Calendar,
-  Strikethrough
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { calculateMonthlyCost } from "@/utils/calculatorUtils";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import FloatingIcons from "../FloatingIcons";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+
+import { getToolIcon, getToolCost } from '@/utils/calculatorUtils';
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
@@ -39,268 +36,217 @@ type OpenSourceAlternativesProps = {
   yearlyCost: number;
 };
 
-// Keyframes para la animación de vibración
-const wiggleKeyframes = `
-  @keyframes wiggle {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-2px); }
-    50% { transform: translateX(0); }
-    75% { transform: translateX(2px); }
-    100% { transform: translateX(0); }
-  }
-`;
-
-const OpenSourceAlternatives = ({ 
-  selectedTools, 
-  userCount, 
-  alternatives, 
+const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
+  selectedTools,
+  userCount,
+  alternatives,
   showSavings,
   monthlyCost,
   yearlyCost
-}: OpenSourceAlternativesProps) => {
-  const isMobile = useIsMobile();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [expandedDetail, setExpandedDetail] = useState<string | null>(null);
-  const [vibrate, setVibrate] = useState(false);
+}) => {
+  const [activeView, setActiveView] = React.useState<string>("mensual");
+  const hasAlternatives = Object.keys(alternatives).length > 0;
+  const alternativesArray = Object.entries(alternatives);
   
-  // Efecto para la animación de vibración del precio tachado
-  useEffect(() => {
-    const vibrateInterval = setInterval(() => {
-      setVibrate(prev => !prev);
-    }, 3000);
-    
-    return () => clearInterval(vibrateInterval);
-  }, []);
+  // Para prevenir el error de n.map, asegurarse de que alternativesArray es un array
+  const safeAlternativesArray = Array.isArray(alternativesArray) ? alternativesArray : [];
   
-  if (selectedTools.length === 0) {
-    return null;
-  }
+  // Tomar herramientas seleccionadas para mostrarlas en el carrusel
+  const selectedToolsForDisplay = selectedTools.map(toolName => ({
+    name: toolName,
+    icon: getToolIcon(toolName),
+    cost: getToolCost(toolName, 1)
+  }));
 
-  // Filter alternatives based on search query
-  const filteredAlternatives = Object.entries(alternatives).reduce((acc, [category, toolGroups]) => {
-    if (searchQuery === "") {
-      acc[category] = toolGroups;
-      return acc;
-    }
-
-    const filteredTools = toolGroups.filter(group => 
-      group.saas.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      group.alternatives.some((alt: any) => alt.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-
-    if (filteredTools.length > 0) {
-      acc[category] = filteredTools;
-    }
-    
-    return acc;
-  }, {} as Record<string, any[]>);
-  
-  const hasFilteredResults = Object.keys(filteredAlternatives).length > 0;
-  
   return (
-    <>
-      <style>{wiggleKeyframes}</style>
-      <Card className="shadow-md bg-gradient-to-br from-white to-green-50 border-green-200 overflow-hidden dark:from-gray-800 dark:to-gray-900 dark:border-green-900">
-        <CardHeader className="border-b bg-green-500/10 dark:bg-green-900/30 py-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-3">
-            <div>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Sparkles className="text-green-500 dark:text-green-400" size={18} />
-                Alternativas Open Source
-              </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Herramientas sin costo para reemplazar servicios de pago
-              </CardDescription>
+    <Card className="shadow-md h-full flex flex-col dark:bg-gray-800/50">
+      <CardHeader>
+        <div className="flex justify-between items-center mb-2">
+          <CardTitle>Alternativas Open Source</CardTitle>
+          <Tabs defaultValue="mensual" value={activeView} onValueChange={setActiveView}>
+            <TabsList>
+              <TabsTrigger value="mensual">Mensual</TabsTrigger>
+              <TabsTrigger value="anual">Anual</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+        <CardDescription>
+          Descubre alternativas gratuitas de código abierto para tus herramientas actuales
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent className="flex-grow">
+        <div className="space-y-6">
+          {/* Desplegar herramientas seleccionadas como carrusel */}
+          {selectedToolsForDisplay.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Herramientas seleccionadas</h4>
+              <FloatingIcons tools={selectedToolsForDisplay} />
             </div>
-            
-            <div className="w-full sm:w-auto flex items-center">
-              <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Buscar alternativas..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 h-8 text-sm bg-white dark:bg-gray-900"
-                />
-              </div>
+          )}
+          
+          {/* Mostrar el costo total */}
+          <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+            <div className="space-y-3">
+              <Tabs value={activeView} className="w-full">
+                <TabsContent value="mensual" className="m-0">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Costo mensual actual:</span>
+                      <motion.span 
+                        key={`monthly-${monthlyCost}`}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="font-bold text-xl text-red-500"
+                      >
+                        ${monthlyCost.toFixed(2)}
+                      </motion.span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Con open source:</span>
+                      <span className="font-bold text-xl text-green-500">$0.00</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-2 border-t">
+                      <span className="font-medium">Ahorro mensual:</span>
+                      <motion.div
+                        key={`monthly-savings-${monthlyCost}`}
+                        initial={{ scale: 1 }}
+                        animate={showSavings ? { 
+                          scale: [1, 1.1, 1],
+                          transition: { duration: 0.5 }
+                        } : {}}
+                        className="font-bold text-2xl text-green-500"
+                      >
+                        ${monthlyCost.toFixed(2)}
+                      </motion.div>
+                    </div>
+                  </div>
+                </TabsContent>
+                <TabsContent value="anual" className="m-0">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Costo anual actual:</span>
+                      <motion.span 
+                        key={`yearly-${yearlyCost}`}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="font-bold text-xl text-red-500"
+                      >
+                        ${yearlyCost.toFixed(2)}
+                      </motion.span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Con open source:</span>
+                      <span className="font-bold text-xl text-green-500">$0.00</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-2 border-t">
+                      <span className="font-medium">Ahorro anual:</span>
+                      <motion.div
+                        key={`yearly-savings-${yearlyCost}`}
+                        initial={{ scale: 1 }}
+                        animate={showSavings ? { 
+                          scale: [1, 1.1, 1],
+                          transition: { duration: 0.5 }
+                        } : {}}
+                        className="font-bold text-2xl text-green-500"
+                      >
+                        ${yearlyCost.toFixed(2)}
+                      </motion.div>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
-        </CardHeader>
-        
-        <CardContent className="pt-4 pb-2">
-          <div className="space-y-4">
-            <AnimatePresence>
-              {showSavings && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="p-4 rounded-xl bg-gradient-to-r from-green-50 to-green-100 border border-green-200 shadow-inner dark:from-green-900/30 dark:to-green-800/20 dark:border-green-800"
-                >
-                  <div className="text-center mb-1">
-                    <span className="text-sm font-medium text-green-600 dark:text-green-500">Ahorro potencial con alternativas Open Source</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center mb-1 relative">
-                        <DollarSign className="h-4 w-4 text-red-500 dark:text-red-400" />
-                        <span className="text-lg font-bold text-red-500 dark:text-red-400 relative">
-                          {monthlyCost.toFixed(2)}
-                          <motion.div 
-                            className="absolute inset-0 flex items-center justify-center"
-                            animate={{ opacity: [0.8, 1, 0.8] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            style={{ 
-                              animation: vibrate ? 'wiggle 0.3s ease-in-out' : 'none'
-                            }}
-                          >
-                            <div className="h-[2px] w-full bg-red-500 dark:bg-red-400 absolute top-1/2 -translate-y-1/2"/>
-                          </motion.div>
-                        </span>
-                      </div>
-                      <span className="text-xs text-green-600 dark:text-green-500 flex items-center gap-1">
-                        <Calendar size={12} />
-                        mensual
-                      </span>
-                    </div>
-                    
-                    <ArrowRight className="text-green-500" size={16} />
-                    
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center mb-1 relative">
-                        <DollarSign className="h-5 w-5 text-red-500 dark:text-red-400" />
-                        <span className="text-2xl font-bold text-red-500 dark:text-red-400 relative">
-                          {yearlyCost.toFixed(2)}
-                          <motion.div 
-                            className="absolute inset-0 flex items-center justify-center"
-                            animate={{ opacity: [0.8, 1, 0.8] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            style={{ 
-                              animation: vibrate ? 'wiggle 0.3s ease-in-out' : 'none'
-                            }}
-                          >
-                            <div className="h-[3px] w-full bg-red-500 dark:bg-red-400 absolute top-1/2 -translate-y-1/2" />
-                          </motion.div>
-                        </span>
-                      </div>
-                      <span className="text-xs text-green-600 dark:text-green-500 flex items-center gap-1">
-                        <Calendar size={12} />
-                        anual
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            
-            {!hasFilteredResults && searchQuery && (
-              <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-                No se encontraron alternativas para "{searchQuery}"
-              </div>
-            )}
-            
-            <div>
-              <Accordion 
-                type="multiple" 
-                defaultValue={Object.keys(filteredAlternatives)}
-                className="space-y-2"
-              >
-                {Object.entries(filteredAlternatives).map(([category, toolGroups]) => (
-                  <AccordionItem 
-                    key={category} 
-                    value={category}
-                    className="border-b-0 bg-white/80 rounded-lg shadow-sm dark:bg-gray-800/40 overflow-hidden"
-                  >
-                    <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{category}</span>
-                        <Badge variant="outline" className="ml-2 text-xs">
-                          {toolGroups.length}
-                        </Badge>
-                      </div>
+          
+          {/* Lista de alternativas por categoría */}
+          <div className="space-y-2">
+            {hasAlternatives ? (
+              <Accordion type="single" collapsible className="w-full">
+                {safeAlternativesArray.map(([category, categoryAlternatives]) => (
+                  <AccordionItem key={category} value={category}>
+                    <AccordionTrigger className="text-base font-semibold hover:no-underline">
+                      {category}
                     </AccordionTrigger>
-                    <AccordionContent className="p-4 pt-2">
-                      <div className="space-y-3">
-                        {toolGroups.map((group, idx) => (
-                          <Collapsible 
-                            key={`${category}-${idx}`}
-                            open={expandedDetail === `${category}-${idx}`}
-                            onOpenChange={() => {
-                              if (expandedDetail === `${category}-${idx}`) {
-                                setExpandedDetail(null);
-                              } else {
-                                setExpandedDetail(`${category}-${idx}`);
-                              }
-                            }}
-                          >
-                            <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-                              <CollapsibleTrigger className="w-full">
-                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                  <div className="flex flex-col">
-                                    <div className="font-medium text-gray-900 dark:text-gray-200">
-                                      {group.saas.name}
-                                    </div>
-                                    <div className="text-sm text-red-500 font-medium mt-0.5 relative">
-                                      <span className="relative">
-                                        ${(group.saas.cost * userCount).toFixed(2)}/mes
-                                        <motion.div 
-                                          className="absolute inset-0 flex items-center justify-center"
-                                          animate={{ opacity: [0.8, 1, 0.8] }}
-                                          transition={{ duration: 2, repeat: Infinity }}
-                                          style={{ 
-                                            animation: vibrate ? 'wiggle 0.3s ease-in-out' : 'none'
-                                          }}
-                                        >
-                                          <div className="h-[2px] w-full bg-red-500 dark:bg-red-400 absolute top-1/2 -translate-y-1/2" />
-                                        </motion.div>
-                                      </span>
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="flex items-center text-sm text-green-600 dark:text-green-400">
-                                    <span className="mr-1">{group.alternatives.length} alternativas</span>
-                                    <Check className="h-4 w-4" />
-                                  </div>
-                                </div>
-                              </CollapsibleTrigger>
-                              
-                              <CollapsibleContent>
-                                <div className="p-3 pt-0 border-t border-gray-100 dark:border-gray-700">
-                                  <div className="flex flex-wrap gap-2 pt-3">
-                                    {group.alternatives.map((alt: any, altIdx: number) => (
-                                      <a
-                                        key={altIdx}
-                                        href={alt.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                      >
-                                        <Button 
-                                          size={isMobile ? "sm" : "default"}
-                                          variant="outline"
-                                          className="border-green-200 bg-green-50 hover:bg-green-100 text-green-700 text-xs md:text-sm py-1 h-auto md:h-9 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-800/40"
-                                        >
-                                          <Check className="mr-1 h-3 w-3" />
-                                          {alt.name}
-                                        </Button>
-                                      </a>
-                                    ))}
-                                  </div>
-                                </div>
-                              </CollapsibleContent>
+                    <AccordionContent>
+                      {Array.isArray(categoryAlternatives) && categoryAlternatives.map((item, index) => {
+                        const saasName = item.saas?.name || 'Herramienta';
+                        return (
+                          <div key={`${category}-${index}`} className="pt-2 pb-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-medium text-sm flex items-center">
+                                {item.saas?.icon && (
+                                  <img 
+                                    src={getToolIcon(item.saas.name)} 
+                                    alt={item.saas.name} 
+                                    className="w-5 h-5 mr-2"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = 'none';
+                                    }}
+                                  />
+                                )}
+                                {saasName}
+                              </h4>
+                              <div className="flex items-center">
+                                <span className="text-xs text-gray-500 mr-2">Costo mensual:</span>
+                                <span className="line-through decoration-red-500 decoration-2">
+                                  ${(item.saas?.cost * userCount).toFixed(2)}
+                                </span>
+                              </div>
                             </div>
-                          </Collapsible>
-                        ))}
-                      </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded">
+                              <h5 className="text-sm font-medium mb-2">Alternativas Open Source:</h5>
+                              <Carousel className="w-full">
+                                <CarouselContent>
+                                  {Array.isArray(item.alternatives) && item.alternatives.map((alt) => (
+                                    <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
+                                      <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
+                                        <div className="flex items-center justify-between mb-2">
+                                          <h6 className="font-medium truncate">{alt.name}</h6>
+                                          <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
+                                            Gratis
+                                          </Badge>
+                                        </div>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
+                                          {alt.details || "Alternativa de código abierto."}
+                                        </p>
+                                        <div className="flex justify-end">
+                                          {alt.url && (
+                                            <a 
+                                              href={alt.url} 
+                                              target="_blank" 
+                                              rel="noopener noreferrer"
+                                              className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                            >
+                                              Más información
+                                            </a>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </CarouselItem>
+                                  ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="left-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
+                                <CarouselNext className="right-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
+                              </Carousel>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
-            </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                Selecciona herramientas para ver alternativas de código abierto
+              </div>
+            )}
           </div>
-        </CardContent>
-      </Card>
-    </>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

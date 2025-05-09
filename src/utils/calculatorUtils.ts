@@ -1,3 +1,4 @@
+
 import { SaaSTool, toolsData } from "../data/toolsData";
 // Eliminamos las importaciones de SVGs individuales y el iconMap
 

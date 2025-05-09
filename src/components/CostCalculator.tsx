@@ -18,12 +18,14 @@ import {
   getOpenSourceAlternatives,
   getDefaultSelectedTools 
 } from "@/utils/calculatorUtils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CostCalculator = () => {
+  const isMobile = useIsMobile();
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
   const [userCount, setUserCount] = useState<number>(1);
   const [showSavings, setShowSavings] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<string>("floating");
+  const [activeView, setActiveView] = useState<string>(isMobile ? "list" : "floating");
   
   // Calcular costos basados en precios reales de las herramientas
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
@@ -43,6 +45,11 @@ const CostCalculator = () => {
       return () => clearTimeout(timer);
     }
   }, [selectedTools]);
+  
+  // Cuando cambia isMobile, ajustar la vista por defecto
+  useEffect(() => {
+    setActiveView(isMobile ? "list" : activeView);
+  }, [isMobile]);
   
   // Manejar selección/deselección de herramientas
   const handleToolToggle = (toolName: string) => {
@@ -79,7 +86,7 @@ const CostCalculator = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="flex justify-between items-center">
                   <span>Busca alternativas!</span>
-                  <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <Tabs defaultValue={isMobile ? "list" : "floating"} value={activeView} onValueChange={setActiveView} className="w-auto">
                     <TabsList>
                       <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
                       <TabsTrigger value="list">Lista</TabsTrigger>
