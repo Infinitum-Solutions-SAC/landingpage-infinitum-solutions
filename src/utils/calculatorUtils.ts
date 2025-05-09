@@ -1,3 +1,4 @@
+
 import { SaaSTool, toolsData } from "../data/toolsData";
 // Eliminamos las importaciones de SVGs individuales y el iconMap
 
@@ -69,7 +70,7 @@ export const getTopToolsPerCategory = (count: number = 2): { name: string; icon:
 };
 
 // Helper para obtener el icono de una herramienta
-export const getToolIcon = (toolName: string): string => {
+export const getToolIcon = (toolName: string, type: string = 'saas'): string => {
   for (const category of Object.values(toolsData.tools)) {
     const tool = category.SaaS.find(t => t.name === toolName);
     if (tool && tool.icon) {
@@ -84,27 +85,32 @@ export const getToolIcon = (toolName: string): string => {
 };
 
 // Obtener alternativas de código abierto para las herramientas seleccionadas
-export const getOpenSourceAlternatives = (selectedTools: string[]) => {
-  const alternatives: Record<string, any[]> = {};
+export const getOpenSourceAlternatives = (selectedTools: string[]): any[] => {
+  const alternativesList: any[] = [];
   
   selectedTools.forEach(toolName => {
     // Encontrar la categoría a la que pertenece la herramienta
     for (const [category, tools] of Object.entries(toolsData.tools)) {
       const saasToolIndex = tools.SaaS.findIndex(tool => tool.name === toolName);
       if (saasToolIndex !== -1) {
-        if (!alternatives[category]) {
-          alternatives[category] = [];
-        }
-        alternatives[category].push({
-          saas: tools.SaaS[saasToolIndex],
-          alternatives: tools.OpenSource
+        const saasName = tools.SaaS[saasToolIndex].name;
+        // Añadir cada alternativa de código abierto como una entrada separada en la lista
+        tools.OpenSource.forEach(openSourceTool => {
+          alternativesList.push({
+            saas: saasName,
+            openSource: openSourceTool.name,
+            description: openSourceTool.description || '',
+            features: openSourceTool.features || [],
+            migrationComplexity: openSourceTool.migrationComplexity || 3,
+            url: openSourceTool.url || ''
+          });
         });
         break;
       }
     }
   });
   
-  return alternatives;
+  return alternativesList;
 };
 
 // Obtener una lista predeterminada de herramientas populares

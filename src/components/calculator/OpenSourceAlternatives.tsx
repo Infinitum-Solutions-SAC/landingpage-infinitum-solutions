@@ -138,19 +138,12 @@ const OpenSourceAlternatives = ({
                 <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/80">
                   <div className="flex items-center space-x-3 text-left">
                     <div className="relative flex-shrink-0 w-10 h-10">
-                      {getToolIcon(alternative.openSource, 'opensource') ? (
-                        <img 
-                          src={getToolIcon(alternative.openSource, 'opensource')} 
-                          alt={alternative.openSource}
-                          className="w-full h-full object-contain"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 flex items-center justify-center bg-green-100 dark:bg-green-900/30 rounded-md">
-                          <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                            {alternative.openSource.substring(0, 2)}
-                          </span>
-                        </div>
-                      )}
+                      {/* Using getToolIcon with a single parameter instead of two */}
+                      <img 
+                        src={getToolIcon(alternative.openSource)} 
+                        alt={alternative.openSource}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                     <div>
                       <div className="font-medium">{alternative.openSource}</div>
