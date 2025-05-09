@@ -23,6 +23,9 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 
+// Importamos los íconos que necesitamos
+import { Calendar, BarChart3 } from "lucide-react";
+
 import { getToolIcon, getToolCost } from '@/utils/calculatorUtils';
 
 type OpenSourceAlternativesProps = {
@@ -57,20 +60,47 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   }));
 
   return (
-    <Card className="shadow-md h-full flex flex-col dark:bg-gray-800/50">
-      <CardHeader>
-        <div className="flex justify-between items-center mb-2">
-          <CardTitle>Alternativas Open Source</CardTitle>
-          <Tabs defaultValue="mensual" value={activeView} onValueChange={setActiveView}>
-            <TabsList>
-              <TabsTrigger value="mensual">Mensual</TabsTrigger>
-              <TabsTrigger value="anual">Anual</TabsTrigger>
+    <Card className="shadow-md h-full flex flex-col dark:bg-gray-800/50 relative">
+      <div className="absolute top-3 right-3 z-10">
+        <div className="flex items-center">
+          <div className="text-sm text-gray-500 dark:text-gray-400 mr-2 hidden sm:block">
+            Vista:
+          </div>
+          <Tabs 
+            defaultValue="mensual" 
+            value={activeView} 
+            onValueChange={setActiveView} 
+            className="relative"
+          >
+            <TabsList className="h-8 p-1">
+              <TabsTrigger 
+                value="mensual" 
+                className="flex items-center gap-1.5 px-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                <Calendar className="h-4 w-4" />
+                <span className="hidden sm:inline">Mensual</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="anual" 
+                className="flex items-center gap-1.5 px-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                <BarChart3 className="h-4 w-4" />
+                <span className="hidden sm:inline">Anual</span>
+              </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
-        <CardDescription>
-          Descubre alternativas gratuitas de código abierto para tus herramientas actuales
-        </CardDescription>
+      </div>
+      
+      <CardHeader className="pb-3 pr-24">
+        <div className="flex-col flex">
+          <CardTitle className="text-xl sm:text-2xl font-bold">
+            Alternativas Open Source
+          </CardTitle>
+          <CardDescription className="mt-1">
+            Descubre alternativas gratuitas de código abierto para tus herramientas actuales
+          </CardDescription>
+        </div>
       </CardHeader>
       
       <CardContent className="flex-grow">
