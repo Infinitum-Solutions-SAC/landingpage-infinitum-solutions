@@ -18,24 +18,33 @@ import {
   getOpenSourceAlternatives,
   getDefaultSelectedTools 
 } from "@/utils/calculatorUtils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CostCalculator = () => {
+  const isMobile = useIsMobile();
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
   const [userCount, setUserCount] = useState<number>(1);
   const [showSavings, setShowSavings] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<string>("floating");
+  const [activeView, setActiveView] = useState<string>(isMobile ? "list" : "floating");
   
-  // Calcular costos basados en precios reales de las herramientas
+  // Set list view as default on mobile when component loads
+  useEffect(() => {
+    if (isMobile) {
+      setActiveView("list");
+    }
+  }, [isMobile]);
+  
+  // Calculate costs based on real tool prices
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
   const totalYearlyCost = calculateYearlyCost(totalMonthlyCost);
   
-  // Effect para mostrar animación de ahorro cuando cambian las herramientas
+  // Effect to show savings animation when tools change
   useEffect(() => {
     if (selectedTools.length > 0) {
-      // Resetear el trigger de animación
+      // Reset animation trigger
       setShowSavings(false);
       
-      // Activar animación después de un breve retraso
+      // Trigger animation after a short delay
       const timer = setTimeout(() => {
         setShowSavings(true);
       }, 300);
@@ -44,7 +53,7 @@ const CostCalculator = () => {
     }
   }, [selectedTools]);
   
-  // Manejar selección/deselección de herramientas
+  // Handle tool selection/deselection
   const handleToolToggle = (toolName: string) => {
     setSelectedTools(prev => {
       if (prev.includes(toolName)) {
@@ -55,7 +64,7 @@ const CostCalculator = () => {
     });
   };
   
-  // Obtener alternativas de código abierto para las herramientas seleccionadas
+  // Get open source alternatives for selected tools
   const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
 
   return (
@@ -73,13 +82,13 @@ const CostCalculator = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
-          {/* Visualización de herramientas (flotantes o lista) */}
+          {/* Tool visualization (floating or list) */}
           <div className="lg:col-span-7">
             <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
               <CardHeader className="pb-3">
                 <CardTitle className="flex justify-between items-center">
                   <span>Busca alternativas!</span>
-                  <Tabs defaultValue="floating" value={activeView} onValueChange={setActiveView} className="w-auto">
+                  <Tabs defaultValue={isMobile ? "list" : "floating"} value={activeView} onValueChange={setActiveView} className="w-auto">
                     <TabsList>
                       <TabsTrigger value="floating">Vista Flotante</TabsTrigger>
                       <TabsTrigger value="list">Lista</TabsTrigger>
@@ -99,7 +108,7 @@ const CostCalculator = () => {
                         onToolToggle={handleToolToggle}
                       />
                       
-                      {/* Control de usuarios integrado en la vista flotante */}
+                      {/* User count control integrated in floating view */}
                       <CardFooter className="border-t p-4">
                         <div className="flex items-center justify-center gap-4 w-full">
                           <span className="text-sm md:text-base font-medium whitespace-nowrap">Número de usuarios:</span>
@@ -131,7 +140,7 @@ const CostCalculator = () => {
             </Card>
           </div>
           
-          {/* Alternativas de código abierto */}
+          {/* Open Source Alternatives */}
           <div className="lg:col-span-5">
             <OpenSourceAlternatives
               selectedTools={selectedTools}
@@ -140,6 +149,7 @@ const CostCalculator = () => {
               showSavings={showSavings}
               monthlyCost={totalMonthlyCost}
               yearlyCost={totalYearlyCost}
+              showSearch={false}
             />
           </div>
         </div>
