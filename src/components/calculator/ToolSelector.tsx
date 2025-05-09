@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -10,16 +9,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Info, HelpCircle, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Info, HelpCircle, Search, ChevronLeft, ChevronRight, X, Plus, Minus } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { toolsData } from '@/data/toolsData';
-import { getToolIcon } from "@/utils/calculatorUtils";
+import { getToolIcon, calculateMonthlyCost } from "@/utils/calculatorUtils";
 
 type ToolSelectorProps = {
   selectedTools: string[];
@@ -40,6 +42,23 @@ const ToolSelector = ({
   const [filteredTools, setFilteredTools] = useState<any[]>([]);
   const [isScrollable, setIsScrollable] = useState<boolean>(false);
   const categoryRef = useRef<HTMLDivElement>(null);
+  const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
+  const [selectedToolsHeight, setSelectedToolsHeight] = useState<number>(90);
+  
+  // Ajustar la altura del ScrollArea basado en el número de herramientas seleccionadas
+  useEffect(() => {
+    // Calcular altura dinámica basada en número de herramientas
+    // Aproximadamente 40px por herramienta para 1 fila, considerando que pueden caber múltiples en una fila
+    const estimatedRows = Math.ceil(selectedTools.length / 3); // Estimación: 3 herramientas por fila
+    const baseHeight = 40; // Altura mínima
+    const rowHeight = 40; // Altura aproximada por fila
+    
+    const calculatedHeight = baseHeight + (estimatedRows * rowHeight);
+    // Limitar altura máxima a 200px
+    const newHeight = Math.min(Math.max(90, calculatedHeight), 200);
+    
+    setSelectedToolsHeight(newHeight);
+  }, [selectedTools.length]);
 
   useEffect(() => {
     if (!searchQuery) {
@@ -94,216 +113,333 @@ const ToolSelector = ({
     }
   };
 
+  const removeSelectedTool = (toolName: string) => {
+    setSelectedTools(selectedTools.filter(tool => tool !== toolName));
+  };
+
   return (
-    <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
-      <CardContent className="space-y-6 pt-6">
-        <div className="space-y-4">
-          <Label htmlFor="userCount" className="text-base font-medium">Número de usuarios</Label>
-          <div className="flex items-center space-x-3">
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={() => userCount > 1 && setUserCount(userCount - 1)}
-              disabled={userCount <= 1}
+    <div className="space-y-6">
+      {/* Panel de herramientas seleccionadas */}
+      <AnimatePresence>
+        {selectedTools.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 shadow-sm"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <Label className="text-base font-medium flex items-center">
+                <span className="mr-2">Herramientas seleccionadas</span>
+                <Badge variant="secondary">{selectedTools.length}</Badge>
+              </Label>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setSelectedTools([])}
+                className="text-xs text-gray-500 hover:text-red-500"
+              >
+                Limpiar todo
+              </Button>
+            </div>
+            <ScrollArea className="pr-4 transition-all duration-300 ease-in-out"
+              style={{ height: `${selectedToolsHeight}px` }}
             >
-              -
-            </Button>
-            <Input
-              id="userCount"
-              type="number"
-              min="1"
-              value={userCount}
-              onChange={(e) => handleUserCountChange(e.target.value)}
-              className="text-center text-lg font-semibold"
-            />
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={() => setUserCount(userCount + 1)}
-            >
-              +
-            </Button>
+              <div className="flex flex-wrap gap-2 p-1">
+                {selectedTools.map((toolName) => {
+                  const tool = Object.values(toolsData.tools)
+                    .flatMap(cat => cat.SaaS)
+                    .find(t => t.name === toolName);
+                    
+                  return (
+                    <motion.div 
+                      key={toolName}
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.8, opacity: 0 }}
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center bg-white dark:bg-gray-700 rounded-full px-2 py-1 shadow-sm"
+                    >
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-800 mr-1">
+                        {tool?.icon ? (
+                          <img 
+                            src={getToolIcon(toolName)} 
+                            alt={toolName} 
+                            className="w-4 h-4 object-contain"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <span className="text-xs font-medium">{toolName.substring(0, 2)}</span>
+                        )}
+                      </div>
+                      <span className="text-xs font-medium mr-1">{toolName}</span>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeSelectedTool(toolName);
+                        }}
+                        className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        <X className="h-3 w-3 text-gray-500" />
+                      </button>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
+            {selectedTools.length > 0 && (
+              <div className="pt-3 mt-2 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <span className="text-sm font-medium">Costo total mensual:</span>
+                <motion.span 
+                  key={totalMonthlyCost} 
+                  initial={{ scale: 0.8 }} 
+                  animate={{ scale: 1 }} 
+                  className="font-bold text-red-500"
+                >
+                  ${totalMonthlyCost.toFixed(2)}
+                </motion.span>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="md:col-span-2 space-y-4">
+          {/* Selector de usuarios mejorado con slider */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+            <Label htmlFor="userCount" className="text-base font-medium block mb-3">Número de usuarios</Label>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => userCount > 1 && setUserCount(userCount - 1)}
+                disabled={userCount <= 1}
+                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <div className="flex-1">
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={userCount}
+                  onChange={(e) => setUserCount(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => setUserCount(userCount + 1)}
+                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+              <Input
+                id="userCount"
+                type="number"
+                min="1"
+                value={userCount}
+                onChange={(e) => handleUserCountChange(e.target.value)}
+                className="text-center text-lg font-semibold w-20 p-1"
+              />
+            </div>
           </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Buscar herramientas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-2"
-            />
-          </div>
-          
+
+          {/* Selector de categorías mejorado */}
           {!searchQuery && (
-            <div>
-              <div className="flex items-center justify-between">
-                <Label className="text-base font-medium">Categoría de herramientas</Label>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <Label className="text-base font-medium">Categorías</Label>
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setShowDetails(!showDetails)}
-                  className="flex items-center gap-1 text-sm"
+                  className="text-xs text-gray-500 hover:text-primary flex items-center"
                 >
                   {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
-                  <Info className="h-4 w-4 ml-1" />
+                  <Info className="h-3 w-3 ml-1" />
                 </Button>
               </div>
-              <div className="relative">
-                {isScrollable && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute left-0 top-1/2 z-10 transform -translate-y-1/2 bg-gradient-to-r from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent h-full rounded-none"
-                      onClick={() => scrollCategories('left')}
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-1/2 z-10 transform -translate-y-1/2 bg-gradient-to-l from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent h-full rounded-none"
-                      onClick={() => scrollCategories('right')}
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </Button>
-                  </>
-                )}
+              <ScrollArea className="h-[112px]">
                 <div
-                  ref={categoryRef}
-                  className="relative overflow-x-auto pb-2 mt-2 mask-x-edges scrollbar-hide scroll-smooth"
+                  className="flex flex-col gap-2"
                 >
-                  <ToggleGroup 
-                    type="single" 
-                    className="flex flex-nowrap overflow-x-auto pb-2 no-scroll"
-                    value={currentCategory} 
-                    onValueChange={(value) => value && setCurrentCategory(value)}
-                  >
-                    {Object.keys(toolsData.tools).map((category) => (
-                      <ToggleGroupItem key={category} value={category} className="whitespace-nowrap">
-                        {category}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                  {Object.keys(toolsData.tools).map((category) => (
+                    <Button
+                      key={category}
+                      variant={currentCategory === category ? "secondary" : "ghost"}
+                      className="justify-start h-auto py-2 text-left"
+                      onClick={() => setCurrentCategory(category)}
+                    >
+                      {category}
+                      <Badge variant="outline" className="ml-2 bg-white dark:bg-gray-700 text-xs">
+                        {toolsData.tools[category].SaaS.length}
+                      </Badge>
+                    </Button>
+                  ))}
                 </div>
-              </div>
+              </ScrollArea>
             </div>
           )}
         </div>
-        
-        <div className="space-y-4">
-          <Label className="text-base font-medium">
-            {searchQuery 
-              ? `Resultados de búsqueda para "${searchQuery}"`
-              : `Selecciona las herramientas de pago (${currentCategory})`
-            }
-          </Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <AnimatePresence mode="wait">
-              <motion.div 
-                key={searchQuery || currentCategory}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full"
-              >
-                {filteredTools.length > 0 ? (
-                  filteredTools.map((tool) => (
-                    <motion.div 
-                      key={tool.name} 
-                      className={`flex flex-col p-3 rounded-md border cursor-pointer transition-colors ${
-                        selectedTools.includes(tool.name) 
-                          ? 'border-primary bg-primary/10 dark:bg-primary/20' 
-                          : 'border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50'
-                      }`}
-                      onClick={() => handleToolToggle(tool.name)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+
+        <div className="md:col-span-3">
+          <Card className="shadow-sm">
+            <CardContent className="p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-base font-medium">
+                  {searchQuery 
+                    ? `Resultados de búsqueda: "${searchQuery}"`
+                    : `${currentCategory}`
+                  }
+                </Label>
+                <div className="relative w-48">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input 
+                    placeholder="Buscar..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-4 py-1 h-8 text-sm"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
                     >
-                      <div className="flex items-center space-x-3 justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="flex-shrink-0">
-                            <Checkbox 
-                              checked={selectedTools.includes(tool.name)}
-                              onCheckedChange={() => handleToolToggle(tool.name)}
-                              className="mr-1"
-                            />
-                          </div>
-                          {tool.icon && (
-                            <div className="flex-shrink-0 w-6 h-6 relative">
-                              <img 
-                                src={getToolIcon(tool.name)} 
-                                alt={tool.name} 
-                                className="w-6 h-6 object-contain" 
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                }}
-                              />
-                            </div>
-                          )}
-                          <span className="font-medium truncate">{tool.name}</span>
-                        </div>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <HelpCircle className="h-4 w-4 text-gray-400 hover:text-gray-600 flex-shrink-0" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="w-64">{tool.details}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      
-                      <AnimatePresence>
-                        {(showDetails || selectedTools.includes(tool.name)) && (
+                      <X className="h-3 w-3 text-gray-400" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <Separator />
+
+              <ScrollArea className="h-[300px] pr-4">
+                <div className="grid grid-cols-1 gap-2">
+                  <AnimatePresence mode="wait">
+                    <motion.div 
+                      key={searchQuery || currentCategory}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="space-y-2 w-full"
+                    >
+                      {filteredTools.length > 0 ? (
+                        filteredTools.map((tool) => (
                           <motion.div 
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="mt-2 pt-2 border-t text-sm"
+                            key={tool.name}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                            className={`flex p-3 rounded-lg border cursor-pointer transition-all ${
+                              selectedTools.includes(tool.name) 
+                                ? 'border-primary bg-primary/5 dark:bg-primary/10' 
+                                : 'border-gray-200 hover:border-primary/30 dark:border-gray-700 dark:hover:border-primary/30 bg-white dark:bg-gray-800'
+                            }`}
+                            onClick={() => handleToolToggle(tool.name)}
                           >
-                            <div className="flex justify-between items-center">
-                              <span className="text-gray-500 dark:text-gray-400">Precio mensual:</span>
-                              <span className="font-semibold text-red-500">${tool.cost}/usuario</span>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-gray-500 dark:text-gray-400">Total mensual:</span>
-                              <span className="font-semibold text-red-500">${(tool.cost * userCount).toFixed(2)}</span>
+                            <div className="w-full">
+                              <div className="flex items-center gap-3">
+                                <Checkbox 
+                                  checked={selectedTools.includes(tool.name)}
+                                  onCheckedChange={() => handleToolToggle(tool.name)}
+                                  className="data-[state=checked]:bg-primary"
+                                />
+                                {tool.icon && (
+                                  <div className="w-6 h-6 flex-shrink-0">
+                                    <img 
+                                      src={getToolIcon(tool.name)} 
+                                      alt={tool.name} 
+                                      className="w-6 h-6 object-contain" 
+                                      onError={(e) => {
+                                        e.currentTarget.style.display = 'none';
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                                <div className="flex-1">
+                                  <div className="flex justify-between items-center">
+                                    <span className="font-medium">{tool.name}</span>
+                                    <div className="flex items-center">
+                                      <span className="text-sm font-semibold text-red-500 mr-2">${tool.cost}/usuario</span>
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <span>
+                                              <HelpCircle className="h-4 w-4 text-gray-400" />
+                                            </span>
+                                          </TooltipTrigger>
+                                          <TooltipContent side="left">
+                                            <p className="max-w-xs">{tool.details}</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <AnimatePresence>
+                                {(showDetails || selectedTools.includes(tool.name)) && (
+                                  <motion.div 
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="mt-2 pl-9 pr-2"
+                                  >
+                                    <div className="pt-2 border-t border-dashed border-gray-200 dark:border-gray-700 text-sm">
+                                      <div className="flex justify-between items-center text-gray-500 dark:text-gray-400">
+                                        <span>Total para {userCount} usuario{userCount !== 1 ? 's' : ''}:</span>
+                                        <span className="font-semibold text-red-500">${(tool.cost * userCount).toFixed(2)}</span>
+                                      </div>
+                                      {tool.details && (
+                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                          {tool.details}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
                           </motion.div>
-                        )}
-                      </AnimatePresence>
+                        ))
+                      ) : (
+                        <motion.div 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-center py-12 text-gray-500 dark:text-gray-400"
+                        >
+                          <p className="mb-1">No se encontraron herramientas</p>
+                          <p className="text-sm">Prueba con otro término de búsqueda</p>
+                        </motion.div>
+                      )}
                     </motion.div>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-8 text-muted-foreground">
-                    No se encontraron herramientas. Prueba con otro término de búsqueda.
-                  </div>
+                  </AnimatePresence>
+                </div>
+              </ScrollArea>
+            </CardContent>
+            
+            <CardFooter className="border-t bg-gray-50 dark:bg-gray-800/50 p-4">
+              <div className="w-full flex justify-between items-center">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  {filteredTools.length} herramientas disponibles
+                </div>
+                {selectedTools.length > 0 && (
+                  <span className="text-sm font-medium">
+                    Seleccionadas: <Badge>{selectedTools.length}</Badge>
+                  </span>
                 )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+              </div>
+            </CardFooter>
+          </Card>
         </div>
-      </CardContent>
-      <CardFooter className="border-t pt-6 bg-gray-50 dark:bg-gray-800">
-        <div className="w-full">
-          <div className="flex flex-col space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500 dark:text-gray-400">Herramientas seleccionadas:</span>
-              <span className="font-semibold">{selectedTools.length}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500 dark:text-gray-400">Número de usuarios:</span>
-              <span className="font-semibold">{userCount}</span>
-            </div>
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
 
