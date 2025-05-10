@@ -208,17 +208,9 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
           <div className="space-y-2">
             {hasAlternatives ? (
               <Accordion type="single" collapsible className="w-full">
-                {safeAlternativesArray.map(([category, categoryAlternatives]) => {
-                  // Eliminar duplicados basados en las alternativas
-                  const uniqueAlternatives = categoryAlternatives.reduce((acc, current) => {
-                    const exists = acc.find(item => 
-                      JSON.stringify(item.alternatives) === JSON.stringify(current.alternatives)
-                    );
-                    if (!exists) {
-                      acc.push(current);
-                    }
-                    return acc;
-                  }, []);
+                {safeAlternativesArray.map(([category, categorySaaSAlternatives]) => {
+                  // categorySaaSAlternatives es un array de objetos, donde cada objeto es:
+                  // { saas: { name: '...', cost: ... }, alternatives: [ { name: '...', icon: '...' }, ... ] }
 
                   return (
                     <AccordionItem key={category} value={category}>
@@ -226,124 +218,156 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                         {category}
                       </AccordionTrigger>
                       <AccordionContent>
-                        {uniqueAlternatives.map((item, index) => {
-                          const saasName = item.saas?.name || 'Herramienta';
-                          const saasIconPath = item.saas?.name ? getToolIcon(item.saas.name) : undefined;
+                        {(() => { // IIFE para calcular variables y luego renderizar
+                           const saasToolsForCategory = categorySaaSAlternatives.map(item => item.saas);
+                           const allOSAlternativesForCategory = categorySaaSAlternatives.flatMap(item => item.alternatives || []);
+                           const uniqueOSAlternatives = allOSAlternativesForCategory.reduce((acc, current) => {
+                             if (current && current.name && !acc.find(alt => alt.name === current.name)) {
+                               acc.push(current);
+                             }
+                             return acc;
+                           }, [] as Array<{ name: string; icon?: string; details?: string; url?: string }>);
 
-                          return (
-                            <div key={`${category}-${index}`} className="pt-2 pb-4">
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="font-medium text-sm flex items-center">
-                                  {saasIconPath ? (
-                                    <img 
-                                      src={saasIconPath} 
-                                      alt={item.saas?.name} 
-                                      title={item.saas?.name}
-                                      className="w-5 h-5"
-                                      onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                        const parent = e.currentTarget.parentElement;
-                                        if (parent && item.saas?.name && !parent.querySelector('.fallback-initials-saas')) {
-                                            const fallbackSpan = document.createElement('span');
-                                            fallbackSpan.className = 'font-medium w-5 h-5 flex items-center justify-center text-xs fallback-initials-saas';
-                                            fallbackSpan.textContent = item.saas.name.substring(0,2);
-                                            fallbackSpan.title = item.saas.name;
-                                            parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
-                                        }
-                                      }}
-                                    />
-                                  ) : (
-                                    item.saas?.name && (
-                                      <span className="font-medium w-5 h-5 flex items-center justify-center text-xs" title={item.saas.name}>
-                                        {item.saas.name.substring(0,2)}
-                                      </span>
-                                    )
-                                  )}
-                                </h4>
-                                <div className="flex items-center">
-                                  <span className="text-xs text-gray-500 mr-2">
-                                    {activeView === 'anual' ? 'Costo anual:' : 'Costo mensual:'}
-                                  </span>
-                                  <span className="line-through decoration-red-500 decoration-2">
-                                    ${activeView === 'anual'
-                                      ? ((item.saas?.cost || 0) * userCount * 12).toFixed(2)
-                                      : ((item.saas?.cost || 0) * userCount).toFixed(2)}
-                                  </span>
-                                </div>
-                              </div>
-                              
-                              <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded">
-                                <h5 className="text-sm font-medium mb-2">Alternativas Open Source:</h5>
-                                <Carousel className="w-full">
-                                  <CarouselContent>
-                                    {Array.isArray(item.alternatives) && item.alternatives.map((alt) => (
-                                      <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
-                                        <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
-                                          <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center min-w-0" title={alt.name}>
-                                              {alt.icon ? (
-                                                <img 
-                                                  src={`/assets/images/icons-opensource/${alt.icon}`}
-                                                  alt={alt.name}
-                                                  className="w-5 h-5" 
-                                                  onError={(e) => { 
-                                                      e.currentTarget.style.display = 'none'; 
-                                                      // Fallback a iniciales si la imagen del icono OS falla
-                                                      const parent = e.currentTarget.parentElement;
-                                                      if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
-                                                          const fallbackSpan = document.createElement('span');
-                                                          fallbackSpan.className = 'font-medium truncate w-5 h-5 flex items-center justify-center text-xs fallback-initials-alt';
-                                                          fallbackSpan.textContent = alt.name.substring(0,2);
-                                                          parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
-                                                      }
-                                                  }}
-                                                />
-                                              ) : (
-                                                // Fallback a iniciales si no hay alt.icon
-                                                <span className="font-medium truncate w-5 h-5 flex items-center justify-center text-xs">
-                                                  {alt.name.substring(0,2)}
-                                                </span>
-                                              )}
-                                              {/* <h6 className="font-medium truncate">{alt.name}</h6> // Eliminado */}
-                                            </div>
-                                            <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
-                                              Gratis
-                                            </Badge>
-                                          </div>
-                                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
-                                            {alt.details || "Alternativa de código abierto."}
-                                          </p>
-                                          <div className="flex justify-end">
-                                            {alt.url && (
-                                              <a 
-                                                href={alt.url} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="text-xs text-blue-600 hover:underline dark:text-blue-400"
-                                              >
-                                                Más información
-                                              </a>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </CarouselItem>
-                                    ))}
-                                  </CarouselContent>
-                                  <CarouselPrevious className="left-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
-                                  <CarouselNext className="right-1 hover:bg-slate-100 dark:hover:bg-gray-700" />
-                                </Carousel>
-                              </div>
-                            </div>
-                          );
-                        })}
+                          if (saasToolsForCategory.length === 0 && uniqueOSAlternatives.length === 0 && categorySaaSAlternatives.length > 0) {
+                            return (
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                No hay información de herramientas o alternativas para esta categoría.
+                              </p>
+                            );
+                          }
+
+                           return (
+                             <>
+                               {/* Mostrar iconos de las SaaS seleccionadas para esta categoría */} 
+                               {saasToolsForCategory.length > 0 && (
+                                 <div className="mb-4"> 
+                                   {/* Opcional: Título para la sección de SaaS */}
+                                   {/* <h5 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Herramientas Propietarias:</h5> */}
+                                   <div className="flex flex-wrap gap-2 items-center">
+                                     {saasToolsForCategory.map((saas, saasIndex) => {
+                                       const saasIconPath = saas?.name ? getToolIcon(saas.name) : undefined;
+                                       return (
+                                         <div key={`${category}-saas-${saas?.name}-${saasIndex}`} title={saas?.name} className="flex items-center justify-center bg-gray-100 dark:bg-gray-700/60 p-1.5 rounded-lg w-9 h-9 shadow-sm">
+                                           {saasIconPath ? (
+                                             <img
+                                               src={saasIconPath}
+                                               alt={saas?.name || 'SaaS tool'}
+                                               className="w-6 h-6 object-contain"
+                                               onError={(e) => {
+                                                 const imgElement = e.currentTarget;
+                                                 imgElement.style.display = 'none';
+                                                 const parent = imgElement.parentElement;
+                                                 if (parent && saas?.name) {
+                                                   if (!parent.querySelector('.saas-icon-fallback')) {
+                                                     const fallbackSpan = document.createElement('span');
+                                                     fallbackSpan.className = 'font-semibold w-6 h-6 flex items-center justify-center text-xs saas-icon-fallback text-gray-600 dark:text-gray-300';
+                                                     fallbackSpan.textContent = saas.name.substring(0, 2).toUpperCase();
+                                                     fallbackSpan.title = saas.name;
+                                                     parent.appendChild(fallbackSpan);
+                                                   }
+                                                 }
+                                               }}
+                                             />
+                                           ) : (
+                                             saas?.name && (
+                                               <span className="font-semibold w-6 h-6 flex items-center justify-center text-xs saas-icon-fallback text-gray-600 dark:text-gray-300" title={saas.name}>
+                                                 {saas.name.substring(0, 2).toUpperCase()}
+                                               </span>
+                                             )
+                                           )}
+                                         </div>
+                                       );
+                                     })}
+                                   </div>
+                                 </div>
+                               )}
+
+                               {/* Mostrar alternativas Open Source */} 
+                               {uniqueOSAlternatives.length > 0 && (
+                                 <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded-lg mt-2">
+                                   <h5 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">Alternativas Open Source Sugeridas:</h5>
+                                   <Carousel className="w-full">
+                                     <CarouselContent className="-ml-2">
+                                       {Array.isArray(uniqueOSAlternatives) && uniqueOSAlternatives.map((alt) => (
+                                         <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
+                                           <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
+                                             <div className="flex items-center justify-between mb-2">
+                                               <div className="flex items-center min-w-0" title={alt.name}>
+                                                 {alt.icon ? (
+                                                   <img 
+                                                     src={`/assets/images/icons-opensource/${alt.icon}`}
+                                                     alt={alt.name}
+                                                     className="w-5 h-5" 
+                                                     onError={(e) => { 
+                                                         e.currentTarget.style.display = 'none'; 
+                                                         // Fallback a iniciales si la imagen del icono OS falla
+                                                         const parent = e.currentTarget.parentElement;
+                                                         if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
+                                                             const fallbackSpan = document.createElement('span');
+                                                             fallbackSpan.className = 'font-medium truncate w-5 h-5 flex items-center justify-center text-xs fallback-initials-alt';
+                                                             fallbackSpan.textContent = alt.name.substring(0,2);
+                                                             parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                                         }
+                                                     }}
+                                                   />
+                                                 ) : (
+                                                   // Fallback a iniciales si no hay alt.icon
+                                                   <span className="font-medium truncate w-5 h-5 flex items-center justify-center text-xs">
+                                                     {alt.name.substring(0,2)}
+                                                   </span>
+                                                 )}
+                                                 {/* <h6 className="font-medium truncate">{alt.name}</h6> // Eliminado */}
+                                               </div>
+                                               <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
+                                                 Gratis
+                                               </Badge>
+                                             </div>
+                                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
+                                               {alt.details || "Alternativa de código abierto."}
+                                             </p>
+                                             <div className="flex justify-end">
+                                               {alt.url && (
+                                                 <a 
+                                                   href={alt.url} 
+                                                   target="_blank" 
+                                                   rel="noopener noreferrer"
+                                                   className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                                 >
+                                                   Más información
+                                                 </a>
+                                               )}
+                                             </div>
+                                           </div>
+                                         </CarouselItem>
+                                       ))}
+                                     </CarouselContent>
+                                     <CarouselPrevious className="left-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
+                                     <CarouselNext className="right-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
+                                   </Carousel>
+                                 </div>
+                               )}
+
+                               {/* Mensaje si no hay alternativas OS pero sí SaaS */} 
+                               {saasToolsForCategory.length > 0 && uniqueOSAlternatives.length === 0 && (
+                                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 text-center py-2 bg-gray-50 dark:bg-gray-800/60 rounded-md">
+                                   No se encontraron alternativas open source para las herramientas seleccionadas en esta categoría.
+                                 </p>
+                               )}
+                             </>
+                           );
+                         })()}
                       </AccordionContent>
                     </AccordionItem>
                   );
                 })}
               </Accordion>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                Selecciona herramientas para ver alternativas de código abierto
+              <div className="text-center py-10 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/40 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+                <p className="mt-3 text-sm font-medium">Comienza por seleccionar herramientas</p>
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Elige las aplicaciones que usas actualmente para ver alternativas y calcular ahorros.</p>
               </div>
             )}
           </div>
