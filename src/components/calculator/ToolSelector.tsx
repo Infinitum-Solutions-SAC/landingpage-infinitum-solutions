@@ -147,9 +147,15 @@ const ToolSelector = ({
                 <Label className="text-base font-bold text-costwise-navy dark:text-white">
                   Todas las herramientas
                 </Label>
-                <Badge variant="outline" className="text-xs px-2 py-1 bg-costwise-blue-light text-costwise-navy border-costwise-blue/20">
-                  {filteredTools.length} herramientas
-                </Badge>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowDetails(!showDetails)}
+                  className="text-xs text-gray-500 hover:text-costwise-blue flex items-center"
+                >
+                  {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
+                  <Info className="h-3 w-3 ml-1" />
+                </Button>
               </div>
               <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400">
                 {searchQuery 
