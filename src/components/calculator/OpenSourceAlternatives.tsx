@@ -289,40 +289,36 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                    <Carousel className="w-full">
                                      <CarouselContent className="-ml-2">
                                        {Array.isArray(uniqueOSAlternatives) && uniqueOSAlternatives.map((alt) => (
-                                         <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3">
-                                           <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col">
-                                             <div className="flex items-center justify-between mb-2">
-                                               <div className="flex items-center min-w-0" title={alt.name}>
-                                                 {alt.icon ? (
-                                                   <img 
-                                                     src={`/assets/images/icons-opensource/${alt.icon}`}
-                                                     alt={alt.name}
-                                                     className="w-5 h-5" 
-                                                     onError={(e) => { 
-                                                         e.currentTarget.style.display = 'none'; 
-                                                         // Fallback a iniciales si la imagen del icono OS falla
-                                                         const parent = e.currentTarget.parentElement;
-                                                         if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
-                                                             const fallbackSpan = document.createElement('span');
-                                                             fallbackSpan.className = 'font-medium truncate w-5 h-5 flex items-center justify-center text-xs fallback-initials-alt';
-                                                             fallbackSpan.textContent = alt.name.substring(0,2);
-                                                             parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
-                                                         }
-                                                     }}
-                                                   />
-                                                 ) : (
-                                                   // Fallback a iniciales si no hay alt.icon
-                                                   <span className="font-medium truncate w-5 h-5 flex items-center justify-center text-xs">
-                                                     {alt.name.substring(0,2)}
-                                                   </span>
-                                                 )}
-                                                 {/* <h6 className="font-medium truncate">{alt.name}</h6> // Eliminado */}
-                                               </div>
-                                               <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 text-xs">
-                                                 Gratis
-                                               </Badge>
+                                         <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3 pl-2 pb-2">
+                                           <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col relative shadow-sm hover:shadow-md transition-shadow duration-200">
+                                             <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
+                                               Gratis
+                                             </Badge>
+                                             <div className="flex items-center mb-2 pr-10"> {/* Espacio para la badge absoluta */}
+                                               {alt.icon ? (
+                                                 <img 
+                                                   src={alt.icon} // Corregido: usar alt.icon directamente
+                                                   alt={alt.name}
+                                                   className="w-5 h-5 mr-2 flex-shrink-0 object-contain" 
+                                                   onError={(e) => { 
+                                                       e.currentTarget.style.display = 'none'; 
+                                                       const parent = e.currentTarget.parentElement;
+                                                       if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
+                                                           const fallbackSpan = document.createElement('span');
+                                                           fallbackSpan.className = 'font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs fallback-initials-alt text-gray-600 dark:text-gray-300';
+                                                           fallbackSpan.textContent = alt.name.substring(0,2).toUpperCase();
+                                                           parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                                       }
+                                                   }}
+                                                 />
+                                               ) : (
+                                                 <span className="font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 dark:text-gray-300">
+                                                   {alt.name.substring(0,2).toUpperCase()}
+                                                 </span>
+                                               )}
+                                               <h6 className="font-medium text-sm text-gray-800 dark:text-gray-200 truncate" title={alt.name}>{alt.name}</h6>
                                              </div>
-                                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
+                                             <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow leading-relaxed">
                                                {alt.details || "Alternativa de código abierto."}
                                              </p>
                                              <div className="flex justify-end">
