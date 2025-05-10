@@ -1,33 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Server, Cpu, HardDrive, Check } from 'lucide-react';
 import '../styles/hardware-animation.css';
 
 const Hardware = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [activeCard, setActiveCard] = useState(-1);
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    
-    const element = document.getElementById('hardware-section');
-    if (element) {
-      observer.observe(element);
-    }
-    
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, []);
-  
   const hardwareOptions = [
     {
       name: "Básico",
@@ -73,14 +47,6 @@ const Hardware = () => {
     }
   ];
   
-  const handleMouseEnter = (index) => {
-    setActiveCard(index);
-  };
-  
-  const handleMouseLeave = () => {
-    setActiveCard(-1);
-  };
-  
   return (
     <section id="hardware" className="section bg-costwise-gray">
       <div className="container-custom" id="hardware-section">
@@ -99,14 +65,9 @@ const Hardware = () => {
             <div 
               key={option.name}
               className="hw-card-container"
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-              style={{ animationDelay: `${index * 200}ms` }}
             >
               <div 
-                className={`hw-card ${option.recommended ? 'hw-card-recommended' : ''} ${
-                  activeCard === index ? 'growing' : activeCard === -1 ? '' : 'shrinking'
-                } ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+                className={`hw-card ${option.recommended ? 'hw-card-recommended' : ''}`}
               >
                 {option.recommended && (
                   <div className="hw-card-label">
