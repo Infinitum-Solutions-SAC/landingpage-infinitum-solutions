@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Server, Cpu, HardDrive, Check } from 'lucide-react';
+import '../styles/hardware-animation.css';
 
 const Hardware = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeCard, setActiveCard] = useState(-1);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,26 +73,16 @@ const Hardware = () => {
     }
   ];
   
+  const handleMouseEnter = (index) => {
+    setActiveCard(index);
+  };
+  
+  const handleMouseLeave = () => {
+    setActiveCard(-1);
+  };
+  
   return (
     <section id="hardware" className="section bg-costwise-gray">
-      <style dangerouslySetInnerHTML={{ __html: `
-        .hw-card {
-          background-color: white;
-          border-radius: 1rem;
-          overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          position: relative;
-          transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-          will-change: transform, box-shadow;
-        }
-        
-        .hw-card:hover {
-          transform: scale(1.12) !important;
-          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
-          z-index: 20 !important;
-        }
-      `}} />
-      
       <div className="container-custom" id="hardware-section">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-4 animate-fade-in">
@@ -106,51 +98,55 @@ const Hardware = () => {
           {hardwareOptions.map((option, index) => (
             <div 
               key={option.name}
-              className={`hw-card ${
-                option.recommended ? 'ring-2 ring-costwise-blue' : ''
-              } ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+              className="hw-card-container"
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              {option.recommended && (
-                <div className="bg-costwise-blue text-white text-center py-2 text-sm font-medium">
-                  Recomendado
-                </div>
-              )}
-              
-              <div className="p-6">
-                <div className="flex justify-center mb-6">
-                  <div className="p-4 bg-costwise-blue/10 rounded-full">
-                    <option.icon size={28} className="text-costwise-blue" />
+              <div 
+                className={`hw-card ${option.recommended ? 'hw-card-recommended' : ''} ${
+                  activeCard === index ? 'growing' : activeCard === -1 ? '' : 'shrinking'
+                } ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+              >
+                {option.recommended && (
+                  <div className="hw-card-label">
+                    Recomendado
                   </div>
-                </div>
+                )}
                 
-                <h3 className="text-xl font-bold text-center mb-2">{option.name}</h3>
-                <div className="text-center mb-4">
-                  <span className="text-3xl font-bold text-costwise-navy">${option.price}</span>
-                </div>
-                <p className="text-gray-600 text-center text-sm mb-6">
-                  {option.description}
-                </p>
-                
-                <div className="space-y-3 mb-8">
-                  {option.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <Check size={16} className="text-costwise-blue flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{feature}</span>
+                <div className="hw-card-content">
+                  <div className="hw-card-header">
+                    <div className="hw-card-icon-container">
+                      <option.icon size={32} style={{ color: '#2A8BFF' }} />
                     </div>
-                  ))}
+                    
+                    <h3 className="hw-card-title">{option.name}</h3>
+                    <div className="hw-card-price">${option.price}</div>
+                    <p className="hw-card-description">
+                      {option.description}
+                    </p>
+                  </div>
+                  
+                  <div className="hw-card-features">
+                    {option.features.map((feature) => (
+                      <div key={feature} className="hw-card-feature">
+                        <Check size={18} className="hw-card-feature-icon" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <a 
+                    href="#contacto" 
+                    className={`block text-center py-3 px-6 rounded-lg font-medium transition-all ${
+                      option.recommended 
+                        ? 'bg-costwise-blue text-white hover:bg-costwise-blue/90'
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    Solicitar información
+                  </a>
                 </div>
-                
-                <a 
-                  href="#contacto" 
-                  className={`block text-center py-3 px-6 rounded-lg font-medium transition-all ${
-                    option.recommended 
-                      ? 'bg-costwise-blue text-white hover:bg-costwise-blue/90'
-                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                  }`}
-                >
-                  Solicitar información
-                </a>
               </div>
             </div>
           ))}

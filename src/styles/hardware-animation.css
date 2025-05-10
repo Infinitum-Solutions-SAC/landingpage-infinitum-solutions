@@ -1,0 +1,123 @@
+/* Estilos específicos para las tarjetas de hardware con animación garantizada */
+
+@keyframes cardGrow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes cardShrink {
+  0% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.hw-card-container {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.hw-card {
+  background-color: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transform: scale(1);
+}
+
+/* Usamos una clase específica para la animación */
+.hw-card.growing {
+  animation: cardGrow 0.3s forwards;
+  z-index: 10;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Usamos una clase específica para la animación inversa */
+.hw-card.shrinking {
+  animation: cardShrink 0.3s forwards;
+  z-index: 1;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Tarjeta recomendada */
+.hw-card-recommended {
+  border-top: 4px solid #2A8BFF;
+}
+
+/* Otros estilos para el contenido de la tarjeta */
+.hw-card-label {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #2A8BFF;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 5px rgba(42, 139, 255, 0.3);
+}
+
+.hw-card-content {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.hw-card-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.hw-card-icon-container {
+  display: inline-flex;
+  background-color: rgba(42, 139, 255, 0.08);
+  padding: 1.25rem;
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+}
+
+.hw-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0A2540;
+  margin-bottom: 0.5rem;
+}
+
+.hw-card-price {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #2A8BFF;
+  margin-bottom: 0.75rem;
+}
+
+.hw-card-description {
+  color: #637381;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hw-card-features {
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.hw-card-feature {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.hw-card-feature-icon {
+  color: #2A8BFF;
+  margin-right: 0.75rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
