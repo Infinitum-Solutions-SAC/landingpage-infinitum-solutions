@@ -20,7 +20,10 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Importamos los íconos necesarios para el switch de visualización
-import { Grid, List, LayoutGrid } from "lucide-react";
+import { Grid, List, LayoutGrid, Plus, Minus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const CostCalculator = () => {
   const isMobile = useIsMobile();
@@ -152,18 +155,51 @@ const CostCalculator = () => {
                       />
                       
                       {/* Control de usuarios integrado en la vista flotante */}
-                      <CardFooter className="border-t p-4">
-                        <div className="flex items-center justify-center gap-4 w-full">
-                          <span className="text-sm md:text-base font-medium whitespace-nowrap">Número de usuarios:</span>
-                          <input
-                            type="range"
-                            min="1"
-                            max="100"
-                            value={userCount}
-                            onChange={(e) => setUserCount(parseInt(e.target.value))}
-                            className="flex-grow h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                          />
-                          <span className="text-base md:text-lg font-semibold min-w-[40px] text-center">{userCount}</span>
+                      <CardFooter className="border-t p-0 w-full">
+                        <div className="w-full rounded-lg p-4">
+                          <Label htmlFor="userCount" className="text-base font-medium block mb-3">Número de usuarios</Label>
+                          <div className="flex items-center gap-3 w-full">
+                            <Button 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => userCount > 1 && setUserCount(userCount - 1)}
+                              disabled={userCount <= 1}
+                              className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                            <div className="flex-1">
+                              <input
+                                type="range"
+                                min="1"
+                                max="100"
+                                value={userCount}
+                                onChange={(e) => setUserCount(parseInt(e.target.value))}
+                                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                              />
+                            </div>
+                            <Button 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => setUserCount(userCount + 1)}
+                              className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                            <Input
+                              id="userCount"
+                              type="number"
+                              min="1"
+                              value={userCount}
+                              onChange={(e) => {
+                                const count = parseInt(e.target.value);
+                                if (!isNaN(count) && count > 0) {
+                                  setUserCount(count);
+                                }
+                              }}
+                              className="text-center text-lg font-semibold w-20 p-1"
+                            />
+                          </div>
                         </div>
                       </CardFooter>
                     </div>
