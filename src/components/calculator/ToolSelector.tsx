@@ -50,12 +50,18 @@ const ToolSelector = ({
     // Calcular altura dinámica basada en número de herramientas
     // Aproximadamente 40px por herramienta para 1 fila, considerando que pueden caber múltiples en una fila
     const estimatedRows = Math.ceil(selectedTools.length / 3); // Estimación: 3 herramientas por fila
-    const baseHeight = 40; // Altura mínima
-    const rowHeight = 40; // Altura aproximada por fila
+    const baseHeight = 0; // Altura base (sin elementos)
+    const singleElementHeight = 40; // Altura para un solo elemento
+    const rowHeight = 40; // Altura aproximada por fila adicional
     
-    const calculatedHeight = baseHeight + (estimatedRows * rowHeight);
-    // Limitar altura máxima a 100px
-    const newHeight = Math.min(Math.max(90, calculatedHeight), 100);
+    // Si no hay herramientas, usamos altura de un elemento para mantener consistencia visual
+    // Si hay herramientas, calculamos la altura basada en el número de filas estimadas
+    const calculatedHeight = selectedTools.length === 0 
+      ? singleElementHeight 
+      : baseHeight + (estimatedRows * rowHeight);
+    
+    // Altura mínima es la altura de un solo elemento, máxima es 120px
+    const newHeight = Math.min(Math.max(singleElementHeight, calculatedHeight), 120);
     
     setSelectedToolsHeight(newHeight);
   }, [selectedTools.length]);
