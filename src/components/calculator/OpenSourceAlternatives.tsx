@@ -27,8 +27,8 @@ import {
 import { Calendar, BarChart3 } from "lucide-react";
 
 import { getToolIcon, getToolCost } from '@/utils/calculatorUtils';
-import { useIsMobile } from '@/hooks/use-mobile'; // Corregido: Importar useIsMobile
-import { Button } from '@/components/ui/button'; // Importar Button
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
@@ -50,9 +50,9 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   const [activeView, setActiveView] = React.useState<string>("mensual");
   const hasAlternatives = Object.keys(alternatives).length > 0;
   const alternativesArray = Object.entries(alternatives);
-  const isMobile = useIsMobile(); // Corregido: Usar useIsMobile directamente
+  const isMobile = useIsMobile();
   const [expandedCategories, setExpandedCategories] = React.useState<Record<string, boolean>>({});
-
+  
   // Para prevenir el error de n.map, asegurarse de que alternativesArray es un array
   const safeAlternativesArray = Array.isArray(alternativesArray) ? alternativesArray : [];
   
@@ -298,7 +298,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                            <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
                                              Gratis
                                            </Badge>
-                                           <div className="flex items-center mb-2 pr-10">
+                                           <div className="flex items-center mb-2 pr-10"> {/* Espacio para la badge absoluta */}
                                              {alt.icon ? (
                                                <img
                                                  src={alt.icon}
@@ -354,19 +354,19 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                      <Carousel className="w-full">
                                        <CarouselContent className="-ml-2">
                                          {Array.isArray(uniqueOSAlternatives) && uniqueOSAlternatives.map((alt) => (
-                                           <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3 pl-2 pb-2">
+                                           <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-2/3 xl:basis-1/2 pl-2 pb-2"> {/* Modificado para lg y xl */}
                                              <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col relative shadow-sm hover:shadow-md transition-shadow duration-200">
                                                <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
                                                  Gratis
                                                </Badge>
                                                <div className="flex items-center mb-2 pr-10"> {/* Espacio para la badge absoluta */}
                                                  {alt.icon ? (
-                                                   <img 
+                                                   <img
                                                      src={alt.icon} // Corregido: usar alt.icon directamente
                                                      alt={alt.name}
-                                                     className="w-5 h-5 mr-2 flex-shrink-0 object-contain" 
-                                                     onError={(e) => { 
-                                                         e.currentTarget.style.display = 'none'; 
+                                                     className="w-5 h-5 mr-2 flex-shrink-0 object-contain"
+                                                     onError={(e) => {
+                                                         e.currentTarget.style.display = 'none';
                                                          const parent = e.currentTarget.parentElement;
                                                          if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
                                                              const fallbackSpan = document.createElement('span');
@@ -388,9 +388,9 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                                </p>
                                                <div className="flex justify-end">
                                                  {alt.url && (
-                                                   <a 
-                                                     href={alt.url} 
-                                                     target="_blank" 
+                                                   <a
+                                                     href={alt.url}
+                                                     target="_blank"
                                                      rel="noopener noreferrer"
                                                      className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                                                    >
