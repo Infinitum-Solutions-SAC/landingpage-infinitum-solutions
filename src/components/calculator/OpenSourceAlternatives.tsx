@@ -24,15 +24,18 @@ import {
 } from "@/components/ui/carousel";
 
 // Importamos los íconos que necesitamos
-import { Calendar, BarChart3 } from "lucide-react";
+import { Calendar, BarChart3, Plus, Minus } from "lucide-react";
 
 import { getToolIcon, getToolCost } from '@/utils/calculatorUtils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
   userCount: number;
+  setUserCount: (count: number) => void;
   alternatives: Record<string, any[]>;
   showSavings: boolean;
   monthlyCost: number;
@@ -42,6 +45,7 @@ type OpenSourceAlternativesProps = {
 const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   selectedTools,
   userCount,
+  setUserCount,
   alternatives,
   showSavings,
   monthlyCost,
@@ -62,6 +66,14 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
     icon: getToolIcon(toolName),
     cost: getToolCost(toolName, 1)
   }));
+
+  // Función auxiliar para manejar cambios en el número de usuarios
+  const handleUserCountChange = (value: string) => {
+    const count = parseInt(value);
+    if (!isNaN(count) && count > 0) {
+      setUserCount(count);
+    }
+  };
 
   return (
     <Card className="shadow-md h-full flex flex-col dark:bg-gray-800/50 relative">
@@ -133,6 +145,48 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
               </div>
             </div>
           )}
+          
+          {/* Control de usuarios */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 mb-4">
+            <Label htmlFor="userCount" className="text-sm font-medium block mb-3">Número de usuarios</Label>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => userCount > 1 && setUserCount(userCount - 1)}
+                disabled={userCount <= 1}
+                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <div className="flex-1">
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={userCount}
+                  onChange={(e) => setUserCount(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => setUserCount(userCount + 1)}
+                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+              <Input
+                id="userCount"
+                type="number"
+                min="1"
+                value={userCount}
+                onChange={(e) => handleUserCountChange(e.target.value)}
+                className="text-center text-lg font-semibold w-20 p-1"
+              />
+            </div>
+          </div>
           
           {/* Mostrar el costo total */}
           <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">

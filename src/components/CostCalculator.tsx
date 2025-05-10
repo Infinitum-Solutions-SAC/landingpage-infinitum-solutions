@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Card, 
   CardHeader, 
@@ -7,10 +7,13 @@ import {
   CardContent,
   CardFooter
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FloatingToolSelector from "./FloatingToolSelector";
+import FloatingToolIcon from "./floating-selector/FloatingToolIcon";
+import ToolsGrid from "./floating-selector/ToolsGrid";
 import ToolSelector from "./calculator/ToolSelector";
 import OpenSourceAlternatives from "./calculator/OpenSourceAlternatives";
+import { useFloatingIcons } from '@/hooks/useFloatingIcons';
 import { 
   calculateMonthlyCost, 
   calculateYearlyCost, 
@@ -19,11 +22,8 @@ import {
 } from "@/utils/calculatorUtils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// Importamos los íconos necesarios para el switch de visualización
-import { Grid, List, LayoutGrid, Plus, Minus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// Importamos los íconos necesarios
+import { Grid, List, LayoutGrid, Search } from "lucide-react";
 
 const CostCalculator = () => {
   const isMobile = useIsMobile();
@@ -31,11 +31,20 @@ const CostCalculator = () => {
   const [userCount, setUserCount] = useState<number>(1);
   const [showSavings, setShowSavings] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>(isMobile ? "list" : "floating");
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [showNewModeBanner, setShowNewModeBanner] = useState<boolean>(() => {
     // Check session storage to see if the banner was dismissed
     const bannerDismissed = sessionStorage.getItem("newModeBannerDismissed");
     return !bannerDismissed;
   });
+  
+  // Referencias para el contenedor flotante
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { icons, setSearchTerm } = useFloatingIcons(containerRef);
+  const [showGrid, setShowGrid] = useState(false);
+  
+  // Si hay demasiados iconos, mostrar opción para cambiar a vista de cuadrícula
+  const shouldShowGridButton = icons.length > 30;
   
   // Calcular costos basados en precios reales de las herramientas
   const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
@@ -60,6 +69,11 @@ const CostCalculator = () => {
   useEffect(() => {
     setActiveView(isMobile ? "list" : activeView);
   }, [isMobile]);
+  
+  // Actualizar el término de búsqueda cuando cambie
+  useEffect(() => {
+    setSearchTerm(searchQuery);
+  }, [searchQuery, setSearchTerm]);
   
   // Manejar selección/deselección de herramientas
   const handleToolToggle = (toolName: string) => {
@@ -145,63 +159,67 @@ const CostCalculator = () => {
                 </div>
               </CardHeader>
               
+              {/* Barra de búsqueda fija para ambas vistas */}
+              <div className="p-4 border-b flex items-center gap-2 bg-white dark:bg-gray-800">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Buscar herramientas..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-4 py-2"
+                  />
+                </div>
+              </div>
+              
               <CardContent className="p-0">
                 <Tabs value={activeView} className="w-full">
                   <TabsContent value="floating" className="m-0">
-                    <div className="flex flex-col">
-                      <FloatingToolSelector 
+                    <div className="relative w-full h-[350px] bg-transparent rounded-lg overflow-hidden" ref={containerRef}>
+                      {/* Mostrar iconos flotantes */}
+                      {icons.length > 0 ? (
+                        icons.map((icon) => (
+                          <FloatingToolIcon
+                            key={icon.name}
+                            name={icon.name}
+                            icon={icon.icon}
+                            cost={icon.cost}
+                            x={icon.x}
+                            y={icon.y}
+                            size={icon.size}
+                            isSelected={selectedTools.includes(icon.name)}
+                            rotating={icon.rotating}
+                            onToggle={handleToolToggle}
+                          />
+                        ))
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <p className="text-muted-foreground">No se encontraron herramientas. Prueba otro término de búsqueda.</p>
+                        </div>
+                      )}
+                      
+                      {/* Vista de cuadrícula para muchas herramientas */}
+                      <ToolsGrid 
+                        visible={showGrid} 
+                        onClose={() => setShowGrid(false)} 
                         selectedTools={selectedTools}
                         onToolToggle={handleToolToggle}
                       />
                       
-                      {/* Control de usuarios integrado en la vista flotante */}
-                      <CardFooter className="border-t p-0 w-full">
-                        <div className="w-full rounded-lg p-4">
-                          <Label htmlFor="userCount" className="text-base font-medium block mb-3">Número de usuarios</Label>
-                          <div className="flex items-center gap-3 w-full">
-                            <Button 
-                              variant="outline" 
-                              size="icon"
-                              onClick={() => userCount > 1 && setUserCount(userCount - 1)}
-                              disabled={userCount <= 1}
-                              className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                            <div className="flex-1">
-                              <input
-                                type="range"
-                                min="1"
-                                max="100"
-                                value={userCount}
-                                onChange={(e) => setUserCount(parseInt(e.target.value))}
-                                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                              />
-                            </div>
-                            <Button 
-                              variant="outline" 
-                              size="icon"
-                              onClick={() => setUserCount(userCount + 1)}
-                              className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                            <Input
-                              id="userCount"
-                              type="number"
-                              min="1"
-                              value={userCount}
-                              onChange={(e) => {
-                                const count = parseInt(e.target.value);
-                                if (!isNaN(count) && count > 0) {
-                                  setUserCount(count);
-                                }
-                              }}
-                              className="text-center text-lg font-semibold w-20 p-1"
-                            />
-                          </div>
-                        </div>
-                      </CardFooter>
+                      {/* Botón para mostrar todas las herramientas en cuadrícula */}
+                      {shouldShowGridButton && (
+                        <button 
+                          className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors dark:bg-blue-600 dark:hover:bg-blue-700"
+                          onClick={() => setShowGrid(true)}
+                        >
+                          Ver todos los iconos
+                        </button>
+                      )}
+                      
+                      {/* Instrucción para el usuario */}
+                      <div className="absolute bottom-2 left-0 right-0 text-center text-sm text-gray-500 bg-white/80 dark:bg-gray-800/80 py-1 backdrop-blur-sm">
+                        Haz clic en un icono para seleccionar o deseleccionar la herramienta
+                      </div>
                     </div>
                   </TabsContent>
                   <TabsContent value="list" className="m-0">
@@ -211,6 +229,7 @@ const CostCalculator = () => {
                         setSelectedTools={setSelectedTools}
                         userCount={userCount}
                         setUserCount={setUserCount}
+                        searchQuery={searchQuery}
                       />
                     </div>
                   </TabsContent>
@@ -224,6 +243,7 @@ const CostCalculator = () => {
             <OpenSourceAlternatives
               selectedTools={selectedTools}
               userCount={userCount}
+              setUserCount={setUserCount}
               alternatives={openSourceAlternatives}
               showSavings={showSavings}
               monthlyCost={totalMonthlyCost}
