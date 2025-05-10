@@ -27,6 +27,8 @@ import {
 import { Calendar, BarChart3 } from "lucide-react";
 
 import { getToolIcon, getToolCost } from '@/utils/calculatorUtils';
+import { useIsMobile } from '@/hooks/use-mobile'; // Corregido: Importar useIsMobile
+import { Button } from '@/components/ui/button'; // Importar Button
 
 type OpenSourceAlternativesProps = {
   selectedTools: string[];
@@ -48,7 +50,9 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   const [activeView, setActiveView] = React.useState<string>("mensual");
   const hasAlternatives = Object.keys(alternatives).length > 0;
   const alternativesArray = Object.entries(alternatives);
-  
+  const isMobile = useIsMobile(); // Corregido: Usar useIsMobile directamente
+  const [expandedCategories, setExpandedCategories] = React.useState<Record<string, boolean>>({});
+
   // Para prevenir el error de n.map, asegurarse de que alternativesArray es un array
   const safeAlternativesArray = Array.isArray(alternativesArray) ? alternativesArray : [];
   
@@ -286,60 +290,122 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                                {uniqueOSAlternatives.length > 0 && (
                                  <div className="bg-gray-50 dark:bg-gray-800/60 p-3 rounded-lg mt-2">
                                    <h5 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">Alternativas Open Source Sugeridas:</h5>
-                                   <Carousel className="w-full">
-                                     <CarouselContent className="-ml-2">
-                                       {Array.isArray(uniqueOSAlternatives) && uniqueOSAlternatives.map((alt) => (
-                                         <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3 pl-2 pb-2">
-                                           <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col relative shadow-sm hover:shadow-md transition-shadow duration-200">
-                                             <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
-                                               Gratis
-                                             </Badge>
-                                             <div className="flex items-center mb-2 pr-10"> {/* Espacio para la badge absoluta */}
-                                               {alt.icon ? (
-                                                 <img 
-                                                   src={alt.icon} // Corregido: usar alt.icon directamente
-                                                   alt={alt.name}
-                                                   className="w-5 h-5 mr-2 flex-shrink-0 object-contain" 
-                                                   onError={(e) => { 
-                                                       e.currentTarget.style.display = 'none'; 
-                                                       const parent = e.currentTarget.parentElement;
-                                                       if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
-                                                           const fallbackSpan = document.createElement('span');
-                                                           fallbackSpan.className = 'font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs fallback-initials-alt text-gray-600 dark:text-gray-300';
-                                                           fallbackSpan.textContent = alt.name.substring(0,2).toUpperCase();
-                                                           parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
-                                                       }
-                                                   }}
-                                                 />
-                                               ) : (
-                                                 <span className="font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 dark:text-gray-300">
-                                                   {alt.name.substring(0,2).toUpperCase()}
-                                                 </span>
-                                               )}
-                                               <h6 className="font-medium text-sm text-gray-800 dark:text-gray-200 truncate" title={alt.name}>{alt.name}</h6>
-                                             </div>
-                                             <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow leading-relaxed">
-                                               {alt.details || "Alternativa de código abierto."}
-                                             </p>
-                                             <div className="flex justify-end">
-                                               {alt.url && (
-                                                 <a 
-                                                   href={alt.url} 
-                                                   target="_blank" 
-                                                   rel="noopener noreferrer"
-                                                   className="text-xs text-blue-600 hover:underline dark:text-blue-400"
-                                                 >
-                                                   Más información
-                                                 </a>
-                                               )}
-                                             </div>
+                                   {isMobile ? (
+                                     // Vista de lista para móviles
+                                     <div className="space-y-2">
+                                       {(expandedCategories[category] ? uniqueOSAlternatives : uniqueOSAlternatives.slice(0, 3)).map((alt) => (
+                                         <div key={alt.name} className="border rounded-lg p-3 bg-white dark:bg-gray-800 relative shadow-sm">
+                                           <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
+                                             Gratis
+                                           </Badge>
+                                           <div className="flex items-center mb-2 pr-10">
+                                             {alt.icon ? (
+                                               <img
+                                                 src={alt.icon}
+                                                 alt={alt.name}
+                                                 className="w-5 h-5 mr-2 flex-shrink-0 object-contain"
+                                                 onError={(e) => {
+                                                   e.currentTarget.style.display = 'none';
+                                                   const parent = e.currentTarget.parentElement;
+                                                   if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
+                                                     const fallbackSpan = document.createElement('span');
+                                                     fallbackSpan.className = 'font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs fallback-initials-alt text-gray-600 dark:text-gray-300';
+                                                     fallbackSpan.textContent = alt.name.substring(0,2).toUpperCase();
+                                                     parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                                   }
+                                                 }}
+                                               />
+                                             ) : (
+                                               <span className="font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 dark:text-gray-300">
+                                                 {alt.name.substring(0,2).toUpperCase()}
+                                               </span>
+                                             )}
+                                             <h6 className="font-medium text-sm text-gray-800 dark:text-gray-200 truncate" title={alt.name}>{alt.name}</h6>
                                            </div>
-                                         </CarouselItem>
+                                           <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow leading-relaxed">
+                                             {alt.details || "Alternativa de código abierto."}
+                                           </p>
+                                           <div className="flex justify-end">
+                                             {alt.url && (
+                                               <a
+                                                 href={alt.url}
+                                                 target="_blank"
+                                                 rel="noopener noreferrer"
+                                                 className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                               >
+                                                 Más información
+                                               </a>
+                                             )}
+                                           </div>
+                                         </div>
                                        ))}
-                                     </CarouselContent>
-                                     <CarouselPrevious className="left-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
-                                     <CarouselNext className="right-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
-                                   </Carousel>
+                                       {uniqueOSAlternatives.length > 3 && (
+                                         <Button
+                                           variant="link"
+                                           className="text-sm p-0 h-auto text-blue-600 dark:text-blue-400"
+                                           onClick={() => setExpandedCategories(prev => ({...prev, [category]: !prev[category]}))}
+                                         >
+                                           {expandedCategories[category] ? 'Ver menos' : `Ver más (${uniqueOSAlternatives.length - 3})`}
+                                         </Button>
+                                       )}
+                                     </div>
+                                   ) : (
+                                     // Vista de carrusel para escritorio
+                                     <Carousel className="w-full">
+                                       <CarouselContent className="-ml-2">
+                                         {Array.isArray(uniqueOSAlternatives) && uniqueOSAlternatives.map((alt) => (
+                                           <CarouselItem key={alt.name} className="basis-full md:basis-1/2 lg:basis-1/3 pl-2 pb-2">
+                                             <div className="border rounded-lg p-3 bg-white dark:bg-gray-800 h-full flex flex-col relative shadow-sm hover:shadow-md transition-shadow duration-200">
+                                               <Badge variant="outline" className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-700/30 dark:text-green-300 text-[10px] px-1.5 py-0.5 font-medium border-green-200 dark:border-green-600">
+                                                 Gratis
+                                               </Badge>
+                                               <div className="flex items-center mb-2 pr-10"> {/* Espacio para la badge absoluta */}
+                                                 {alt.icon ? (
+                                                   <img 
+                                                     src={alt.icon} // Corregido: usar alt.icon directamente
+                                                     alt={alt.name}
+                                                     className="w-5 h-5 mr-2 flex-shrink-0 object-contain" 
+                                                     onError={(e) => { 
+                                                         e.currentTarget.style.display = 'none'; 
+                                                         const parent = e.currentTarget.parentElement;
+                                                         if (parent && alt.name && !parent.querySelector('.fallback-initials-alt')) {
+                                                             const fallbackSpan = document.createElement('span');
+                                                             fallbackSpan.className = 'font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs fallback-initials-alt text-gray-600 dark:text-gray-300';
+                                                             fallbackSpan.textContent = alt.name.substring(0,2).toUpperCase();
+                                                             parent.insertBefore(fallbackSpan, e.currentTarget.nextSibling);
+                                                         }
+                                                     }}
+                                                   />
+                                                 ) : (
+                                                   <span className="font-semibold w-5 h-5 mr-2 flex-shrink-0 flex items-center justify-center text-xs text-gray-600 dark:text-gray-300">
+                                                     {alt.name.substring(0,2).toUpperCase()}
+                                                   </span>
+                                                 )}
+                                                 <h6 className="font-medium text-sm text-gray-800 dark:text-gray-200 truncate" title={alt.name}>{alt.name}</h6>
+                                               </div>
+                                               <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow leading-relaxed">
+                                                 {alt.details || "Alternativa de código abierto."}
+                                               </p>
+                                               <div className="flex justify-end">
+                                                 {alt.url && (
+                                                   <a 
+                                                     href={alt.url} 
+                                                     target="_blank" 
+                                                     rel="noopener noreferrer"
+                                                     className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                                   >
+                                                     Más información
+                                                   </a>
+                                                 )}
+                                               </div>
+                                             </div>
+                                           </CarouselItem>
+                                         ))}
+                                       </CarouselContent>
+                                       <CarouselPrevious className="left-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
+                                       <CarouselNext className="right-[-8px] top-1/2 -translate-y-1/2 h-7 w-7 hover:bg-slate-100 dark:hover:bg-gray-700/80" />
+                                     </Carousel>
+                                   )}
                                  </div>
                                )}
 
