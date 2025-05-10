@@ -265,7 +265,7 @@ const ToolSelector = ({
                   <Info className="h-3 w-3 ml-1" />
                 </Button>
               </div>
-              <ScrollArea className="h-[112px]">
+                <ScrollArea className={`h-[112px] md:h-[250px]`}>
                 <div
                   className="flex flex-col gap-2"
                 >
