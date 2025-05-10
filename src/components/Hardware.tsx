@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Server, Cpu, HardDrive, Check } from 'lucide-react';
 
@@ -74,6 +73,24 @@ const Hardware = () => {
   
   return (
     <section id="hardware" className="section bg-costwise-gray">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .hw-card {
+          background-color: white;
+          border-radius: 1rem;
+          overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          position: relative;
+          transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+          will-change: transform, box-shadow;
+        }
+        
+        .hw-card:hover {
+          transform: scale(1.12) !important;
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
+          z-index: 20 !important;
+        }
+      `}} />
+      
       <div className="container-custom" id="hardware-section">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-4 animate-fade-in">
@@ -89,7 +106,7 @@ const Hardware = () => {
           {hardwareOptions.map((option, index) => (
             <div 
               key={option.name}
-              className={`bg-white rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg ${
+              className={`hw-card ${
                 option.recommended ? 'ring-2 ring-costwise-blue' : ''
               } ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
               style={{ animationDelay: `${index * 200}ms` }}

@@ -1,0 +1,136 @@
+/* Este archivo contiene estilos específicos para el componente Hardware */
+
+.hardware-card {
+  background-color: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.3s ease;
+}
+
+.hardware-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.hardware-card.recommended {
+  border: 2px solid #2A8BFF;
+}
+
+.hardware-card-header {
+  background-color: #2A8BFF;
+  color: white;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.hardware-card-body {
+  padding: 1.5rem;
+}
+
+.hardware-card-icon-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.hardware-card-icon {
+  padding: 1rem;
+  background-color: rgba(42, 139, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.hardware-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.hardware-card-price {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.hardware-card-price-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #0A2540;
+}
+
+.hardware-card-description {
+  color: #4B5563;
+  text-align: center;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.hardware-card-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.hardware-card-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hardware-card-feature-icon {
+  color: #2A8BFF;
+  flex-shrink: 0;
+}
+
+.hardware-card-feature-text {
+  font-size: 0.875rem;
+  color: #4B5563;
+}
+
+.hardware-card-button {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.hardware-card-button-primary {
+  background-color: #2A8BFF;
+  color: white;
+}
+
+.hardware-card-button-primary:hover {
+  background-color: rgba(42, 139, 255, 0.9);
+}
+
+.hardware-card-button-secondary {
+  background-color: #F3F4F6;
+  color: #1F2937;
+}
+
+.hardware-card-button-secondary:hover {
+  background-color: #E5E7EB;
+}
+
+/* Animaciones */
+.fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

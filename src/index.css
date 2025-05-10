@@ -95,6 +95,15 @@
   .section {
     @apply py-12 md:py-16 lg:py-24;
   }
+  
+  .card-scale-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card-scale-effect:hover {
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
 }
 
 /* Estilos para carrusel con sombras en extremos */
