@@ -146,50 +146,56 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
             </div>
           )}
           
-          {/* Control de usuarios */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 mb-4">
-            <Label htmlFor="userCount" className="text-sm font-medium block mb-3">Número de usuarios</Label>
-            <div className="flex items-center gap-3">
-              <Button 
-                variant="outline" 
-                size="icon"
-                onClick={() => userCount > 1 && setUserCount(userCount - 1)}
-                disabled={userCount <= 1}
-                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <div className="flex-1">
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  value={userCount}
-                  onChange={(e) => setUserCount(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-              <Button 
-                variant="outline" 
-                size="icon"
-                onClick={() => setUserCount(userCount + 1)}
-                className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-              <Input
-                id="userCount"
-                type="number"
-                min="1"
-                value={userCount}
-                onChange={(e) => handleUserCountChange(e.target.value)}
-                className="text-center text-lg font-semibold w-20 p-1"
-              />
-            </div>
-          </div>
-          
           {/* Mostrar el costo total */}
           <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+            {/* Control de usuarios - Movido y rediseñado */}
+            <div className="mb-4">
+              <Label htmlFor="userCountInput" className="text-sm font-medium block mb-2 text-gray-700 dark:text-gray-300">Número de usuarios</Label>
+              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-2">
+                {/* Botón Menos */}
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => userCount > 1 && setUserCount(userCount - 1)}
+                  disabled={userCount <= 1}
+                  className="rounded-full h-8 w-8 p-0 order-1 sm:order-1 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600"
+                >
+                  <Minus className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+                </Button>
+                {/* Input numérico */}
+                <Input
+                  id="userCountInput"
+                  type="number"
+                  min="1"
+                  value={userCount}
+                  onChange={(e) => handleUserCountChange(e.target.value)}
+                  className="text-center font-semibold w-20 p-1 h-8 text-base order-2 sm:order-2 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:ring-primary focus:border-primary"
+                />
+                {/* Botón Más */}
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => setUserCount(userCount + 1)}
+                  className="rounded-full h-8 w-8 p-0 order-3 sm:order-3 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600"
+                >
+                  <Plus className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+                </Button>
+                {/* Slider */}
+                <div className="flex-1 w-full order-4 sm:order-4">
+                  <input
+                    type="range"
+                    min="1"
+                    max="100" // Considerar aumentar este máximo o hacerlo dinámico
+                    value={userCount}
+                    onChange={(e) => setUserCount(parseInt(e.target.value))}
+                    className="w-full h-2 bg-gray-300 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-primary"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Separador */}
+            <hr className="my-4 border-gray-300 dark:border-gray-600" />
+
             <div className="space-y-3">
               <Tabs value={activeView} className="w-full">
                 <TabsContent value="mensual" className="m-0">
