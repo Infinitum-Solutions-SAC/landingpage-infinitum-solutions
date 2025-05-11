@@ -42,10 +42,10 @@ const Services = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 gap-12 items-center">
           {activeCase === 'emprendedor' ? (
             <>
-              <div className="space-y-6 animate-fade-in">
+              <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
                 <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy">
                   Para emprendedores que buscan reducir costos iniciales
                 </h3>
@@ -97,95 +97,13 @@ const Services = () => {
                 </a>
               </div>
               
-              <div className="relative animate-fade-in">
-                <div className="glass-card p-8 rounded-2xl relative z-10">
-                  <div className="flex justify-center mb-8">
-                    <div className="p-4 bg-costwise-blue/10 rounded-full">
-                      <Lightbulb size={32} className="text-costwise-blue" />
-                    </div>
-                  </div>
-                  
-                  <h4 className="text-xl font-semibold text-center mb-6">
-                    Comienza tu negocio sin gastos excesivos
-                  </h4>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Hosting/VPS tradicional</span>
-                      <span className="text-red-600 font-medium">$20-50/mes</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Licencias de software</span>
-                      <span className="text-red-600 font-medium">$100-300/mes</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Servicios en la nube</span>
-                      <span className="text-red-600 font-medium">$50-150/mes</span>
-                    </div>
-                    
-                    <div className="border-t border-gray-200 my-4"></div>
-                    
-                    <div className="flex items-center justify-between font-semibold">
-                      <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-green-600">desde $499 | pago único</span>
-                    </div>
-                    
-                    <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">
-                      <p className="text-sm text-gray-700">
-                        Ahorra hasta un <span className="font-semibold">100%</span> en costos mensuales
-                        con nuestra solución para emprendedores.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* TARJETA ELIMINADA PARA EMPRENDEDOR */}
             </>
           ) : (
             <>
-              <div className="relative order-2 lg:order-1 animate-fade-in">
-                <div className="glass-card p-8 rounded-2xl relative z-10">
-                  <div className="flex justify-center mb-8">
-                    <div className="p-4 bg-costwise-blue/10 rounded-full">
-                      <Server size={32} className="text-costwise-blue" />
-                    </div>
-                  </div>
-                  
-                  <h4 className="text-xl font-semibold text-center mb-6">
-                    Reduce drásticamente tus costos operativos
-                  </h4>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Servicios cloud actuales</span>
-                      <span className="text-red-600 font-medium">$500-2000/mes</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Licencias por usuario</span>
-                      <span className="text-red-600 font-medium">$100-250/usuario</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Mantenimiento externo</span>
-                      <span className="text-red-600 font-medium">$200-500/mes</span>
-                    </div>
-                    
-                    <div className="border-t border-gray-200 my-4"></div>
-                    
-                    <div className="flex items-center justify-between font-semibold">
-                      <span className="text-costwise-blue">Solución Infinitum Solutions</span>
-                      <span className="text-green-600">desde $899 | pago único</span>
-                    </div>
-                    
-                    <div className="bg-costwise-blue/10 p-4 rounded-lg mt-4">
-                      <p className="text-sm text-gray-700">
-                        Reducción del <span className="font-semibold">100%</span> en gastos IT totales
-                        con nuestras soluciones personalizadas.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* TARJETA ELIMINADA PARA EMPRESA */}
               
-              <div className="space-y-6 order-1 lg:order-2 animate-fade-in">
+              <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
                 <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy">
                   Para empresas establecidas que buscan optimizar costos
                 </h3>
