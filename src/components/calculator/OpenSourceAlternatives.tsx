@@ -51,7 +51,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
   monthlyCost,
   yearlyCost
 }) => {
-  const [activeView, setActiveView] = React.useState<string>("mensual");
+  const [activeView, setActiveView] = React.useState<string>("anual");
   const hasAlternatives = Object.keys(alternatives).length > 0;
   const alternativesArray = Object.entries(alternatives);
   const isMobile = useIsMobile();
@@ -108,10 +108,11 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
       <CardHeader className="pb-3 pr-24">
         <div className="flex-col flex">
           <CardTitle className="text-xl sm:text-2xl font-bold">
-            Alternativas Open Source
+            {/* Alternativas <br />  */}
+            Auto Hospedado
           </CardTitle>
           <CardDescription className="mt-1">
-            Descubre alternativas gratuitas de código abierto para tus herramientas actuales
+            Descubre alternativas de código abierto para tus herramientas actuales
           </CardDescription>
         </div>
       </CardHeader>
@@ -245,7 +246,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
                       </motion.span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Con open source:</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Auto hospedado:</span>
                       <span className="font-bold text-xl text-green-500">$0.00</span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t">
