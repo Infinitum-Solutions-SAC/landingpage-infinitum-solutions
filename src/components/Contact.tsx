@@ -62,8 +62,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-costwise-navy">Email</h4>
-                  <a href="mailto:contacto@Infinitum-Solutions.com" className="text-gray-600 hover:text-costwise-blue transition-colors">
-                    contacto@Infinitum-Solutions.com
+                  <a
+                    href="mailto:infinitumsolutionssac@gmail.com"
+                    className="text-gray-600 hover:text-costwise-blue transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    infinitumsolutionssac@gmail.com
                   </a>
                 </div>
               </div>
@@ -74,8 +79,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-costwise-navy">Teléfono</h4>
-                  <a href="tel:+525512345678" className="text-gray-600 hover:text-costwise-blue transition-colors">
-                    +51 111 222 333
+                  <a href="tel:+51940937600" className="text-gray-600 hover:text-costwise-blue transition-colors">
+                    +51 940 937 600
                   </a>
                 </div>
               </div>
