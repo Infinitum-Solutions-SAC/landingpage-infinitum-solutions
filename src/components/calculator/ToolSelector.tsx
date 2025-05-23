@@ -280,9 +280,9 @@ const ToolSelector = ({
                                 className="mt-2 pl-9 pr-2"
                               >
                                 <div className="pt-2 border-t border-dashed border-gray-200 dark:border-gray-700 text-sm">
-                                  <div className="flex justify-between items-center text-gray-500 dark:text-gray-400">
+                                  <div className="flex justify-between items-center text-gray-500 dark:text-gray-400 hidden lg:block">
                                     <span>Total para {userCount} usuario{userCount !== 1 ? 's' : ''}:</span>
-                                    <span className="font-semibold text-red-500">${(tool.cost * userCount).toFixed(2)}</span>
+                                    <span className="font-semibold text-red-500"> ${(tool.cost * userCount).toFixed(2)}</span>
                                   </div>
                                   {tool.details && (
                                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
