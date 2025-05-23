@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
@@ -22,8 +21,22 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
+
+    const { name, email, company, employees, message } = formData;
+
+    const whatsappMessage = `Hola, mi nombre es ${name}.
+Email: ${email}
+Empresa: ${company || 'No especificada'}
+Número de empleados: ${employees || 'No especificado'}
+
+Mensaje:
+${message}`;
+
+    const whatsappUrl = `https://wa.me/51940937600?text=${encodeURIComponent(whatsappMessage)}`;
+
+    window.open(whatsappUrl, '_blank');
+
+    // Mantener la lógica de feedback visual
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -39,7 +52,7 @@ const Contact = () => {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    }, 1500);
+    }, 500); // Reducir el tiempo de espera ya que la acción principal es abrir WhatsApp
   };
   
   return (

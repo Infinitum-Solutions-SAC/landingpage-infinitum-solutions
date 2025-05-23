@@ -152,7 +152,7 @@ const OpenSourceAlternatives: React.FC<OpenSourceAlternativesProps> = ({
             {/* Control de usuarios - Movido y rediseñado */}
             <div className="mb-4">
               <Label htmlFor="userCountInput" className="text-sm font-medium block mb-2 text-gray-700 dark:text-gray-300">Número de usuarios</Label>
-              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-2">
+              <div className="flex flex-row items-center gap-2 w-full">                
                 {/* Botón Menos */}
                 <Button 
                   variant="outline" 

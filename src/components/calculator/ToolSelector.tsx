@@ -112,7 +112,7 @@ const ToolSelector = ({
       {/* Vista principal con pestañas para categorías y herramientas */}
       <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
         <CardHeader className="pb-0 pt-4 px-4 bg-costwise-gray dark:bg-gray-800/70">
-          <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue="tools" className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue="tools" className="w-full mb-3 sm:mb-0">
             <TabsList className="w-full grid grid-cols-2">
               <TabsTrigger value="categories" className="rounded-md data-[state=active]:bg-costwise-blue data-[state=active]:text-white">
                 <Filter className="h-4 w-4 mr-2" />
@@ -137,12 +137,12 @@ const ToolSelector = ({
                   <Info className="h-3 w-3 ml-1" />
                 </Button>
               </div>
-              <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400">
+              <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400 hidden sm:block">
                 Explora herramientas por categoría
               </CardDescription>
             </TabsContent>
             
-            <TabsContent value="tools" className="pt-2">
+            <TabsContent value="tools" className="pt-2 hidden sm:block">
               <div className="flex items-center justify-between mb-3">
                 <Label className="text-base font-bold text-costwise-navy dark:text-white">
                   Todas las herramientas

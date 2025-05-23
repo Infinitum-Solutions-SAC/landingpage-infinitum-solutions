@@ -28,7 +28,7 @@ import { Grid, List, LayoutGrid, Search } from "lucide-react";
 const CostCalculator = () => {
   const isMobile = useIsMobile();
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
-  const [userCount, setUserCount] = useState<number>(1);
+  const [userCount, setUserCount] = useState<number>(2);
   const [showSavings, setShowSavings] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>(isMobile ? "list" : "floating");
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -223,7 +223,7 @@ const CostCalculator = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="list" className="m-0">
-                    <div className="p-4">
+                    <div className="p-0">
                       <ToolSelector 
                         selectedTools={selectedTools}
                         setSelectedTools={setSelectedTools}
