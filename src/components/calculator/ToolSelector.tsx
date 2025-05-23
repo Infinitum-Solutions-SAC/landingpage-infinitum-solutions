@@ -1,19 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react'; // Eliminado useRef si no se usa
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Card, 
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
+  // CardTitle, // Eliminado si no se usa directamente
   CardDescription
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, HelpCircle, Filter, ChevronLeft, ChevronRight, X, Sliders } from "lucide-react";
+import { Info, HelpCircle } from "lucide-react"; 
 import {
   Tooltip,
   TooltipContent,
@@ -21,7 +20,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator"; // Eliminado si no se usa
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toolsData } from '@/data/toolsData';
 import { getToolIcon, calculateMonthlyCost } from "@/utils/calculatorUtils";
 
@@ -30,70 +36,43 @@ type ToolSelectorProps = {
   setSelectedTools: (tools: string[]) => void;
   userCount: number;
   setUserCount: (count: number) => void;
-  searchQuery: string; // Añadir searchQuery como prop
+  searchQuery: string;
 };
 
 const ToolSelector = ({
   selectedTools,
   setSelectedTools,
   userCount,
-  setUserCount,
-  searchQuery // Recibir searchQuery desde el componente padre
+  // setUserCount, // No se usa en este componente directamente para modificar, solo para cálculo
+  searchQuery
 }: ToolSelectorProps) => {
-  const [currentCategory, setCurrentCategory] = useState<string>(Object.keys(toolsData.tools)[0]);
+  const [currentCategory, setCurrentCategory] = useState<string>("all");
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [filteredTools, setFilteredTools] = useState<any[]>([]);
   const [allTools, setAllTools] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("tools"); // Tab por defecto es "tools"
-  const [isScrollable, setIsScrollable] = useState<boolean>(false);
-  const categoryRef = useRef<HTMLDivElement>(null);
-  const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
+  // const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount); // No se usa directamente en el renderizado de ToolSelector
   
-  // Cargar todas las herramientas al iniciar
   useEffect(() => {
     const allSaaSTools = Object.values(toolsData.tools).flatMap(cat => cat.SaaS);
     setAllTools(allSaaSTools);
   }, []);
 
   useEffect(() => {
+    let toolsToFilter = allTools;
+
+    if (currentCategory !== "all" && toolsData.tools[currentCategory]) {
+      toolsToFilter = toolsData.tools[currentCategory].SaaS;
+    }
+
     if (searchQuery) {
-      // Con búsqueda, filtrar todas las herramientas
-      const filtered = allTools.filter(tool => 
+      const searchFiltered = toolsToFilter.filter(tool =>
         tool.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredTools(filtered);
-    } else if (activeTab === "categories") {
-      // Si estamos en la pestaña de categorías, mostrar solo las de la categoría seleccionada
-      setFilteredTools(toolsData.tools[currentCategory].SaaS);
+      setFilteredTools(searchFiltered);
     } else {
-      // En la pestaña de herramientas sin búsqueda, mostrar todas
-      setFilteredTools(allTools);
+      setFilteredTools(toolsToFilter);
     }
-  }, [searchQuery, currentCategory, activeTab, allTools]);
-
-  // Verificar si el carrusel de categorías es desplazable
-  useEffect(() => {
-    const checkScrollable = () => {
-      if (categoryRef.current) {
-        const { scrollWidth, clientWidth } = categoryRef.current;
-        setIsScrollable(scrollWidth > clientWidth);
-      }
-    };
-
-    checkScrollable();
-    window.addEventListener('resize', checkScrollable);
-    return () => window.removeEventListener('resize', checkScrollable);
-  }, []);
-
-  const scrollCategories = (direction: 'left' | 'right') => {
-    if (categoryRef.current) {
-      const scrollAmount = direction === 'left' ? -200 : 200;
-      categoryRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
+  }, [searchQuery, currentCategory, allTools]);
 
   const handleToolToggle = (toolName: string) => {
     if (selectedTools.includes(toolName)) {
@@ -103,115 +82,60 @@ const ToolSelector = ({
     }
   };
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-  };
-
   return (
     <div className="space-y-6">
-      {/* Vista principal con pestañas para categorías y herramientas */}
       <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
         <CardHeader className="pb-0 pt-4 px-4 bg-costwise-gray dark:bg-gray-800/70">
-          <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue="tools" className="w-full mb-3 sm:mb-0">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="categories" className="rounded-md data-[state=active]:bg-costwise-blue data-[state=active]:text-white">
-                <Filter className="h-4 w-4 mr-2" />
-                Categorías
-              </TabsTrigger>
-              <TabsTrigger value="tools" className="rounded-md data-[state=active]:bg-costwise-blue data-[state=active]:text-white">
-                <Sliders className="h-4 w-4 mr-2" />
-                Herramientas
-              </TabsTrigger>
-            </TabsList>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+            <Select value={currentCategory} onValueChange={(value) => setCurrentCategory(value)}>
+              <SelectTrigger className="w-full sm:w-auto sm:min-w-[200px]">
+                <SelectValue placeholder="Filtrar por categoría" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas las categorías</SelectItem>
+                {Object.keys(toolsData.tools).map((categoryName) => (
+                  <SelectItem key={categoryName} value={categoryName}>
+                    {categoryName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             
-            <TabsContent value="categories" className="pt-2">
-              <div className="flex items-center justify-between mb-3">
-                <Label className="text-base font-bold text-costwise-navy dark:text-white">Selecciona una categoría</Label>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setShowDetails(!showDetails)}
-                  className="text-xs text-gray-500 hover:text-costwise-blue flex items-center"
-                >
-                  {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
-                  <Info className="h-3 w-3 ml-1" />
-                </Button>
-              </div>
-              <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400 hidden sm:block">
-                Explora herramientas por categoría
-              </CardDescription>
-            </TabsContent>
-            
-            <TabsContent value="tools" className="pt-2 hidden sm:block">
-              <div className="flex items-center justify-between mb-3">
-                <Label className="text-base font-bold text-costwise-navy dark:text-white">
-                  Todas las herramientas
-                </Label>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setShowDetails(!showDetails)}
-                  className="text-xs text-gray-500 hover:text-costwise-blue flex items-center"
-                >
-                  {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
-                  <Info className="h-3 w-3 ml-1" />
-                </Button>
-              </div>
-              <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400">
+            <div className="flex items-center justify-between flex-1 mt-2 sm:mt-0">
+              <Label className="text-base font-bold text-costwise-navy dark:text-white">
                 {searchQuery 
-                  ? "Herramientas que coinciden con tu búsqueda"
-                  : "Selecciona las herramientas que utilizas"
-                }
-              </CardDescription>
-            </TabsContent>
-          </Tabs>
+                  ? `Resultados para "${searchQuery}"`
+                  : currentCategory === "all" || !toolsData.tools[currentCategory] 
+                    ? "Todas las herramientas" 
+                    : `${currentCategory}`}
+              </Label>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowDetails(!showDetails)}
+                className="text-xs text-gray-500 hover:text-costwise-blue flex items-center"
+              >
+                {showDetails ? "Ocultar detalles" : "Mostrar detalles"}
+                <Info className="h-3 w-3 ml-1" />
+              </Button>
+            </div>
+          </div>
+
+          <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400">
+            {searchQuery
+              ? `Herramientas que coinciden con "${searchQuery}"${currentCategory !== "all" && toolsData.tools[currentCategory] ? ` en ${currentCategory}` : ''}`
+              : currentCategory === "all" || !toolsData.tools[currentCategory]
+              ? "Explora y selecciona las herramientas que utilizas"
+              : `Herramientas en la categoría: ${currentCategory}`}
+          </CardDescription>
         </CardHeader>
         
         <CardContent className="p-4 pt-0">
-          {activeTab === "categories" && !searchQuery && (
-            <ScrollArea className="h-[200px] md:h-[200px] mb-4">
-              <div className="flex flex-col gap-2 pr-2">
-                {Object.keys(toolsData.tools).map((category) => (
-                  <Button
-                    key={category}
-                    variant={currentCategory === category ? "default" : "outline"}
-                    className={`justify-start h-auto py-3 px-4 text-left ${
-                      currentCategory === category 
-                        ? 'bg-costwise-blue text-white border-costwise-blue shadow-sm' 
-                        : 'hover:border-costwise-blue/40 hover:text-costwise-navy border-costwise-blue/20'
-                    }`}
-                    onClick={() => setCurrentCategory(category)}
-                  >
-                    <div className="flex flex-col items-start w-full">
-                      <div className="flex items-center justify-between w-full">
-                        <span className="font-medium">{category}</span>
-                        <Badge variant="outline" className={`ml-2 ${
-                          currentCategory === category 
-                            ? 'bg-white text-costwise-blue border-white' 
-                            : 'bg-costwise-gray text-gray-700 border-costwise-blue/20'
-                        } text-xs`}>
-                          {toolsData.tools[category].SaaS.length}
-                        </Badge>
-                      </div>
-                      {showDetails && (
-                        <span className={`text-xs mt-1 text-left ${
-                          currentCategory === category ? 'text-white/80' : 'text-gray-500'
-                        }`}>
-                          {getToolCategoryDescription(category)}
-                        </span>
-                      )}
-                    </div>
-                  </Button>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
-          
-          <ScrollArea className="h-[300px] md:h-[350px] pr-4">
+          <ScrollArea className="h-[calc(100vh-420px)] min-h-[250px] md:h-[350px] pr-4"> {/* Altura ajustada y ejemplo de min-height */}
             <div className="grid grid-cols-1 gap-2">
               <AnimatePresence mode="wait">
                 <motion.div 
-                  key={`${searchQuery}-${currentCategory}-${activeTab}`}
+                  key={`${searchQuery}-${currentCategory}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -234,7 +158,7 @@ const ToolSelector = ({
                           <div className="flex items-center gap-3">
                             <Checkbox 
                               checked={selectedTools.includes(tool.name)}
-                              onCheckedChange={() => handleToolToggle(tool.name)}
+                              onCheckedChange={() => handleToolToggle(tool.name)} // No necesita argumento explícito aquí
                               className="data-[state=checked]:bg-costwise-blue data-[state=checked]:border-costwise-blue"
                             />
                             {tool.icon && (
@@ -244,7 +168,16 @@ const ToolSelector = ({
                                   alt={tool.name} 
                                   className="w-6 h-6 object-contain" 
                                   onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                    // Opcional: reemplazar con un ícono genérico o placeholder
+                                    const parent = target.parentNode as HTMLElement;
+                                    if (parent) {
+                                      const placeholder = document.createElement('div');
+                                      placeholder.className = "w-6 h-6 bg-gray-200 rounded flex items-center justify-center text-gray-500 text-xs";
+                                      placeholder.textContent = tool.name.substring(0,1).toUpperCase(); // Inicial
+                                      parent.appendChild(placeholder);
+                                    }
                                   }}
                                 />
                               </div>
@@ -302,8 +235,16 @@ const ToolSelector = ({
                       animate={{ opacity: 1 }}
                       className="text-center py-12 text-gray-500 dark:text-gray-400"
                     >
-                      <p className="mb-1">No se encontraron herramientas</p>
-                      <p className="text-sm">Prueba con otro término de búsqueda</p>
+                      <p className="mb-1">
+                        {searchQuery 
+                          ? `No se encontraron herramientas para "${searchQuery}"`
+                          : "No hay herramientas en esta categoría"}
+                      </p>
+                      <p className="text-sm">
+                        {searchQuery 
+                          ? "Prueba con otro término de búsqueda o cambia la categoría."
+                          : "Selecciona otra categoría o borra la búsqueda."}
+                      </p>
                     </motion.div>
                   )}
                 </motion.div>
@@ -315,12 +256,12 @@ const ToolSelector = ({
         <CardFooter className="border-t bg-costwise-gray dark:bg-gray-800/50 p-4">
           <div className="w-full flex justify-between items-center">
             <div className="text-sm text-gray-600 dark:text-gray-400">
-              {selectedTools.length > 0 ? `${selectedTools.length} herramientas seleccionadas` : "Selecciona herramientas para calcular el costo"}
+              {selectedTools.length > 0 ? `${selectedTools.length} herramienta${selectedTools.length !== 1 ? 's' : ''} seleccionada${selectedTools.length !== 1 ? 's' : ''}` : "Selecciona herramientas para calcular el costo"}
             </div>
             {selectedTools.length > 0 && (
               <span className="text-sm font-medium flex items-center">
                 <span className="mr-2 text-costwise-navy dark:text-white">Ahorro potencial:</span>
-                <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">100%</Badge>
+                <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">100%</Badge> {/* Este valor debería ser dinámico */}
               </span>
             )}
           </div>
@@ -328,26 +269,6 @@ const ToolSelector = ({
       </Card>
     </div>
   );
-};
-
-// Función auxiliar para obtener descripciones de categorías
-const getToolCategoryDescription = (category: string): string => {
-  const descriptions: Record<string, string> = {
-    "Comunicación": "Herramientas para chat, videoconferencias y correo electrónico",
-    "Gestión de Proyectos": "Planificación, seguimiento y colaboración en proyectos",
-    "Diseño y UX": "Diseño gráfico, prototipos e interfaces de usuario",
-    "Marketing": "Automatización, email marketing y analítica",
-    "Ventas y CRM": "Gestión de clientes y oportunidades",
-    "Productividad": "Notas, calendarios y organización personal",
-    "Desarrollo": "Herramientas para programadores y desarrolladores",
-    "Recursos Humanos": "Reclutamiento, nóminas y gestión de personal",
-    "Finanzas": "Contabilidad, facturación y gestión financiera",
-    "Almacenamiento": "Almacenamiento en la nube y gestión de archivos",
-    "Monitorización": "Monitorización de sistemas y alertas",
-    "Soporte": "Atención al cliente y tickets de soporte",
-  };
-  
-  return descriptions[category] || "Herramientas y servicios SaaS";
 };
 
 export default ToolSelector;
