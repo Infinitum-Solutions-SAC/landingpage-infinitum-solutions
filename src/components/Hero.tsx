@@ -25,7 +25,7 @@ const Hero = () => {
                 Consulta gratis
                 <ArrowRight size={18} />
               </a>
-              <a href="#comparacion" className="btn-secondary flex items-center justify-center px-6 py-3">
+              <a href="#calculadora" className="btn-secondary flex items-center justify-center px-6 py-3">
                 Ver comparación de costos
               </a>
             </div>
