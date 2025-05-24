@@ -85,7 +85,7 @@ const ToolSelector = ({
   return (
     <div className="space-y-6">
       <Card className="shadow-md overflow-hidden dark:bg-gray-800/50">
-        <CardHeader className="pb-0 pt-4 px-4 bg-costwise-gray dark:bg-gray-800/70">
+        <CardHeader className="pb-0 pt-4 px-4 ">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
             <Select value={currentCategory} onValueChange={(value) => setCurrentCategory(value)}>
               <SelectTrigger className="w-full sm:w-auto sm:min-w-[200px]">
@@ -102,13 +102,13 @@ const ToolSelector = ({
             </Select>
             
             <div className="flex items-center justify-between flex-1 mt-2 sm:mt-0">
-              <Label className="text-base font-bold text-costwise-navy dark:text-white">
+              {/* <Label className="text-base font-bold text-costwise-navy dark:text-white">
                 {searchQuery 
                   ? `Resultados para "${searchQuery}"`
                   : currentCategory === "all" || !toolsData.tools[currentCategory] 
                     ? "Todas las herramientas" 
                     : `${currentCategory}`}
-              </Label>
+              </Label> */}
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -124,9 +124,8 @@ const ToolSelector = ({
           <CardDescription className="mt-1 mb-3 text-gray-600 dark:text-gray-400">
             {searchQuery
               ? `Herramientas que coinciden con "${searchQuery}"${currentCategory !== "all" && toolsData.tools[currentCategory] ? ` en ${currentCategory}` : ''}`
-              : currentCategory === "all" || !toolsData.tools[currentCategory]
-              ? "Explora y selecciona las herramientas que utilizas"
-              : `Herramientas en la categoría: ${currentCategory}`}
+              : null
+            }
           </CardDescription>
         </CardHeader>
         

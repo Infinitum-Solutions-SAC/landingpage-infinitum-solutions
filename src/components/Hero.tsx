@@ -58,42 +58,12 @@ const Hero = () => {
             <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-costwise-blue/5 rounded-full -z-10 animate-float"></div>
             <div className="absolute bottom-0 left-0 w-36 h-36 md:w-48 md:h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float" style={{ animationDelay: '1s' }}></div>
             
-            <div className="glass-card p-6 md:p-8 rounded-2xl h-full flex flex-col justify-center relative z-10 animate-fade-in-up">
-              <div className="absolute -top-4 md:-top-5 right-4 md:-right-5 bg-costwise-blue/10 backdrop-blur-sm p-3 md:p-6 rounded-2xl border border-white/20">
-                <div className="text-lg md:text-2xl font-bold text-costwise-blue mb-1">100%</div>
-                <div className="text-xs md:text-sm text-gray-600 whitespace-nowrap">reducción en costos IT</div>
-              </div>
-              
-              <div className="mb-6 mt-8 md:mt-0">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-500">Antes</span>
-                  <span className="text-sm font-medium">~$300/mes</span>
-                </div>
-                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-gray-400 rounded-full" style={{ width: '100%' }}></div>
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-500">Con Infinitum Solutions</span>
-                  <span className="text-sm font-medium">$0/mes</span>
-                </div>
-                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-costwise-blue rounded-full" style={{ width: '2%' }}></div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 md:gap-6 mt-8 md:mt-10">
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-costwise-navy">100%</div>
-                  <div className="text-xs md:text-sm text-gray-600">Ahorro en licencias</div>
-                </div>
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-costwise-navy">100%</div>
-                  <div className="text-xs md:text-sm text-gray-600">Control de tus datos</div>
-                </div>
-              </div>
+            <div className="h-full flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
+              <img 
+                src="/assets/images/hardware/firewall.png" 
+                alt="Firewall Hardware Infinitum Solutions" 
+                className="object-contain w-auto h-auto max-w-full max-h-[300px] md:max-h-[350px] lg:max-h-[400px] mx-auto" 
+              />
             </div>
           </div>
         </div>
