@@ -1,47 +1,60 @@
-import { Server, Cpu, HardDrive, Check } from 'lucide-react';
+import { Server, Cpu, HardDrive, Check, ShieldAlert } from 'lucide-react'; // Añadido ShieldAlert
 import '../styles/hardware-animation.css';
 
 const Hardware = () => {
   const hardwareOptions = [
     {
-      name: "Básico",
+      name: "Configuración Inicial",
       icon: Server,
-      price: 499,
-      description: "Ideal para emprendedores y pequeños negocios que están comenzando",
+      price: "Consultar", // Precio actualizado
+      description: "Ideal para iniciar con infraestructura local, enfocada en servicios básicos.",
       features: [
-        "Servidor mini PC compacto",
-        "4 GB RAM / 256 GB SSD",
-        "Procesador eficiente",
-        "Configuración básica",
-        "Soporte por 3 meses"
+        "Nodo único con Proxmox VE",
+        "Virtualización de servicios",
+        "Hardware simulado: 16GB RAM",
+        "Almacenamiento SSD",
+        "Soporte básico"
       ],
       recommended: false
     },
     {
-      name: "Intermedio",
-      icon: Cpu,
-      price: 899,
-      description: "Perfecto para pequeñas empresas con necesidades de crecimiento",
+      name: "Configuración Segura",
+      icon: Cpu, // Podríamos cambiar el icono si es necesario
+      price: "Consultar", // Precio actualizado
+      description: "Para empresas que requieren mayor seguridad y rendimiento.",
       features: [
-        "Servidor tower de alto rendimiento",
-        "16 GB RAM / 1 TB SSD",
-        "Procesador multinúcleo",
-        "Backup automático",
-        "Soporte por 6 meses"
+        "Firewall dedicado",
+        "Nodo de servidor optimizado",
+        "Backup gestionado",
+        "Soporte estándar"
       ],
       recommended: true
     },
     {
-      name: "Avanzado",
-      icon: HardDrive,
-      price: 1499,
-      description: "Diseñado para empresas medianas con múltiples usuarios",
+      name: "Alta Disponibilidad",
+      icon: HardDrive, // Podríamos cambiar el icono si es necesario
+      price: "Consultar", // Precio actualizado
+      description: "Solución robusta para continuidad de negocio y cargas críticas.",
       features: [
-        "Servidor profesional rack-mountable",
-        "32 GB RAM / 2 TB SSD",
-        "Procesador de servidor",
-        "RAID para redundancia",
-        "Soporte prioritario por 12 meses"
+        "Firewall dedicado",
+        "Switch gestionable",
+        "Cluster de 2+ nodos (Proxmox VE)",
+        "Almacenamiento compartido (opcional)",
+        "Soporte prioritario"
+      ],
+      recommended: false
+    },
+    { // Nueva opción
+      name: "Arquitecturas Avanzadas",
+      icon: ShieldAlert, // Nuevo icono
+      price: "Personalizado",
+      description: "Diseñamos soluciones a medida para alta disponibilidad y requisitos específicos.",
+      features: [
+        "Consultoría especializada",
+        "Diseño de clústeres complejos",
+        "Integración con sistemas existentes",
+        "Planes de recuperación ante desastres",
+        "Soporte premium 24/7"
       ],
       recommended: false
     }
@@ -52,22 +65,22 @@ const Hardware = () => {
       <div className="container-custom" id="hardware-section">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-4 animate-fade-in">
-            Hardware optimizado
+            Arquitecturas y Configuraciones
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto animate-fade-in">
-            Ofrecemos soluciones de hardware pre-configuradas que se adaptan 
-            a las necesidades y presupuesto de tu empresa.
+            Ofrecemos arquitecturas pre-diseñadas y soluciones a medida 
+            para optimizar tu infraestructura IT local.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"> {/* Ajustado para 4 tarjetas */}
           {hardwareOptions.map((option, index) => (
             <div 
               key={option.name}
               className="hw-card-container"
             >
               <div 
-                className={`hw-card ${option.recommended ? 'hw-card-recommended' : ''}`}
+                className={`hw-card ${option.recommended ? 'hw-card-recommended' : ''} flex flex-col`} // Asegurar altura uniforme
               >
                 {option.recommended && (
                   <div className="hw-card-label">
@@ -75,20 +88,24 @@ const Hardware = () => {
                   </div>
                 )}
                 
-                <div className="hw-card-content">
+                <div className="hw-card-content flex flex-col flex-grow"> {/* Contenido flexible */}
                   <div className="hw-card-header">
                     <div className="hw-card-icon-container">
                       <option.icon size={32} style={{ color: '#2A8BFF' }} />
                     </div>
                     
                     <h3 className="hw-card-title">{option.name}</h3>
-                    <div className="hw-card-price">${option.price}</div>
+                    {option.price !== "Personalizado" && option.price !== "Consultar" ? (
+                      <div className="hw-card-price">${option.price}</div>
+                    ) : (
+                      <div className="hw-card-price">{option.price}</div>
+                    )}
                     <p className="hw-card-description">
                       {option.description}
                     </p>
                   </div>
                   
-                  <div className="hw-card-features">
+                  <div className="hw-card-features flex-grow"> {/* Características flexibles */}
                     {option.features.map((feature) => (
                       <div key={feature} className="hw-card-feature">
                         <Check size={18} className="hw-card-feature-icon" />
@@ -99,13 +116,13 @@ const Hardware = () => {
                   
                   <a 
                     href="#contacto" 
-                    className={`block text-center py-3 px-6 rounded-lg font-medium transition-all ${
+                    className={`block text-center py-3 px-6 rounded-lg font-medium transition-all mt-auto ${ // mt-auto para alinear al final
                       option.recommended 
                         ? 'bg-costwise-blue text-white hover:bg-costwise-blue/90'
                         : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                     }`}
                   >
-                    Solicitar información
+                    {option.name === "Arquitecturas Avanzadas" ? "Consultar especialista" : "Solicitar información"}
                   </a>
                 </div>
               </div>
@@ -115,10 +132,10 @@ const Hardware = () => {
         
         <div className="mt-16 text-center">
           <p className="text-gray-600 mb-6 animate-fade-in">
-            ¿Necesitas una solución personalizada para tus necesidades específicas?
+            ¿Tu proyecto tiene requisitos únicos? Diseñamos la solución perfecta para ti.
           </p>
           <a href="#contacto" className="btn-secondary inline-block animate-fade-in">
-            Contacta a nuestros especialistas
+            Contacta para una solución personalizada
           </a>
         </div>
       </div>
