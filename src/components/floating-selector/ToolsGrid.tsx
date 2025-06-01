@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getTopToolsPerCategory } from '@/utils/calculatorUtils';
+import { getOptimalToolsPerCategory } from '@/utils/performanceConfig';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check, Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -16,8 +17,9 @@ const ToolsGrid = ({ visible, onClose, selectedTools, onToolToggle }: ToolsGridP
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTools, setFilteredTools] = useState<any[]>([]);
   
-  // Obtener todas las herramientas para mostrar en la cuadrícula
-  const allTools = getTopToolsPerCategory(4);
+  // Obtener todas las herramientas para mostrar en la cuadrícula usando configuración optimizada
+  const optimalToolsPerCategory = getOptimalToolsPerCategory();
+  const allTools = getTopToolsPerCategory(optimalToolsPerCategory);
   
   useEffect(() => {
     if (!searchQuery) {

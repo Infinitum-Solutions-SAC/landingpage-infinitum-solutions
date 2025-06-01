@@ -1,5 +1,5 @@
 
-import { motion } from 'framer-motion';
+import React, { memo } from 'react';
 import { Check } from 'lucide-react';
 
 interface FloatingToolIconProps {
@@ -14,7 +14,8 @@ interface FloatingToolIconProps {
   onToggle: (toolName: string) => void;
 }
 
-const FloatingToolIcon = ({
+// Memo para evitar re-renders innecesarios
+const FloatingToolIcon = memo(({
   name,
   icon,
   cost,
@@ -26,27 +27,16 @@ const FloatingToolIcon = ({
   onToggle
 }: FloatingToolIconProps) => {
   return (
-    <motion.div
-      className="absolute cursor-pointer flex flex-col items-center z-10"
+    <div
+      className="absolute cursor-pointer flex flex-col items-center z-10 transition-transform duration-200 hover:scale-110"
       style={{
         left: x,
         top: y,
         width: size,
-        height: size + 30 // Aumentar un poco la altura para el precio
-      }}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ 
-        opacity: 1, 
-        scale: 1,
-        rotate: rotating ? [0, 10, -10, 0] : 0 // Efecto de sacudida en colisión
-      }}
-      transition={{ 
-        duration: 0.3,
-        rotate: { duration: 0.3, ease: "easeInOut" }
+        height: size + 30,
+        transform: rotating ? 'rotate(5deg)' : 'none'
       }}
       onClick={() => onToggle(name)}
-      whileHover={{ scale: 1.1, zIndex: 20 }}
-      whileTap={{ scale: 0.95 }}
     >
       <div 
         className={`relative rounded-full p-1 flex items-center justify-center bg-white/90 shadow-lg 
@@ -85,8 +75,11 @@ const FloatingToolIcon = ({
       >
         {name}
       </div>
-    </motion.div>
+    </div>
   );
-};
+});
+
+// Añadir displayName para debugging
+FloatingToolIcon.displayName = 'FloatingToolIcon';
 
 export default FloatingToolIcon;

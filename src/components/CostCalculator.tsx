@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { 
   Card, 
   CardHeader, 
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OptimizedSearch from "@/components/ui/optimized-search";
 import FloatingToolIcon from "./floating-selector/FloatingToolIcon";
 import ToolsGrid from "./floating-selector/ToolsGrid";
 import ToolSelector from "./calculator/ToolSelector";
@@ -21,11 +22,12 @@ import {
   getDefaultSelectedTools 
 } from "@/utils/calculatorUtils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { PERFORMANCE_CONFIG } from "@/utils/performanceConfig";
 
 // Importamos los íconos necesarios
 import { Grid, List, LayoutGrid, Search } from "lucide-react";
 
-const CostCalculator = () => {
+const CostCalculator = React.memo(() => {
   const isMobile = useIsMobile();
   const [selectedTools, setSelectedTools] = useState<string[]>(getDefaultSelectedTools());
   const [userCount, setUserCount] = useState<number>(2);
@@ -43,14 +45,25 @@ const CostCalculator = () => {
   const { icons, setSearchTerm } = useFloatingIcons(containerRef);
   const [showGrid, setShowGrid] = useState(false);
   
-  // Si hay demasiados iconos, mostrar opción para cambiar a vista de cuadrícula
-  const shouldShowGridButton = icons.length > 30;
+  // Memoizar valores calculados para evitar recálculos innecesarios
+  const shouldShowGridButton = useMemo(() => icons.length > 30, [icons.length]);
   
-  // Calcular costos basados en precios reales de las herramientas
-  const totalMonthlyCost = calculateMonthlyCost(selectedTools, userCount);
-  const totalYearlyCost = calculateYearlyCost(totalMonthlyCost);
+  // Memoizar costos para evitar recálculos en cada render
+  const { totalMonthlyCost, totalYearlyCost } = useMemo(() => {
+    const monthly = calculateMonthlyCost(selectedTools, userCount);
+    return {
+      totalMonthlyCost: monthly,
+      totalYearlyCost: calculateYearlyCost(monthly)
+    };
+  }, [selectedTools, userCount]);
   
-  // Effect para mostrar animación de ahorro cuando cambian las herramientas
+  // Memoizar alternativas de código abierto
+  const openSourceAlternatives = useMemo(() => 
+    getOpenSourceAlternatives(selectedTools),
+    [selectedTools]
+  );
+  
+  // Effect para mostrar animación de ahorro cuando cambian las herramientas (con debounce)
   useEffect(() => {
     if (selectedTools.length > 0) {
       // Resetear el trigger de animación
@@ -59,7 +72,7 @@ const CostCalculator = () => {
       // Activar animación después de un breve retraso
       const timer = setTimeout(() => {
         setShowSavings(true);
-      }, 300);
+      }, PERFORMANCE_CONFIG.THROTTLING.SEARCH_DEBOUNCE_MS);
       
       return () => clearTimeout(timer);
     }
@@ -70,13 +83,18 @@ const CostCalculator = () => {
     setActiveView(isMobile ? "list" : activeView);
   }, [isMobile]);
   
-  // Actualizar el término de búsqueda cuando cambie
+  // Actualizar el término de búsqueda cuando cambie (sin debouncing aquí, ya lo maneja OptimizedSearch)
   useEffect(() => {
     setSearchTerm(searchQuery);
   }, [searchQuery, setSearchTerm]);
   
-  // Manejar selección/deselección de herramientas
-  const handleToolToggle = (toolName: string) => {
+  // Manejar cambio de búsqueda optimizado
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
+  
+  // Memoizar funciones callback para evitar re-renders
+  const handleToolToggle = useCallback((toolName: string) => {
     setSelectedTools(prev => {
       if (prev.includes(toolName)) {
         return prev.filter(tool => tool !== toolName);
@@ -84,18 +102,19 @@ const CostCalculator = () => {
         return [...prev, toolName];
       }
     });
-  };
-  
-  // Obtener alternativas de código abierto para las herramientas seleccionadas
-  const openSourceAlternatives = getOpenSourceAlternatives(selectedTools);
+  }, []);
 
-  const handleViewChange = (view: string) => {
+  const handleViewChange = useCallback((view: string) => {
     setActiveView(view);
     if (showNewModeBanner) {
       setShowNewModeBanner(false);
       sessionStorage.setItem("newModeBannerDismissed", "true");
     }
-  };
+  }, [showNewModeBanner]);
+
+  const handleGridToggle = useCallback(() => {
+    setShowGrid(prev => !prev);
+  }, []);
 
   return (
     <section id="calculadora" className="section bg-gradient-to-b from-white to-costwise-gray py-16 dark:from-gray-900 dark:to-gray-950">
@@ -159,17 +178,13 @@ const CostCalculator = () => {
                 </div>
               </CardHeader>
               
-              {/* Barra de búsqueda fija para ambas vistas */}
+              {/* Barra de búsqueda optimizada */}
               <div className="p-4 border-b flex items-center gap-2 bg-white dark:bg-gray-800">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Buscar herramientas..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-4 py-2"
-                  />
-                </div>
+                <OptimizedSearch
+                  placeholder="Buscar herramientas..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
               </div>
               
               <CardContent className="p-0">
@@ -201,7 +216,7 @@ const CostCalculator = () => {
                       {/* Vista de cuadrícula para muchas herramientas */}
                       <ToolsGrid 
                         visible={showGrid} 
-                        onClose={() => setShowGrid(false)} 
+                        onClose={handleGridToggle}
                         selectedTools={selectedTools}
                         onToolToggle={handleToolToggle}
                       />
@@ -210,7 +225,7 @@ const CostCalculator = () => {
                       {shouldShowGridButton && (
                         <button 
                           className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors dark:bg-blue-600 dark:hover:bg-blue-700"
-                          onClick={() => setShowGrid(true)}
+                          onClick={handleGridToggle}
                         >
                           Ver todos los iconos
                         </button>
@@ -254,6 +269,9 @@ const CostCalculator = () => {
       </div>
     </section>
   );
-};
+});
+
+// Añadir displayName para debugging
+CostCalculator.displayName = 'CostCalculator';
 
 export default CostCalculator;

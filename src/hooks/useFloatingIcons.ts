@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { getTopToolsPerCategory } from '@/utils/calculatorUtils';
+import { getTopToolsPerCategory, getToolsWithDynamicCount } from '@/utils/calculatorUtils';
+import { PERFORMANCE_CONFIG, calculateOptimalIconCount, detectDeviceType, getOptimalToolsPerCategory, getCategorySpecificConfig } from '@/utils/performanceConfig';
 
 export interface FloatingIcon {
   name: string;
@@ -22,13 +23,17 @@ interface ContainerSize {
   height: number;
 }
 
-export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) => {
+export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>, isFloatingMode?: boolean) => {
   const [icons, setIcons] = useState<FloatingIcon[]>([]);
   const [allTools, setAllTools] = useState<any[]>([]);
   const [containerSize, setContainerSize] = useState<ContainerSize>({ width: 0, height: 0 });
   const [searchTerm, setSearchTerm] = useState<string>('');
   const animationRef = useRef<number>();
   const lastUpdateTimeRef = useRef<number>(0);
+  const [isContainerVisible, setIsContainerVisible] = useState<boolean>(true);
+  
+  // isVisible ahora depende tanto de la visibilidad del contenedor como del modo activo
+  const isVisible = isContainerVisible && (isFloatingMode !== false);
 
   // Inicializar los iconos flotantes
   useEffect(() => {
@@ -46,13 +51,17 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     // Configurar el tamaño inicial
     updateContainerSize();
 
-    // Obtener las herramientas SaaS
-    const tools = getTopToolsPerCategory(1);
+    // Determinar el número óptimo de herramientas por categoría basado en el dispositivo y área del contenedor
+    const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
+    const categoryConfig = getCategorySpecificConfig(containerArea);
+    
+    // Obtener las herramientas SaaS con la configuración optimizada por categoría
+    const tools = getToolsWithDynamicCount(categoryConfig);
     setAllTools(tools);
     
-    // Determinar el número óptimo de iconos basado en el tamaño del contenedor
-    const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-    const maxIcons = Math.min(tools.length, Math.max(20,Math.floor(containerArea / 10000)));
+    // Determinar el número óptimo de iconos basado en el dispositivo y rendimiento
+    const deviceType = detectDeviceType();
+    const maxIcons = Math.min(tools.length, calculateOptimalIconCount(containerArea, deviceType));
     const selectedTools = tools.slice(0, maxIcons);
     
     createFloatingIcons(selectedTools, containerRef.current);
@@ -61,10 +70,23 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
       updateContainerSize();
     };
 
+    // Intersection Observer para pausar animaciones cuando no es visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsContainerVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      observer.disconnect();
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -76,16 +98,17 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     if (!containerRef.current || !allTools.length) return;
 
     if (!searchTerm) {
-      // Si no hay término de búsqueda, mostrar iconos predeterminados
+      // Si no hay término de búsqueda, mostrar iconos predeterminados con límite optimizado
       const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-      const maxIcons = Math.min(allTools.length, Math.max(20, Math.floor(containerArea / 10000)));
+      const deviceType = detectDeviceType();
+      const maxIcons = Math.min(allTools.length, calculateOptimalIconCount(containerArea, deviceType));
       const defaultTools = allTools.slice(0, maxIcons);
       createFloatingIcons(defaultTools, containerRef.current);
     } else {
-      // Filtrar herramientas basadas en el término de búsqueda
+      // Filtrar herramientas basadas en el término de búsqueda con límite
       const matchedTools = allTools.filter(tool => 
         tool.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      ).slice(0, PERFORMANCE_CONFIG.ICONS.MAX_SEARCH_RESULTS);
       createFloatingIcons(matchedTools, containerRef.current);
     }
   }, [searchTerm, allTools]);
@@ -183,86 +206,81 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
     }
   };
 
-  // Animar los iconos flotantes
+  // Animar los iconos flotantes con optimizaciones de rendimiento
   useEffect(() => {
-    if (icons.length === 0 || !containerRef.current) return;
+    if (icons.length === 0 || !containerRef.current || !isVisible) return;
+
+    let frameCount = 0;
+    const { COLLISION_CHECK_INTERVAL, TARGET_FPS, MAX_CONCURRENT_ICONS, MOVEMENT_RADIUS, MOVEMENT_SPEED_MULTIPLIER } = PERFORMANCE_CONFIG.ANIMATION;
+    const FRAME_TIME = 1000 / TARGET_FPS;
 
     const animateIcons = (timestamp: number) => {
-      // Limitar la tasa de actualización a 60fps
-      if (timestamp - lastUpdateTimeRef.current < 16) {
+      // Pausar animación si no es visible
+      if (!isVisible) {
+        animationRef.current = requestAnimationFrame(animateIcons);
+        return;
+      }
+
+      // Throttling más efectivo
+      if (timestamp - lastUpdateTimeRef.current < FRAME_TIME) {
         animationRef.current = requestAnimationFrame(animateIcons);
         return;
       }
       
       lastUpdateTimeRef.current = timestamp;
+      frameCount++;
 
       setIcons(prevIcons => {
-        // Primera pasada: actualizar posiciones
+        // Optimización: limitar el número de iconos animados simultáneamente
+        if (prevIcons.length > MAX_CONCURRENT_ICONS) {
+          // Para muchos iconos, hacer animación más sutil
+          return prevIcons.map(icon => ({
+            ...icon,
+            x: icon.x + Math.sin(timestamp * 0.001 + icon.name.length) * 0.5,
+            y: icon.y + Math.cos(timestamp * 0.001 + icon.name.length) * 0.5
+          }));
+        }
+
+        // Animación completa solo para <= MAX_CONCURRENT_ICONS iconos
         const updatedIcons = prevIcons.map(icon => {
           let { x, y, dirX, dirY, speed, size, initialX, initialY } = icon;
-          const movementRadius = 10; // Radio de movimiento permitido
           
-          // Actualizar posición tentativa
-          let nextX = x + dirX * speed;
-          let nextY = y + dirY * speed;
+          // Movimiento más simple y eficiente
+          let nextX = x + dirX * speed * MOVEMENT_SPEED_MULTIPLIER;
+          let nextY = y + dirY * speed * MOVEMENT_SPEED_MULTIPLIER;
           
-          // Comprobar límites de movimiento alrededor de la posición inicial
-          if (nextX < initialX - movementRadius) {
-            nextX = initialX - movementRadius;
+          // Límites de movimiento simplificados
+          if (nextX < initialX - MOVEMENT_RADIUS || nextX > initialX + MOVEMENT_RADIUS) {
             dirX *= -1;
-          } else if (nextX > initialX + movementRadius) {
-            nextX = initialX + movementRadius;
-            dirX *= -1;
+            nextX = Math.max(initialX - MOVEMENT_RADIUS, Math.min(nextX, initialX + MOVEMENT_RADIUS));
           }
           
-          if (nextY < initialY - movementRadius) {
-            nextY = initialY - movementRadius;
+          if (nextY < initialY - MOVEMENT_RADIUS || nextY > initialY + MOVEMENT_RADIUS) {
             dirY *= -1;
-          } else if (nextY > initialY + movementRadius) {
-            nextY = initialY + movementRadius;
-            dirY *= -1;
+            nextY = Math.max(initialY - MOVEMENT_RADIUS, Math.min(nextY, initialY + MOVEMENT_RADIUS));
           }
 
-          // Asignar la nueva posición
-          x = nextX;
-          y = nextY;
+          // Límites del contenedor
+          nextX = Math.max(0, Math.min(nextX, containerSize.width - size));
+          nextY = Math.max(0, Math.min(nextY, containerSize.height - size));
           
-          // Comprobar colisiones con los bordes del contenedor (además de la restricción de movimiento)
-          // Esto es para asegurar que si initialX/Y está cerca del borde, no se salga.
-          if (x <= 0) {
-            x = 0;
-            dirX = Math.abs(dirX); // Asegurar que se aleje del borde
-          } else if (x >= containerSize.width - size) {
-            x = containerSize.width - size;
-            dirX = -Math.abs(dirX); // Asegurar que se aleje del borde
-          }
-          
-          if (y <= 0) {
-            y = 0;
-            dirY = Math.abs(dirY); // Asegurar que se aleje del borde
-          } else if (y >= containerSize.height - size) {
-            y = containerSize.height - size;
-            dirY = -Math.abs(dirY); // Asegurar que se aleje del borde
-          }
-          
-          // Añadir un pequeño grado de aleatoriedad al movimiento para evitar patrones repetitivos
-          dirX += (Math.random() - 0.5) * 0.02;
-          dirY += (Math.random() - 0.5) * 0.02;
-          
-          // Normalizar el vector de dirección para mantener la velocidad constante
-          const magnitude = Math.sqrt(dirX * dirX + dirY * dirY);
-          if (magnitude > 0) {
-            dirX = (dirX / magnitude) * Math.min(magnitude, 1); // Limitar velocidad máxima
-            dirY = (dirY / magnitude) * Math.min(magnitude, 1);
-          }
-          
-          return { ...icon, x, y, dirX, dirY };
+          return { ...icon, x: nextX, y: nextY, dirX, dirY };
         });
         
-        // Segunda pasada: resolver colisiones entre iconos
-        for (let i = 0; i < updatedIcons.length; i++) {
-          for (let j = i + 1; j < updatedIcons.length; j++) {
-            handleCollision(i, j, updatedIcons);
+        // Colisiones solo cada N frames para mejor rendimiento
+        if (frameCount % COLLISION_CHECK_INTERVAL === 0 && updatedIcons.length <= 30) {
+          // Optimización espacial: solo verificar iconos cercanos
+          for (let i = 0; i < updatedIcons.length; i++) {
+            for (let j = i + 1; j < updatedIcons.length; j++) {
+              const icon1 = updatedIcons[i];
+              const icon2 = updatedIcons[j];
+              
+              // Pre-filtro de distancia antes del cálculo completo
+              const roughDistance = Math.abs(icon1.x - icon2.x) + Math.abs(icon1.y - icon2.y);
+              if (roughDistance < icon1.size + icon2.size) {
+                handleCollision(i, j, updatedIcons);
+              }
+            }
           }
         }
         
@@ -279,7 +297,7 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>) 
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [icons.length, containerSize]);
+  }, [icons.length, containerSize, isVisible]);
 
   return { icons, setIcons, setSearchTerm };
 };

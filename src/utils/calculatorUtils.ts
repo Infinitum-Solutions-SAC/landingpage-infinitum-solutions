@@ -124,3 +124,45 @@ export const getTopToolsPerCategory = (count: number): { name: string; icon: str
   
   return result;
 };
+
+// Obtener herramientas con configuración dinámica por categoría
+export const getToolsWithDynamicCount = (config: Record<string, number> = {}): { name: string; icon: string; cost?: number }[] => {
+  const result: { name: string; icon: string; cost?: number }[] = [];
+  const categories = Object.keys(toolsData.tools);
+  
+  categories.forEach(category => {
+    // Usar la configuración específica para la categoría, o un valor por defecto
+    const countForCategory = config[category] || 3;
+    const tools = toolsData.tools[category].SaaS.slice(0, countForCategory);
+    
+    tools.forEach(tool => {
+      result.push({
+        name: tool.name,
+        icon: tool.icon,
+        cost: tool.cost
+      });
+    });
+  });
+  
+  return result;
+};
+
+// Obtener todas las herramientas disponibles (sin límite)
+export const getAllAvailableTools = (): { name: string; icon: string; cost?: number }[] => {
+  const result: { name: string; icon: string; cost?: number }[] = [];
+  const categories = Object.keys(toolsData.tools);
+  
+  categories.forEach(category => {
+    const tools = toolsData.tools[category].SaaS;
+    
+    tools.forEach(tool => {
+      result.push({
+        name: tool.name,
+        icon: tool.icon,
+        cost: tool.cost
+      });
+    });
+  });
+  
+  return result;
+};
