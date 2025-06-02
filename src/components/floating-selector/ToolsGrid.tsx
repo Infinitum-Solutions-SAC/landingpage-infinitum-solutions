@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getTopToolsPerCategory } from '@/utils/calculatorUtils';
 import { getOptimalToolsPerCategory } from '@/utils/performanceConfig';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,9 +17,11 @@ const ToolsGrid = ({ visible, onClose, selectedTools, onToolToggle }: ToolsGridP
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTools, setFilteredTools] = useState<any[]>([]);
   
-  // Obtener todas las herramientas para mostrar en la cuadrícula usando configuración optimizada
-  const optimalToolsPerCategory = getOptimalToolsPerCategory();
-  const allTools = getTopToolsPerCategory(optimalToolsPerCategory);
+  // Memorizar las herramientas para evitar recálculos innecesarios
+  const allTools = useMemo(() => {
+    const optimalToolsPerCategory = getOptimalToolsPerCategory();
+    return getTopToolsPerCategory(optimalToolsPerCategory);
+  }, []); // Array vacío porque estas funciones son puras y no dependen de props/state
   
   useEffect(() => {
     if (!searchQuery) {
