@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { getTopToolsPerCategory, getToolsWithDynamicCount } from '@/utils/calculatorUtils';
 import { PERFORMANCE_CONFIG, calculateOptimalIconCount, detectDeviceType, getOptimalToolsPerCategory, getCategorySpecificConfig } from '@/utils/performanceConfig';
 
@@ -35,86 +35,8 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>, 
   // isVisible ahora depende tanto de la visibilidad del contenedor como del modo activo
   const isVisible = isContainerVisible && (isFloatingMode !== false);
 
-  // Inicializar los iconos flotantes
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const updateContainerSize = () => {
-      if (containerRef.current) {
-        setContainerSize({
-          width: containerRef.current.clientWidth,
-          height: containerRef.current.clientHeight,
-        });
-      }
-    };
-
-    // Configurar el tamaño inicial
-    updateContainerSize();
-
-    // Determinar el número óptimo de herramientas por categoría basado en el dispositivo y área del contenedor
-    const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-    const categoryConfig = getCategorySpecificConfig(containerArea);
-    
-    // Obtener las herramientas SaaS con la configuración optimizada por categoría
-    const tools = getToolsWithDynamicCount(categoryConfig);
-    setAllTools(tools);
-    
-    // Determinar el número óptimo de iconos basado en el dispositivo y rendimiento
-    const deviceType = detectDeviceType();
-    const maxIcons = Math.min(tools.length, calculateOptimalIconCount(containerArea, deviceType));
-    const selectedTools = tools.slice(0, maxIcons);
-    
-    createFloatingIcons(selectedTools, containerRef.current);
-
-    const handleResize = () => {
-      updateContainerSize();
-    };
-
-    // Intersection Observer para pausar animaciones cuando no es visible
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsContainerVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      observer.disconnect();
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
-
-  // Efecto para el término de búsqueda
-  useEffect(() => {
-    if (!containerRef.current || !allTools.length) return;
-
-    if (!searchTerm) {
-      // Si no hay término de búsqueda, mostrar iconos predeterminados con límite optimizado
-      const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
-      const deviceType = detectDeviceType();
-      const maxIcons = Math.min(allTools.length, calculateOptimalIconCount(containerArea, deviceType));
-      const defaultTools = allTools.slice(0, maxIcons);
-      createFloatingIcons(defaultTools, containerRef.current);
-    } else {
-      // Filtrar herramientas basadas en el término de búsqueda con límite
-      const matchedTools = allTools.filter(tool => 
-        tool.name.toLowerCase().includes(searchTerm.toLowerCase())
-      ).slice(0, PERFORMANCE_CONFIG.ICONS.MAX_SEARCH_RESULTS);
-      createFloatingIcons(matchedTools, containerRef.current);
-    }
-  }, [searchTerm, allTools]);
-
   // Función para crear iconos flotantes
-  const createFloatingIcons = (tools: any[], container: HTMLDivElement) => {
+  const createFloatingIcons = useCallback((tools: any[], container: HTMLDivElement) => {
     // Organizar inicialmente los iconos en una cuadrícula
     const columns = Math.ceil(Math.sqrt(tools.length));
     const cellWidth = container.clientWidth / columns;
@@ -151,7 +73,113 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>, 
     });
 
     setIcons(newIcons);
-  };
+  }, []);
+
+  // Función para manejar colisiones
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateContainerSize = () => {
+      if (containerRef.current) {
+        setContainerSize({
+          width: containerRef.current.clientWidth,
+          height: containerRef.current.clientHeight,
+        });
+      }
+    };
+
+    // Configurar el tamaño inicial
+    updateContainerSize();
+
+    // Determinar el número óptimo de herramientas por categoría basado en el dispositivo y área del contenedor
+    const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
+    const categoryConfig = getCategorySpecificConfig(containerArea);
+    
+    // Obtener las herramientas SaaS con la configuración optimizada por categoría
+    const tools = getToolsWithDynamicCount(categoryConfig);
+    setAllTools(tools);
+    
+    // Determinar el número óptimo de iconos basado en el dispositivo y rendimiento
+    const deviceType = detectDeviceType();
+    const maxIcons = Math.min(tools.length, calculateOptimalIconCount(containerArea, deviceType));
+    const selectedTools = tools.slice(0, maxIcons);
+    
+    createFloatingIcons(selectedTools, containerRef.current);
+
+    const handleResize = () => {
+      updateContainerSize();
+      // Usar setTimeout para recrear iconos después de que se complete el redimensionamiento
+      setTimeout(() => {
+        if (!containerRef.current || !allTools.length || isFloatingMode === false) return;
+        
+        const containerArea = containerRef.current.clientWidth * containerRef.current.clientHeight;
+        const deviceType = detectDeviceType();
+        
+        if (!searchTerm) {
+          const maxIcons = Math.min(allTools.length, calculateOptimalIconCount(containerArea, deviceType));
+          const defaultTools = allTools.slice(0, maxIcons);
+          createFloatingIcons(defaultTools, containerRef.current);
+        } else {
+          const matchedTools = allTools.filter(tool => 
+            tool.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ).slice(0, PERFORMANCE_CONFIG.ICONS.MAX_SEARCH_RESULTS);
+          createFloatingIcons(matchedTools, containerRef.current);
+        }
+      }, 100);
+    };
+
+    // Intersection Observer para pausar animaciones cuando no es visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsContainerVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      observer.disconnect();
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  // Efecto unificado para manejar cambios que requieren recrear iconos
+  useEffect(() => {
+    if (!containerRef.current || !allTools.length || isFloatingMode !== true) return;
+
+    // Debounce para evitar recreaciones excesivas
+    const timeoutId = setTimeout(() => {
+      const containerArea = containerRef.current!.clientWidth * containerRef.current!.clientHeight;
+      const deviceType = detectDeviceType();
+      
+      if (!searchTerm) {
+        const maxIcons = Math.min(allTools.length, calculateOptimalIconCount(containerArea, deviceType));
+        const defaultTools = allTools.slice(0, maxIcons);
+        createFloatingIcons(defaultTools, containerRef.current!);
+      } else {
+        const matchedTools = allTools.filter(tool => 
+          tool.name.toLowerCase().includes(searchTerm.toLowerCase())
+        ).slice(0, PERFORMANCE_CONFIG.ICONS.MAX_SEARCH_RESULTS);
+        createFloatingIcons(matchedTools, containerRef.current!);
+      }
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [isFloatingMode, allTools, searchTerm, containerSize.width, containerSize.height]);
+
+  // Efecto para el término de búsqueda - solo ejecutar la lógica inicial
+  useEffect(() => {
+    // Este efecto se mantiene para la inicialización inicial
+    // La lógica de recreación está en el efecto de modo flotante
+  }, []);  // Solo ejecutar en la inicialización
 
   // Función para manejar colisiones
   const handleCollision = (icon1Index: number, icon2Index: number, updatedIcons: FloatingIcon[]) => {
@@ -297,7 +325,7 @@ export const useFloatingIcons = (containerRef: React.RefObject<HTMLDivElement>, 
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [icons.length, containerSize, isVisible]);
+  }, [icons.length, containerSize, isVisible, isFloatingMode]);
 
   return { icons, setIcons, setSearchTerm };
 };

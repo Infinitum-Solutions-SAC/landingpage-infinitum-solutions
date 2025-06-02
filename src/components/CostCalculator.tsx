@@ -42,7 +42,7 @@ const CostCalculator = React.memo(() => {
   
   // Referencias para el contenedor flotante
   const containerRef = useRef<HTMLDivElement>(null);
-  const { icons, setSearchTerm } = useFloatingIcons(containerRef);
+  const { icons, setSearchTerm } = useFloatingIcons(containerRef, activeView === "floating");
   const [showGrid, setShowGrid] = useState(false);
   
   // Memoizar valores calculados para evitar recálculos innecesarios
