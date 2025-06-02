@@ -80,7 +80,7 @@ export const toolsData: ToolsData = {
     },
     "Comunicación de Equipos": {
       "SaaS": [
-        {"name": "Slack", "cost": 12.5, "icon": "/assets/images/icons-saas/slack.svg", "details": "Mensajería en tiempo real para equipos con integraciones."},
+        {"name": "Slack", "cost": 8.75, "icon": "/assets/images/icons-saas/slack.svg", "details": "Mensajería en tiempo real para equipos con integraciones."},
         {"name": "Microsoft Teams", "cost": 4, "icon": "/assets/images/icons-saas/microsoftteams.svg", "details": "Colaboración y videoconferencia integrada con Microsoft 365."},
         {"name": "Discord", "cost": 9.99, "icon": "/assets/images/icons-saas/discord.svg", "details": "Comunicación por voz, video y texto, popular en equipos técnicos."}
       ],

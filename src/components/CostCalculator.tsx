@@ -232,9 +232,9 @@ const CostCalculator = React.memo(() => {
                       )}
                       
                       {/* Instrucción para el usuario */}
-                      <div className="absolute bottom-2 left-0 right-0 text-center text-sm text-gray-500 bg-white/80 dark:bg-gray-800/80 py-1 backdrop-blur-sm">
+                      {/* <div className="absolute bottom-2 left-0 right-0 text-center text-sm text-gray-500 bg-white/80 dark:bg-gray-800/80 py-1 backdrop-blur-sm">
                         Haz clic en un icono para seleccionar o deseleccionar la herramienta
-                      </div>
+                      </div> */}
                     </div>
                   </TabsContent>
                   <TabsContent value="list" className="m-0">

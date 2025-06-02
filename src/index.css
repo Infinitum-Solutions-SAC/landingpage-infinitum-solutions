@@ -81,7 +81,7 @@
   }
 
   .btn-primary {
-    @apply bg-costwise-blue text-white rounded-lg font-medium transition-all hover:bg-costwise-blue/90 focus:outline-none focus:ring-2 focus:ring-costwise-blue focus:ring-offset-2;
+    @apply bg-costwise-blue text-white px-2 py-0.5 rounded-lg font-medium transition-all hover:bg-costwise-blue/90 focus:outline-none focus:ring-2 focus:ring-costwise-blue focus:ring-offset-2;
   }
 
   .btn-secondary {
