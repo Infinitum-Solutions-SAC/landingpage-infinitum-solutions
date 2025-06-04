@@ -41,6 +41,9 @@ jobs:
         else
           echo "exists=false" >> "$GITHUB_OUTPUT"
         fi
+    
+    - name: Temporarily move build output
+      run: mv dist ../dist_build
 
     - name: Create production branch if it doesn't exist
       if: steps.check_branch.outputs.exists == 'false'
@@ -65,9 +68,8 @@ jobs:
 
     - name: Copy build files to production branch
       run: |
-        git checkout main -- dist/
-        mv dist/* . 2>/dev/null || true
-        rmdir dist 2>/dev/null || true
+        cp -a ../dist_build/. .
+        rm -rf ../dist_build
 
     - name: Commit and push to production branch
       run: |
