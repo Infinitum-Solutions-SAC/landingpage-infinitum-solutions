@@ -1,0 +1,77 @@
+name: Build and Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+
+    - name: Check if production branch exists
+      run: |
+        if git ls-remote --heads origin production | grep -q production; then
+          echo "BRANCH_EXISTS=true" >> $GITHUB_ENV
+        else
+          echo "BRANCH_EXISTS=false" >> $GITHUB_ENV
+        fi
+
+    - name: Create production branch if it doesn't exist
+      if: env.BRANCH_EXISTS == 'false'
+      run: |
+        git checkout --orphan production
+        git rm -rf .
+        echo "# Production Branch" > README.md
+        git add README.md
+        git commit -m "Initial production branch"
+        git push origin production
+
+    - name: Switch to production branch
+      if: env.BRANCH_EXISTS == 'true'
+      run: |
+        git fetch origin production
+        git checkout production
+
+    - name: Clear production branch (keep only .git)
+      if: env.BRANCH_EXISTS == 'true'
+      run: |
+        find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} +
+
+    - name: Copy build files to production branch
+      run: |
+        git checkout main -- dist/
+        mv dist/* . 2>/dev/null || true
+        rmdir dist 2>/dev/null || true
+
+    - name: Commit and push to production branch
+      run: |
+        git add .
+        if [ -n "$(git status --porcelain)" ]; then
+          git commit -m "Deploy from main branch - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push origin production
+        else
+          echo "No changes to commit"
+        fi
