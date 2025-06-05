@@ -28,6 +28,9 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Copy docker-compose.yaml to dist
+      run: cp public/docker-compose.yaml dist/docker-compose.yaml
+
     - name: Configure Git
       run: |
         git config --global user.name 'GitHub Actions'
