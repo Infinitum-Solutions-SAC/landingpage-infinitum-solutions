@@ -4,14 +4,13 @@ Esta configuración de Docker incluye medidas de seguridad y limpieza automátic
 
 ## 🚀 Inicio Rápido
 
-### Iniciar la aplicación
+### Scripts disponibles
 ```bash
-./start.sh
-```
-
-### Detener la aplicación
-```bash
-./stop.sh
+./start.sh    # Iniciar la aplicación con verificaciones completas
+./stop.sh     # Detener con opciones de limpieza avanzadas
+./status.sh   # Verificar estado de todos los servicios
+./logs.sh     # Ver logs en tiempo real
+./sync.sh     # Sincronizar cambios durante desarrollo
 ```
 
 ### Comandos manuales
@@ -76,3 +75,58 @@ docker-compose logs web
 # Ejecutar comando dentro del contenedor
 docker-compose exec web /bin/bash
 ```
+
+## 🛠️ Scripts Mejorados
+
+### 📋 `status.sh` - Diagnóstico completo
+- ✅ Estado de Docker y contenedores
+- ✅ Verificación de conectividad HTTP
+- ✅ Información de recursos y puertos
+- ✅ Comandos sugeridos según el estado
+
+### 🚀 `start.sh` - Inicio inteligente
+- ✅ Verificaciones previas (Docker, puertos)
+- ✅ Compatibilidad con docker-compose legacy y moderno
+- ✅ Detección automática de problemas
+- ✅ Opción para abrir navegador automáticamente
+
+### 🛑 `stop.sh` - Parada avanzada
+- ✅ Múltiples opciones de limpieza
+- ✅ Limpieza específica del proyecto
+- ✅ Verificación de recursos liberados
+- ✅ Resumen completo del estado final
+
+### 📊 `logs.sh` - Monitoreo en tiempo real
+- ✅ Logs con formato y timestamps
+- ✅ Estado de contenedores antes de mostrar logs
+- ✅ Fácil acceso a información de debugging
+
+## 🔒 Seguridad Avanzada
+
+### 🛡️ Separación de Archivos Host/Contenedor
+
+**Nueva característica:** Los archivos `.git` y sensibles se mantienen **solo en tu servidor**, mientras que el contenedor recibe una **copia limpia** sin información confidencial.
+
+#### Cómo funciona:
+1. **Host (tu servidor):** Mantiene todos los archivos incluyendo `.git`, `.env`, etc.
+2. **Contenedor:** Solo recibe archivos necesarios para servir la web
+3. **Resultado:** Máxima seguridad sin perder funcionalidad de desarrollo
+
+#### Estructura de volúmenes:
+```yaml
+volumes:
+  - ./:/tmp/source:ro      # Código fuente como solo lectura
+  - web_clean_files:/usr/share/nginx/html  # Archivos limpios para nginx
+```
+
+### 🔄 Sincronización durante Desarrollo
+
+Usa el script `sync.sh` para actualizar el contenedor durante el desarrollo:
+
+```bash
+./sync.sh    # Menú interactivo
+```
+
+**Opciones disponibles:**
+- **Sincronización única:** Actualiza archivos una vez
+- **Modo watch:** Detecta cambios automáticamente (requiere `inotify-tools`)

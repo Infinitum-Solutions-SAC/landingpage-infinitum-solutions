@@ -4,6 +4,7 @@ FROM nginx:alpine
 # Instalar herramientas necesarias y nginx-mod-http-headers-more
 RUN apk add --no-cache \
     bash \
+    rsync \
     nginx-mod-http-headers-more \
     && rm -rf /var/cache/apk/*
 

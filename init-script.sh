@@ -2,25 +2,63 @@
 
 # Script de inicialización para limpiar archivos .git y ocultar información del servidor
 
-echo "🧹 Iniciando limpieza de archivos sensibles..."
+echo "🧹 Iniciando configuración segura del contenedor..."
 
-# Eliminar directorio .git si existe
-if [ -d "/usr/share/nginx/html/.git" ]; then
-    echo "🗑️  Eliminando directorio .git..."
-    rm -rf /usr/share/nginx/html/.git
-    echo "✅ Directorio .git eliminado"
-else
-    echo "ℹ️  No se encontró directorio .git"
-fi
+# Función para logging con timestamp
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
 
-# Eliminar archivos relacionados con git
-echo "🗑️  Eliminando archivos relacionados con git..."
-rm -f /usr/share/nginx/html/.gitignore
-rm -f /usr/share/nginx/html/.gitattributes
-rm -f /usr/share/nginx/html/.github
+# Función para copiar archivos sin .git
+copy_clean_files() {
+    log "📂 Copiando archivos del código fuente (excluyendo .git)..."
+    
+    # Limpiar directorio de destino
+    rm -rf /usr/share/nginx/html/*
+    rm -rf /usr/share/nginx/html/.* 2>/dev/null || true
+    
+    # Copiar archivos excluyendo .git y archivos relacionados
+    if command -v rsync &> /dev/null; then
+        log "🔄 Usando rsync para copia eficiente..."
+        rsync -av \
+              --exclude='.git' \
+              --exclude='.gitignore' \
+              --exclude='.gitattributes' \
+              --exclude='.github' \
+              --exclude='node_modules' \
+              --exclude='*.log' \
+              --exclude='.env*' \
+              /tmp/source/ /usr/share/nginx/html/
+    else
+        log "🔄 Usando cp con find..."
+        # Método alternativo
+        cd /tmp/source
+        find . -type f \
+             ! -path './.git/*' \
+             ! -name '.git*' \
+             ! -path './node_modules/*' \
+             ! -name '*.log' \
+             ! -name '.env*' \
+             -exec cp --parents {} /usr/share/nginx/html/ \; 2>/dev/null || true
+    fi
+    
+    log "✅ Archivos copiados sin información sensible"
+    
+    # Verificar que hay archivos en el destino
+    FILE_COUNT=$(find /usr/share/nginx/html -type f | wc -l)
+    log "📊 Total de archivos copiados: $FILE_COUNT"
+    
+    if [ "$FILE_COUNT" -eq 0 ]; then
+        log "⚠️  No se copiaron archivos, creando página de prueba..."
+        echo "<h1>Landing Page - Infinitum Solutions</h1><p>Página en configuración...</p>" > /usr/share/nginx/html/index.html
+    fi
+}
+
+# Ejecutar la copia de archivos limpios
+copy_clean_files
 
 # Crear configuración personalizada de nginx para ocultar información del servidor
-echo "🔒 Configurando nginx para ocultar información del servidor..."
+log "🔒 Configurando nginx para ocultar información del servidor..."
 
 # Crear directorio de configuración si no existe
 mkdir -p /etc/nginx/conf.d
