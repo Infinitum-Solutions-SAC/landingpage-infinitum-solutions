@@ -43,20 +43,22 @@ export const usePerformanceMetrics = () => {
             break;
             
           case 'layout-shift':
-            if (!(entry as any).hadRecentInput) {
+            const layoutShiftEntry = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
+            if (!layoutShiftEntry.hadRecentInput) {
               setMetrics(prev => ({ 
                 ...prev, 
-                cls: (prev.cls || 0) + (entry as any).value 
+                cls: (prev.cls || 0) + layoutShiftEntry.value 
               }));
             }
             break;
             
           case 'first-input':
+            const fidEntry = entry as PerformanceEntry & { processingStart: number };
             setMetrics(prev => ({ 
               ...prev, 
-              fid: Math.round(entry.processingStart - entry.startTime) 
+              fid: Math.round(fidEntry.processingStart - fidEntry.startTime) 
             }));
-            console.log('⚡ FID:', Math.round(entry.processingStart - entry.startTime) + 'ms');
+            console.log('⚡ FID:', Math.round(fidEntry.processingStart - fidEntry.startTime) + 'ms');
             break;
         }
       });
