@@ -60,7 +60,7 @@ const Hero = () => {
             
             <div className="h-full flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
               <img 
-                src="/assets/images/hardware/firewall.png" 
+                src="/assets/images/hardware/firewall.webp" 
                 alt="Firewall Hardware Infinitum Solutions" 
                 className="object-contain w-auto h-auto max-w-full max-h-[300px] md:max-h-[350px] lg:max-h-[400px] mx-auto" 
               />
