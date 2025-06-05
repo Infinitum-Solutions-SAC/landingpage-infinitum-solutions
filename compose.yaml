@@ -1,18 +1,7 @@
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: nginx:alpine
     ports:
       - "81:80"
     volumes:
-      # Montar código fuente como solo lectura en ubicación temporal
-      - ./:/tmp/source:ro
-      # Volumen para archivos limpios que sirve nginx
-      - web_clean_files:/usr/share/nginx/html
-    environment:
-      - NGINX_ENTRYPOINT_QUIET_LOGS=1
-    restart: unless-stopped
-
-volumes:
-  web_clean_files:
+      - ./:/usr/share/nginx/html
