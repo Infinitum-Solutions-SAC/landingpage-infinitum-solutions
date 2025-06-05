@@ -2,6 +2,6 @@ services:
   web:
     image: nginx:alpine
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - ./:/usr/share/nginx/html
