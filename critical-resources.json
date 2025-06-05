@@ -1,0 +1,12 @@
+{
+  "images": [
+    "/assets/images/og-image.webp",
+    "/favicon.ico"
+  ],
+  "css": [
+    "/assets/critical.css"
+  ],
+  "js": [
+    "/src/main.tsx"
+  ]
+}
