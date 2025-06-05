@@ -1,7 +1,12 @@
 services:
   web:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "81:80"
     volumes:
       - ./:/usr/share/nginx/html
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+    restart: unless-stopped
