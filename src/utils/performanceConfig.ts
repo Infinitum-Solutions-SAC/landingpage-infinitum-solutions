@@ -1,6 +1,15 @@
 // Configuraciones de rendimiento para optimizar el uso de recursos
 
 export const PERFORMANCE_CONFIG = {
+  // Configuración de LCP (Largest Contentful Paint)
+  LCP: {
+    CRITICAL_RESOURCES_PRELOAD: true,
+    LAZY_LOAD_BELOW_FOLD: true,
+    OPTIMIZE_IMAGES: true,
+    DEFER_NON_CRITICAL_CSS: true,
+    MINIMIZE_RENDER_BLOCKING: true,
+  },
+
   // Configuración de animaciones
   ANIMATION: {
     TARGET_FPS: 30,
@@ -8,6 +17,7 @@ export const PERFORMANCE_CONFIG = {
     MAX_CONCURRENT_ICONS: 50,
     MOVEMENT_RADIUS: 8,
     MOVEMENT_SPEED_MULTIPLIER: 0.8,
+    REDUCE_MOTION_PREFERENCE: true, // Respetar preferencias de usuario
   },
 
   // Configuración de iconos

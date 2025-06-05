@@ -1,6 +1,10 @@
 import { ArrowRight, Server, Database, Shield } from 'lucide-react';
+import { usePreloadCriticalResources } from '@/hooks/useOptimizedResources';
 
 const Hero = () => {
+  // Precargar recursos críticos para mejorar LCP
+  usePreloadCriticalResources();
+
   return (
     <section className="pt-20 md:pt-28 pb-12 md:pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
       <div className="container-custom px-4 md:px-6">
@@ -10,6 +14,7 @@ const Hero = () => {
               Soluciones IT Inteligentes
             </div>
             
+            {/* Elemento LCP optimizado con prioridad de carga */}
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-costwise-navy leading-tight">
               Reduce costos con <br className="hidden md:block" />
               <span className="text-costwise-blue">infraestructura local</span>

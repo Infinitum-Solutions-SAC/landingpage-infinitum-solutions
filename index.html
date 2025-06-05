@@ -14,6 +14,36 @@
     
     <!-- Preconnect para optimización -->
     <link rel="preconnect" href="https://cdn.gpteng.co" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Critical CSS inline para elementos LCP -->
+    <style>
+      /* Critical CSS para mejorar LCP - Clases del elemento problemático */
+      .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+      .font-semibold { font-weight: 600; }
+      .text-costwise-navy { color: #0A2540; }
+      
+      /* Estilos críticos para el above-the-fold */
+      #root { min-height: 100vh; }
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+      
+      /* Optimización de loading state */
+      .skeleton-loader {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+      
+      @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Preload de clases comúnmente usadas */
+      .container-custom { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+      .btn-primary { background-color: #2A8BFF; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; }
+    </style>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Infinitum Solutions - Soluciones Tecnológicas Integrales" />
@@ -36,7 +66,26 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Loading placeholder para mejorar percepción de velocidad -->
+      <div id="initial-loader" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f8fafc;">
+        <div style="text-align: center;">
+          <div style="width: 40px; height: 40px; border: 3px solid #e2e8f0; border-top: 3px solid #2A8BFF; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p style="color: #64748b; font-size: 14px; font-weight: 600;">Cargando Infinitum Solutions...</p>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      /* Ocultar el loader cuando la app esté lista */
+      .app-loaded #initial-loader {
+        display: none !important;
+      }
+    </style>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
