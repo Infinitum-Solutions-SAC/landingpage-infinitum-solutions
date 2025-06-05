@@ -28,8 +28,8 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Copy docker-compose.yaml to dist
-      run: cp public/docker-compose.yaml dist/docker-compose.yaml
+    - name: Copy compose.yaml to dist
+      run: cp public/compose.yaml dist/compose.yaml
 
     - name: Configure Git
       run: |
