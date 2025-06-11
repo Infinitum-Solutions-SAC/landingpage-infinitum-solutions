@@ -65,7 +65,7 @@ const Footer = () => {
                 >
                   <BookOpen size={16} />
                   <span>Libro de reclamaciones</span>
-                  <span className="bg-gray-100 dark:bg-slate-700 text-xs px-2 py-1 rounded-full text-gray-700 dark:text-gray-300">Implementación</span>
+                  {/* <span className="bg-gray-100 dark:bg-slate-700 text-xs px-2 py-1 rounded-full text-gray-700 dark:text-gray-300">Implementación</span> */}
                 </a>
               </li>
             </ul>

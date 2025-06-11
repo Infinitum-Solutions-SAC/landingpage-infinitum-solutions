@@ -1,0 +1,359 @@
+/* Estilos para efecto de cartas de naipes - SOLO MÓVILES */
+
+/* Solo aplicar en móviles para mejor performance */
+@media (max-width: 767px) {
+  .card-deck-container {
+    position: relative;
+    perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    padding: 1.5rem 0 1rem 0;
+  }
+
+  .card-deck {
+    position: relative;
+    width: 280px;
+    height: 420px;
+    margin: 0 auto;
+  }
+
+  .deck-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center bottom;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    backface-visibility: hidden;
+    /* Optimización: usar will-change solo cuando es necesario */
+    will-change: transform, opacity;
+  }
+
+  /* Dark mode styles */
+  .dark .deck-card {
+    background: rgb(30, 41, 59); /* slate-800 */
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Posicionamiento de cartas en el deck - Ajustado para móviles */
+  .deck-card:nth-child(1) {
+    z-index: 4;
+    transform: translateX(-15px) translateY(8px) rotate(-6deg) scale(0.96);
+    opacity: 0.7;
+  }
+
+  .deck-card:nth-child(2) {
+    z-index: 5;
+    transform: translateX(-8px) translateY(4px) rotate(-3deg) scale(0.98);
+    opacity: 0.85;
+  }
+
+  .deck-card:nth-child(3) {
+    z-index: 6;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+
+  .deck-card:nth-child(4) {
+    z-index: 5;
+    transform: translateX(8px) translateY(4px) rotate(3deg) scale(0.98);
+    opacity: 0.85;
+  }
+
+  .deck-card:nth-child(5) {
+    z-index: 4;
+    transform: translateX(15px) translateY(8px) rotate(6deg) scale(0.96);
+    opacity: 0.7;
+  }
+
+  /* Estado activo */
+  .deck-card.active {
+    z-index: 10 !important;
+    transform: translateX(0) translateY(-20px) rotate(0deg) scale(1.05) !important;
+    opacity: 1 !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .dark .deck-card.active {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Contenido de la carta */
+  .card-content {
+    padding: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-header {
+    position: relative;
+  }
+
+  .card-recommended-badge {
+    position: absolute;
+    top: -1.25rem;
+    right: -1.25rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0 16px 0 8px;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+
+  .dark .card-recommended-badge {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+  }
+
+  .dark .card-icon {
+    background: rgba(6, 182, 212, 0.2);
+    color: #06b6d4;
+  }
+
+  .card-icon.recommended {
+    background: rgba(59, 130, 246, 0.15);
+    color: #1d4ed8;
+  }
+
+  .dark .card-icon.recommended {
+    background: rgba(6, 182, 212, 0.25);
+    color: #06b6d4;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .dark .card-title {
+    color: white;
+  }
+
+  .card-description {
+    color: #64748b;
+    font-size: 0.825rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    height: 2.5rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .dark .card-description {
+    color: #94a3b8;
+  }
+
+  .card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+  }
+
+  .card-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: #475569;
+  }
+
+  .dark .card-feature {
+    color: #cbd5e1;
+  }
+
+  .card-feature-icon {
+    color: #10b981;
+    flex-shrink: 0;
+  }
+
+  .card-footer {
+    margin-top: auto;
+  }
+
+  .card-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+  }
+
+  .dark .card-price {
+    color: #06b6d4;
+  }
+
+  .card-button {
+    width: 100%;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+
+  .card-button.primary {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+
+  .card-button.primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  }
+
+  .card-button.secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+
+  .card-button.secondary:active {
+    background: #e2e8f0;
+    transform: translateY(1px);
+  }
+
+  .dark .card-button.secondary {
+    background: #334155;
+    color: white;
+    border-color: #475569;
+  }
+
+  .dark .card-button.secondary:active {
+    background: #475569;
+  }
+
+  /* Navegación optimizada para móviles - Fuera del contenedor */
+  .deck-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .nav-button {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #3b82f6;
+    /* Mejorar área de toque en móviles */
+    touch-action: manipulation;
+  }
+
+  .dark .nav-button {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #06b6d4;
+  }
+
+  .nav-button:active {
+    background: white;
+    transform: scale(0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark .nav-button:active {
+    background: rgb(30, 41, 59);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .deck-indicators {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .deck-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Mejorar área de toque */
+    padding: 4px;
+    margin: -4px;
+  }
+
+  .dark .deck-indicator {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .deck-indicator.active {
+    background: #3b82f6;
+    transform: scale(1.2);
+  }
+
+  .dark .deck-indicator.active {
+    background: #06b6d4;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 380px) {
+  .card-deck {
+    width: 260px;
+    height: 400px;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+  }
+  
+  .card-description {
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  
+  .card-feature {
+    font-size: 0.75rem;
+  }
+}

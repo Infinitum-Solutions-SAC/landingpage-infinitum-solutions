@@ -1,10 +1,10 @@
 import { Server, Cpu, HardDrive, Check, ShieldAlert, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import '../styles/hardware-animation.css';
+import '../styles/card-deck.css';
 
 const Hardware = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
   const hardwareOptions = [
@@ -77,6 +77,25 @@ const Hardware = () => {
     setCurrentIndex(index);
   };
 
+  // Navegación con teclado
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevCard();
+      } else if (event.key === 'ArrowRight') {
+        nextCard();
+      } else if (event.key >= '1' && event.key <= '4') {
+        const index = parseInt(event.key) - 1;
+        if (index < hardwareOptions.length) {
+          goToCard(index);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Touch handlers for swipe functionality
   const minSwipeDistance = 30; // Reducir distancia mínima para hacer más sensible
 
@@ -115,10 +134,10 @@ const Hardware = () => {
     
     // Solo procesar swipe horizontal si el movimiento es más horizontal que vertical
     if (Math.abs(distanceX) > distanceY) {
-      if (isLeftSwipe && currentIndex < hardwareOptions.length - 1) {
+      if (isLeftSwipe) {
         nextCard();
       }
-      if (isRightSwipe && currentIndex > 0) {
+      if (isRightSwipe) {
         prevCard();
       }
     }
@@ -139,7 +158,7 @@ const Hardware = () => {
           </p>
         </div>
 
-        {/* Carrusel para móviles y vista de cuadrícula para escritorio */}
+        {/* Vista de cuadrícula tradicional para escritorio */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {hardwareOptions.map((option, index) => (
             <div 
@@ -177,91 +196,88 @@ const Hardware = () => {
           ))}
         </div>
 
-        {/* Carrusel para móviles */}
-        <div className="md:hidden relative overflow-hidden">
-          <div 
-            className="flex transition-transform duration-300 ease-out"
-            ref={scrollContainerRef}
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            {hardwareOptions.map((option, index) => (
-              <div key={index} className="w-full flex-shrink-0 px-2">
-                <div className={`relative p-6 rounded-xl shadow-lg flex flex-col justify-between h-full bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}>
+        {/* Efecto de cartas de naipes para móviles */}
+        <div className="md:hidden">
+          <div className="card-deck-container">
+            <div className="card-deck">
+              {hardwareOptions.map((option, index) => (
+                <div 
+                  key={index} 
+                  className={`deck-card ${currentIndex === index ? 'active' : ''}`}
+                  onClick={() => setCurrentIndex(index)}
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
                   {option.recommended && (
-                    <div className="absolute top-0 right-0 bg-costwise-blue dark:bg-costwise-teal text-white text-xs font-semibold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                    <div className="card-recommended-badge">
                       Recomendado
                     </div>
                   )}
-                  <div>
-                    <div className={`p-3 rounded-full inline-block mb-4 ${option.recommended ? 'bg-costwise-blue/10 dark:bg-costwise-teal/20' : 'bg-gray-100 dark:bg-slate-700'}`}>
-                      <option.icon size={28} className={option.recommended ? 'text-costwise-blue dark:text-costwise-teal' : 'text-costwise-navy dark:text-gray-300'} />
+                  <div className="card-content">
+                    <div className="card-header">
+                      <div className={`card-icon ${option.recommended ? 'recommended' : ''}`}>
+                        <option.icon size={24} />
+                      </div>
+                      <h3 className="card-title">{option.name}</h3>
+                      <p className="card-description">{option.description}</p>
                     </div>
-                    <h3 className="text-xl font-semibold text-costwise-navy dark:text-white mb-2">{option.name}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 h-20 overflow-hidden">{option.description}</p>
-                    <ul className="space-y-2 mb-6">
+                    
+                    <ul className="card-features">
                       {option.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                          <Check size={16} className="text-green-500 flex-shrink-0" />
+                        <li key={i} className="card-feature">
+                          <Check size={16} className="card-feature-icon" />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
-                  </div>
-                  <div className="mt-auto">
-                    <p className="text-2xl font-bold text-costwise-blue dark:text-costwise-teal mb-4">{option.price}</p>
-                    <a href="#contacto" className={`w-full text-center px-6 py-3 rounded-lg font-medium transition-colors ${option.recommended ? 'btn-primary' : 'btn-secondary dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'}`}>
-                      Solicitar cotización
-                    </a>
+                    
+                    <div className="card-footer">
+                      <p className="card-price">{option.price}</p>
+                      <a 
+                        href="#contacto" 
+                        className={`card-button ${option.recommended ? 'primary' : 'secondary'}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Solicitar cotización
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-
-          {/* Controles del carrusel e indicadores en la misma línea */}
-          <div className="flex justify-center items-center mt-6 space-x-4">
-            {/* Botón anterior */}
-            {hardwareOptions.length > 1 && (
-              <button 
-                onClick={prevCard} 
-                disabled={currentIndex === 0}
-                className={`bg-white/90 dark:bg-slate-700/90 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-lg transition-all duration-200 ${
-                  currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-80 hover:opacity-100 active:scale-95'
-                }`}
-                aria-label="Anterior"
-              >
-                <ChevronLeft size={18} className="text-costwise-blue dark:text-costwise-teal" />
-              </button>
-            )}
-
-            {/* Indicadores de puntos */}
-            <div className="flex justify-center space-x-2">
+          
+          {/* Navegación del deck móvil - Fuera del contenedor de cartas */}
+          <div className="deck-navigation">
+            <button 
+              onClick={prevCard} 
+              disabled={false}
+              className="nav-button"
+              aria-label="Anterior"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            
+            <div className="deck-indicators">
               {hardwareOptions.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => goToCard(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-costwise-blue dark:bg-costwise-teal scale-125' : 'bg-gray-300 dark:bg-slate-600 hover:bg-gray-400 dark:hover:bg-slate-500'}`}
-                  aria-label={`Ir a la tarjeta ${index + 1}`}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`deck-indicator ${currentIndex === index ? 'active' : ''}`}
+                  aria-label={`Ver configuración ${index + 1}`}
                 />
               ))}
             </div>
-
-            {/* Botón siguiente */}
-            {hardwareOptions.length > 1 && (
-              <button 
-                onClick={nextCard} 
-                disabled={currentIndex === hardwareOptions.length - 1}
-                className={`bg-white/90 dark:bg-slate-700/90 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-lg transition-all duration-200 ${
-                  currentIndex === hardwareOptions.length - 1 ? 'opacity-50 cursor-not-allowed' : 'opacity-80 hover:opacity-100 active:scale-95'
-                }`}
-                aria-label="Siguiente"
-              >
-                <ChevronRight size={18} className="text-costwise-blue dark:text-costwise-teal" />
-              </button>
-            )}
+            
+            <button 
+              onClick={nextCard} 
+              disabled={false}
+              className="nav-button"
+              aria-label="Siguiente"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
       </div>
