@@ -15,7 +15,7 @@ const Hero = () => {
             </div>
             
             {/* Elemento LCP optimizado con prioridad de carga */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-costwise-navy dark:text-white leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue leading-tight">
               Reduce costos con <br className="hidden md:block" />
               <span className="text-costwise-blue dark:text-costwise-teal">infraestructura local</span>
             </h1>

@@ -8,7 +8,7 @@ const Services = () => {
     <section id="servicios" className="section bg-gradient-to-b from-white to-costwise-gray dark:from-slate-900 dark:to-slate-800">
       <div className="container-custom">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-4">
             Soluciones adaptadas a tus necesidades
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -42,11 +42,18 @@ const Services = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 gap-12 items-center">
+        <div className="grid grid-cols-1 gap-12 items-center relative">
           {activeCase === 'emprendedor' ? (
             <>
-              <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
-                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy dark:text-white">
+              {/* Imagen decorativa cluster solo para emprendedores en escritorio */}
+              <img
+                src="/assets/images/hardware/cluster.webp"
+                alt="Cluster hardware"
+                className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-40 max-w-xs hidden lg:block drop-shadow-xl rotate-6"
+                style={{ zIndex: 0 }}
+              />
+              <div className="space-y-6 animate-fade-in max-w-3xl mx-auto relative z-10">
+                <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue">
                   Para emprendedores que buscan reducir costos iniciales
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
@@ -104,7 +111,7 @@ const Services = () => {
               {/* TARJETA ELIMINADA PARA EMPRESA */}
               
               <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
-                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy dark:text-white">
+                <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue">
                   Para empresas establecidas que buscan optimizar costos
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">

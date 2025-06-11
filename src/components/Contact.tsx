@@ -60,7 +60,7 @@ ${message}`;
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-4">
               ¿Listo para reducir tus costos IT?
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
@@ -111,7 +111,7 @@ ${message}`;
           </div>
           
           <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl animate-fade-in-up">
-            <h3 className="text-2xl font-semibold text-costwise-navy dark:text-white mb-6">Envíanos un mensaje</h3>
+            <h3 className="text-2xl font-semibold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-6">Envíanos un mensaje</h3>
             
             {isSubmitted && (
               <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-500/50 rounded-md text-green-700 dark:text-green-300 text-sm">
