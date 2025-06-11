@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
@@ -45,9 +44,6 @@ const NavBar = () => {
           <a href="#hardware" className="text-gray-700 hover:text-costwise-blue transition-colors">
             Hardware
           </a>
-          <a href="#testimonios" className="text-gray-700 hover:text-costwise-blue transition-colors">
-            Casos de Éxito
-          </a>
           <a href="#contacto" className="btn-primary">
             Consultar
           </a>
@@ -86,13 +82,6 @@ const NavBar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Hardware
-            </a>
-            <a 
-              href="#testimonios" 
-              className="text-gray-700 py-2 hover:text-costwise-blue transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Casos de Éxito
             </a>
             <a 
               href="#contacto" 

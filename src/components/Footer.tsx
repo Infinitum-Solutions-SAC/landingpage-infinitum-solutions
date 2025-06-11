@@ -1,4 +1,3 @@
-
 import { ArrowUp, Github, Linkedin, Twitter, BookOpen, MessageCircle } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -48,7 +47,6 @@ const Footer = () => {
             <h4 className="font-semibold text-costwise-navy mb-4">Empresa</h4>
             <ul className="space-y-3">
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Sobre nosotros</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Caso de éxito</a></li>
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Blog</a></li>
               <li><a href="#" className="text-gray-600 hover:text-costwise-blue transition-colors">Contacto</a></li>
             </ul>

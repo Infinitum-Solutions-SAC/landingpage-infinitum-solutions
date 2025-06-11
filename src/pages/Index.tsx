@@ -7,7 +7,6 @@ import Services from "@/components/Services";
 // Lazy loading para componentes below-the-fold
 const CostCalculator = lazy(() => import("@/components/CostCalculator"));
 const Hardware = lazy(() => import("@/components/Hardware"));
-const Testimonials = lazy(() => import("@/components/Testimonials"));
 const OpenSource = lazy(() => import("@/components/OpenSource"));
 const Contact = lazy(() => import("@/components/Contact"));
 const Footer = lazy(() => import("@/components/Footer"));
@@ -38,10 +37,6 @@ const Index = () => {
       
       <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
         <Hardware />
-      </Suspense>
-      
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
-        <Testimonials />
       </Suspense>
       
       <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
