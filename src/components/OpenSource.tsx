@@ -139,103 +139,100 @@ const OpenSource = () => {
       </div>
 
       <div className="container-custom">
-        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-8 rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
-              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-6 py-3 rounded-full text-sm font-medium border border-costwise-blue/30 dark:border-costwise-teal/40">
-                <Github size={16} />
-                <span>Filosofía Open Source</span>
+        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-3 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+            <div className={`space-y-3 md:space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
+              <div className="inline-flex items-center gap-1.5 md:gap-3 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-3 md:px-6 py-1 md:py-3 rounded-full text-xs md:text-sm font-medium border border-costwise-blue/30 dark:border-costwise-teal/40">
+                <Github size={12} className="md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Filosofía Open Source</span>
+                <span className="sm:hidden">Open Source</span>
               </div>
               
-              <h3 className="text-3xl font-bold bg-gradient-to-r from-costwise-navy to-costwise-blue bg-clip-text text-transparent dark:from-white dark:to-costwise-teal">
-                Auto-hospedamos por Principio
+              <h3 className="text-lg md:text-3xl font-bold bg-gradient-to-r from-costwise-navy to-costwise-blue bg-clip-text text-transparent dark:from-white dark:to-costwise-teal leading-tight">
+                <span className="hidden sm:inline">Auto-hospedamos por Principio</span>
+                <span className="sm:hidden">Soberanía Digital</span>
               </h3>
               
-              <div className="space-y-4">
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
-                  <Zap size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
-                  <span><strong>Independencia tecnológica:</strong> No dependemos de gigantes tecnológicos. 
+              <div className="space-y-2 md:space-y-4">
+                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
+                  <Zap size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
+                  <span className="sm:hidden"><strong>Independencia</strong> • Tus datos seguros</span>
+                  <span className="hidden sm:inline"><strong>Independencia tecnológica:</strong> No dependemos de gigantes tecnológicos. 
                   Nuestros servidores, nuestras reglas, tus datos seguros.</span>
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
-                  <Wrench size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
-                  <span><strong>Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
+                </div>
+                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
+                  <Wrench size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
+                  <span className="sm:hidden"><strong>Personalización</strong> • A tu medida</span>
+                  <span className="hidden sm:inline"><strong>Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
                   porque creemos que no hay soluciones universales.</span>
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
-                  <Handshake size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
-                  <span><strong>Retribuimos a la comunidad:</strong> El 5% de nuestros ingresos se destinan a 
+                </div>
+                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
+                  <Handshake size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
+                  <span className="sm:hidden"><strong>Comunidad</strong> • 5% a open source</span>
+                  <span className="hidden sm:inline"><strong>Retribuimos a la comunidad:</strong> El 5% de nuestros ingresos se destinan a 
                   contribuir y mantener proyectos de software libre.</span>
-                </p>
-              </div>
-              
-              <div className="pt-4">
-                <a href="#contacto" className="inline-flex items-center gap-2 bg-gradient-to-r from-costwise-blue to-costwise-teal text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <Code size={16} />
-                  Ve nuestras contribuciones
-                </a>
+                </div>
               </div>
             </div>
             
             <div className={`relative ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1000ms' }}>
-              <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm border border-costwise-blue/20 dark:border-costwise-teal/30 p-8 rounded-2xl shadow-xl">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="p-4 bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-2xl">
-                    <Terminal size={24} className="text-costwise-blue dark:text-costwise-teal" />
+              <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm border border-costwise-blue/20 dark:border-costwise-teal/30 p-4 md:p-8 rounded-2xl shadow-xl">
+                <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                  <div className="p-3 md:p-4 bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-2xl">
+                    <Terminal size={20} className="text-costwise-blue dark:text-costwise-teal md:w-6 md:h-6" />
                   </div>
                   <div>
-                    <h4 className="flex items-center text-xl font-bold text-costwise-navy dark:text-white">
-                      <Target size={20} className="mr-2 text-costwise-blue dark:text-costwise-teal" /> 
+                    <h4 className="flex items-center text-lg md:text-xl font-bold text-costwise-navy dark:text-white">
                       Ventajas del Auto-hospedaje
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Más allá del ahorro económico</p>
+                    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300">Más allá del ahorro económico</p>
                   </div>
                 </div>
                 
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-4">
-                    <div className="mt-1 w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Lock size={16} className="text-white" />
+                <ul className="space-y-3 md:space-y-4">
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Lock size={14} className="text-white md:w-4 md:h-4" />
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">Control total de tus datos</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Tus datos nunca salen de tu infraestructura</p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Control total de tus datos</span>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Tus datos nunca salen de tu infraestructura</p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-4">
-                    <div className="mt-1 w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Gauge size={16} className="text-white" />
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Gauge size={14} className="text-white md:w-4 md:h-4" />
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">Rendimiento optimizado</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Hardware dedicado, latencia mínima</p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Rendimiento optimizado</span>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Hardware dedicado, latencia mínima</p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-4">
-                    <div className="mt-1 w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <ShieldCheck size={16} className="text-white" />
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <ShieldCheck size={14} className="text-white md:w-4 md:h-4" />
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">Seguridad por diseño</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Auditabilidad completa del código</p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Seguridad por diseño</span>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Auditabilidad completa del código</p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-4">
-                    <div className="mt-1 w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <BadgeDollarSign size={16} className="text-white" />
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <BadgeDollarSign size={14} className="text-white md:w-4 md:h-4" />
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">Costos predecibles</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Sin licencias por usuario ni límites artificiales</p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Costos predecibles</span>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Sin licencias por usuario ni límites artificiales</p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-4">
-                    <div className="mt-1 w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Globe size={16} className="text-white" />
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Globe size={14} className="text-white md:w-4 md:h-4" />
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">Comunidad global</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Soporte y mejoras continuas</p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Comunidad global</span>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Soporte y mejoras continuas</p>
                     </div>
                   </li>
                 </ul>

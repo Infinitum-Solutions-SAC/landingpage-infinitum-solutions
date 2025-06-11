@@ -3,10 +3,42 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronRight, ExternalLink, Building2, Users, Zap, ArrowLeft, ListChecks, Replace, LayoutGrid } from "lucide-react";
-import * as LucideIcons from "lucide-react"; // Importar todos los iconos
+import { 
+  ChevronRight, 
+  ExternalLink, 
+  Building2, 
+  Users, 
+  Zap, 
+  ArrowLeft, 
+  ListChecks, 
+  Replace, 
+  LayoutGrid,
+  Rocket,
+  ShoppingCart,
+  Briefcase,
+  GraduationCap,
+  HeartPulse,
+  Factory,
+  Circle
+} from "lucide-react";
 import { industriesData, getIndustryOpenSourceAlternatives, type Industry } from "@/data/industriesData";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+// Mapeo de nombres de iconos a componentes
+const iconMap = {
+  Rocket,
+  ShoppingCart,
+  Briefcase,
+  GraduationCap,
+  HeartPulse,
+  Factory,
+  Circle
+} as const;
+
+// Función para obtener el componente de icono
+const getIconComponent = (iconName: string) => {
+  return iconMap[iconName as keyof typeof iconMap] || Circle;
+};
 
 const IndustrySelector = () => {
   const isMobile = useIsMobile();
@@ -76,9 +108,7 @@ const IndustrySelector = () => {
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                          <span className="text-2xl">
-                            {React.createElement(LucideIcons[industry.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
-                          </span>
+                          {React.createElement(getIconComponent(industry.icon), { size: 24 })}
                           <div>
                             <h3 className="font-semibold text-gray-900 dark:text-white">
                               {industry.name}
@@ -103,9 +133,7 @@ const IndustrySelector = () => {
                       <ArrowLeft className="h-5 w-5 mr-1" /> Volver
                     </Button>
                     {selectedIndustryData.icon && 
-                      <span className="text-2xl">
-                        {React.createElement(LucideIcons[selectedIndustryData.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
-                      </span>
+                      React.createElement(getIconComponent(selectedIndustryData.icon), { size: 24 })
                     }
                     <h3 className="font-bold text-xl">{selectedIndustryData.name}</h3>
                   </div>
@@ -223,9 +251,7 @@ const IndustrySelector = () => {
                     } border`}
                   >
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl">
-                        {React.createElement(LucideIcons[industry.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
-                      </span>
+                      {React.createElement(getIconComponent(industry.icon), { size: 24 })}
                       <div>
                         <h3 className="font-semibold text-gray-900 dark:text-white">
                           {industry.name}
@@ -249,9 +275,7 @@ const IndustrySelector = () => {
                 <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-4 mb-4">
-                      <span className="text-4xl">
-                        {React.createElement(LucideIcons[selectedIndustryData.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
-                      </span>
+                      {React.createElement(getIconComponent(selectedIndustryData.icon), { size: 36 })}
                       <div>
                         <h2 className="text-2xl font-bold">{selectedIndustryData.name}</h2>
                         <p className="text-blue-100">{selectedIndustryData.description}</p>
