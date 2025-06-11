@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Code, Github, Terminal, Heart } from 'lucide-react';
 
@@ -39,23 +38,23 @@ const OpenSource = () => {
   ];
   
   return (
-    <section id="beneficios" className="section bg-gradient-to-b from-costwise-gray to-white">
+    <section id="beneficios" className="section bg-gradient-to-b from-costwise-gray to-white dark:from-slate-800 dark:to-slate-900">
       <div className="container-custom" id="opensource-section">
         <div className="text-center mb-16">
-          <div className={`inline-flex items-center gap-2 bg-costwise-blue/10 text-costwise-blue px-4 py-2 rounded-full text-sm font-medium mb-4 ${
+          <div className={`inline-flex items-center gap-2 bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal px-4 py-2 rounded-full text-sm font-medium mb-4 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`}>
             <Heart size={14} />
             <span>Agradecimientos</span>
           </div>
           
-          <h2 className={`text-3xl md:text-4xl font-bold text-costwise-navy mb-4 ${
+          <h2 className={`text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-4 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '100ms' }}>
             Potenciados por Open Source
           </h2>
           
-          <p className={`text-gray-600 max-w-2xl mx-auto ${
+          <p className={`text-gray-600 dark:text-gray-300 max-w-2xl mx-auto ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '200ms' }}>
             Nuestras soluciones se basan en tecnologías de código abierto de alta calidad,
@@ -67,34 +66,34 @@ const OpenSource = () => {
           {tools.map((tool, index) => (
             <div 
               key={tool.name}
-              className={`bg-white p-4 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 ${
+              className={`bg-white dark:bg-slate-800 p-4 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 ${
                 isVisible ? 'animate-fade-in' : 'opacity-0'
               }`}
               style={{ animationDelay: `${index * 100 + 300}ms` }}
             >
               <div className="text-center">
-                <div className="w-12 h-12 mx-auto bg-gray-100 rounded-full mb-3 flex items-center justify-center">
-                  <Code size={24} className="text-gray-600" />
+                <div className="w-12 h-12 mx-auto bg-gray-100 dark:bg-slate-700 rounded-full mb-3 flex items-center justify-center">
+                  <Code size={24} className="text-gray-600 dark:text-gray-300" />
                 </div>
-                <span className="text-sm font-medium text-gray-800">{tool.name}</span>
+                <span className="text-sm font-medium text-gray-800 dark:text-gray-100">{tool.name}</span>
               </div>
             </div>
           ))}
         </div>
         
-        <div className="bg-costwise-blue/5 p-8 rounded-2xl">
+        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/10 p-8 rounded-2xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className={`space-y-6 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
-              <div className="inline-flex items-center gap-2 bg-costwise-blue/10 text-costwise-blue px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal px-4 py-2 rounded-full text-sm font-medium">
                 <Github size={14} />
                 <span>Comunidad Open Source</span>
               </div>
               
-              <h3 className="text-2xl font-bold text-costwise-navy">
+              <h3 className="text-2xl font-bold text-costwise-navy dark:text-white">
                 Comprometidos con el Software Libre
               </h3>
               
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Creemos en el poder del software libre y contribuimos activamente a la comunidad.
                 Parte de nuestros ingresos se destina a apoyar proyectos de código abierto.
               </p>

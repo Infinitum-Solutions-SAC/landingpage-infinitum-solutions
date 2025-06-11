@@ -5,25 +5,25 @@ const Services = () => {
   const [activeCase, setActiveCase] = useState<'emprendedor' | 'empresa'>('emprendedor');
   
   return (
-    <section id="servicios" className="section bg-gradient-to-b from-white to-costwise-gray">
+    <section id="servicios" className="section bg-gradient-to-b from-white to-costwise-gray dark:from-slate-900 dark:to-slate-800">
       <div className="container-custom">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-4">
             Soluciones adaptadas a tus necesidades
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Ofrecemos servicios personalizados según el tamaño y necesidades de cada cliente,
             desde emprendedores hasta empresas ya establecidas.
           </p>
         </div>
         
         <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1 bg-gray-100 rounded-full">
+          <div className="inline-flex p-1 bg-gray-100 dark:bg-slate-700 rounded-full">
             <button
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                 activeCase === 'emprendedor' 
                   ? 'bg-costwise-blue text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
               }`}
               onClick={() => setActiveCase('emprendedor')}
             >
@@ -33,7 +33,7 @@ const Services = () => {
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                 activeCase === 'empresa' 
                   ? 'bg-costwise-blue text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
               }`}
               onClick={() => setActiveCase('empresa')}
             >
@@ -46,53 +46,53 @@ const Services = () => {
           {activeCase === 'emprendedor' ? (
             <>
               <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
-                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy">
+                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy dark:text-white">
                   Para emprendedores que buscan reducir costos iniciales
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Si estás comenzando tu negocio y buscas optimizar tus gastos en infraestructura
                   tecnológica, tenemos la solución perfecta para ti.
                 </p>
                 
                 <div className="space-y-4 mt-6">
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Configuraciones pre-establecidas</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Configuraciones pre-establecidas</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Scripts automáticos que configuran todo tu entorno con las mejores herramientas open source.
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Hardware básico asequible</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Hardware básico asequible</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Opciones de hardware económicas pero eficientes para tus servidores locales.
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Capacitación básica</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Capacitación básica</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Te enseñamos lo esencial para administrar tu infraestructura.
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <a href="#hardware" className="inline-flex items-center text-costwise-blue font-medium gap-2 mt-4">
+                <a href="#hardware" className="inline-flex items-center text-costwise-blue dark:text-costwise-teal font-medium gap-2 mt-4">
                   Ver opciones de hardware <ArrowRight size={16} />
                 </a>
               </div>
@@ -104,53 +104,53 @@ const Services = () => {
               {/* TARJETA ELIMINADA PARA EMPRESA */}
               
               <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
-                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy">
+                <h3 className="text-2xl md:text-3xl font-bold text-costwise-navy dark:text-white">
                   Para empresas establecidas que buscan optimizar costos
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Si ya tienes una empresa en funcionamiento y buscas reducir el gasto en servicios cloud
                   y licencias, ofrecemos soluciones a medida.
                 </p>
                 
                 <div className="space-y-4 mt-6">
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Evaluación personalizada</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Evaluación personalizada</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Analizamos tu infraestructura actual y desarrollamos un plan de migración a medida.
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Soluciones escalables</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Soluciones escalables</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Hardware y software diseñados para crecer con tu empresa.
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 bg-costwise-blue/10 p-1 rounded-full">
-                      <Check size={16} className="text-costwise-blue" />
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-800">Capacitación completa y soporte</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Capacitación completa y soporte</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Entrenamos a tu equipo y ofrecemos soporte continuo para asegurar operaciones fluidas.
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <a href="#contacto" className="inline-flex items-center text-costwise-blue font-medium gap-2 mt-4">
+                <a href="#contacto" className="inline-flex items-center text-costwise-blue dark:text-costwise-teal font-medium gap-2 mt-4">
                   Solicitar evaluación gratuita <ArrowRight size={16} />
                 </a>
               </div>

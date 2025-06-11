@@ -1,4 +1,3 @@
-
 import { Suspense, lazy } from "react";
 import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
@@ -14,40 +13,40 @@ const Footer = lazy(() => import("@/components/Footer"));
 // Loading skeleton optimizado
 const ComponentSkeleton = () => (
   <div className="animate-pulse">
-    <div className="h-64 bg-gray-200 rounded-lg mb-4"></div>
+    <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
     <div className="space-y-3">
-      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
     </div>
   </div>
 );
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Componentes críticos above-the-fold - cargar inmediatamente */}
       <NavBar />
       <Hero />
       <Services />
       
       {/* Componentes below-the-fold - cargar con lazy loading */}
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <CostCalculator />
       </Suspense>
       
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <Hardware />
       </Suspense>
       
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <OpenSource />
       </Suspense>
       
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <Contact />
       </Suspense>
       
-      <Suspense fallback={<div className="container-custom py-16"><ComponentSkeleton /></div>}>
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <Footer />
       </Suspense>
     </div>
