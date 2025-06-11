@@ -78,7 +78,7 @@ const Hardware = () => {
   };
 
   // Touch handlers for swipe functionality
-  const minSwipeDistance = 50; // Minimum distance for a swipe
+  const minSwipeDistance = 30; // Reducir distancia mínima para hacer más sensible
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null); // Reset touchEnd
@@ -93,6 +93,16 @@ const Hardware = () => {
       x: e.targetTouches[0].clientX,
       y: e.targetTouches[0].clientY
     });
+    
+    // Prevenir scroll vertical si hay movimiento horizontal
+    if (touchStart) {
+      const distanceX = Math.abs(touchStart.x - e.targetTouches[0].clientX);
+      const distanceY = Math.abs(touchStart.y - e.targetTouches[0].clientY);
+      
+      if (distanceX > distanceY && distanceX > 10) {
+        e.preventDefault();
+      }
+    }
   };
 
   const onTouchEnd = () => {
@@ -112,6 +122,10 @@ const Hardware = () => {
         prevCard();
       }
     }
+    
+    // Limpiar valores de touch
+    setTouchStart(null);
+    setTouchEnd(null);
   };
   return (
     <section id="hardware" className="section bg-gradient-to-b from-costwise-gray to-white dark:from-slate-800 dark:to-slate-900">
@@ -164,9 +178,9 @@ const Hardware = () => {
         </div>
 
         {/* Carrusel para móviles */}
-        <div className="md:hidden relative">
+        <div className="md:hidden relative overflow-hidden">
           <div 
-            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide transition-transform duration-300 ease-out"
+            className="flex transition-transform duration-300 ease-out"
             ref={scrollContainerRef}
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             onTouchStart={onTouchStart}
@@ -174,7 +188,7 @@ const Hardware = () => {
             onTouchEnd={onTouchEnd}
           >
             {hardwareOptions.map((option, index) => (
-              <div key={index} className="min-w-full snap-center p-2 flex-shrink-0">
+              <div key={index} className="w-full flex-shrink-0 px-2">
                 <div className={`relative p-6 rounded-xl shadow-lg flex flex-col justify-between h-full bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}>
                   {option.recommended && (
                     <div className="absolute top-0 right-0 bg-costwise-blue dark:bg-costwise-teal text-white text-xs font-semibold px-3 py-1 rounded-bl-lg rounded-tr-lg">
@@ -207,36 +221,47 @@ const Hardware = () => {
             ))}
           </div>
 
-          {/* Controles del carrusel */}
-          {hardwareOptions.length > 1 && (
-            <>
+          {/* Controles del carrusel e indicadores en la misma línea */}
+          <div className="flex justify-center items-center mt-6 space-x-4">
+            {/* Botón anterior */}
+            {hardwareOptions.length > 1 && (
               <button 
                 onClick={prevCard} 
-                className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/80 dark:bg-slate-700/80 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-md transition-opacity opacity-75 hover:opacity-100 z-10"
+                disabled={currentIndex === 0}
+                className={`bg-white/90 dark:bg-slate-700/90 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-lg transition-all duration-200 ${
+                  currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-80 hover:opacity-100 active:scale-95'
+                }`}
                 aria-label="Anterior"
               >
-                <ChevronLeft size={24} className="text-costwise-blue dark:text-costwise-teal" />
+                <ChevronLeft size={18} className="text-costwise-blue dark:text-costwise-teal" />
               </button>
+            )}
+
+            {/* Indicadores de puntos */}
+            <div className="flex justify-center space-x-2">
+              {hardwareOptions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToCard(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-costwise-blue dark:bg-costwise-teal scale-125' : 'bg-gray-300 dark:bg-slate-600 hover:bg-gray-400 dark:hover:bg-slate-500'}`}
+                  aria-label={`Ir a la tarjeta ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Botón siguiente */}
+            {hardwareOptions.length > 1 && (
               <button 
                 onClick={nextCard} 
-                className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white/80 dark:bg-slate-700/80 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-md transition-opacity opacity-75 hover:opacity-100 z-10"
+                disabled={currentIndex === hardwareOptions.length - 1}
+                className={`bg-white/90 dark:bg-slate-700/90 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-full shadow-lg transition-all duration-200 ${
+                  currentIndex === hardwareOptions.length - 1 ? 'opacity-50 cursor-not-allowed' : 'opacity-80 hover:opacity-100 active:scale-95'
+                }`}
                 aria-label="Siguiente"
               >
-                <ChevronRight size={24} className="text-costwise-blue dark:text-costwise-teal" />
+                <ChevronRight size={18} className="text-costwise-blue dark:text-costwise-teal" />
               </button>
-            </>
-          )}
-
-          {/* Indicadores de puntos */}
-          <div className="flex justify-center mt-6 space-x-2">
-            {hardwareOptions.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToCard(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-costwise-blue dark:bg-costwise-teal scale-125' : 'bg-gray-300 dark:bg-slate-600 hover:bg-gray-400 dark:hover:bg-slate-500'}`}
-                aria-label={`Ir a la tarjeta ${index + 1}`}
-              />
-            ))}
+            )}
           </div>
         </div>
       </div>
