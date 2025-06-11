@@ -30,8 +30,9 @@ const Hero = () => {
                 Consulta gratis
                 <ArrowRight size={18} />
               </a>
-              <a href="#calculadora" className="btn-secondary flex items-center justify-center px-6 py-3">
+              <a href="#calculadora" className="btn-secondary flex items-center justify-center gap-2 px-6 py-3">
                 Ver comparación de costos
+                {/* Se podría añadir un icono aquí si se desea, ej: <BarChart size={18} /> */}
               </a>
             </div>
             

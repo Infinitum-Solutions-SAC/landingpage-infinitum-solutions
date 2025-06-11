@@ -10,7 +10,7 @@ export type Industry = {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: keyof typeof import("lucide-react"); // Cambiado para usar nombres de iconos de lucide-react
   commonTools: IndustryTool[];
 };
 
@@ -19,7 +19,7 @@ export const industriesData: Industry[] = [
     id: "startups-tech",
     name: "Startups & Tech",
     description: "Empresas tecnológicas en crecimiento",
-    icon: "🚀",
+    icon: "Rocket", // Reemplazado emoji 🚀
     commonTools: [
       { name: "Slack", category: "Comunicación", description: "Chat para equipos", priority: 5 },
       { name: "Jira", category: "Gestión de Proyectos", description: "Gestión ágil", priority: 4 },
@@ -34,7 +34,7 @@ export const industriesData: Industry[] = [
     id: "retail-comercio",
     name: "Retail & Comercio",
     description: "Tiendas y comercio electrónico",
-    icon: "🛒",
+    icon: "ShoppingCart", // Reemplazado emoji 🛒
     commonTools: [
       { name: "Shopify", category: "E-commerce", description: "Tienda online", priority: 5 },
       { name: "Salesforce", category: "CRM", description: "Gestión de ventas", priority: 4 },
@@ -49,7 +49,7 @@ export const industriesData: Industry[] = [
     id: "servicios-profesionales",
     name: "Servicios Profesionales",
     description: "Consultorías, agencias, bufetes",
-    icon: "💼",
+    icon: "Briefcase", // Reemplazado emoji 💼
     commonTools: [
       { name: "Microsoft 365", category: "Ofimática", description: "Suite de oficina", priority: 5 },
       { name: "Salesforce", category: "CRM", description: "Gestión de clientes", priority: 4 },
@@ -64,7 +64,7 @@ export const industriesData: Industry[] = [
     id: "educacion",
     name: "Educación",
     description: "Instituciones educativas y e-learning",
-    icon: "🎓",
+    icon: "GraduationCap", // Reemplazado emoji 🎓
     commonTools: [
       { name: "Google Workspace", category: "Ofimática", description: "Aulas virtuales", priority: 5 },
       { name: "Zoom", category: "Videoconferencias", description: "Clases virtuales", priority: 5 },
@@ -78,7 +78,7 @@ export const industriesData: Industry[] = [
     id: "salud",
     name: "Salud & Medicina",
     description: "Clínicas, hospitales, consultorios",
-    icon: "⚕️",
+    icon: "HeartPulse", // Reemplazado emoji ⚕️
     commonTools: [
       { name: "Microsoft 365", category: "Ofimática", description: "Gestión administrativa", priority: 4 },
       { name: "Salesforce Health Cloud", category: "CRM", description: "Gestión de pacientes", priority: 5 },
@@ -92,7 +92,7 @@ export const industriesData: Industry[] = [
     id: "manufactura",
     name: "Manufactura",
     description: "Industria manufacturera y producción",
-    icon: "🏭",
+    icon: "Factory", // Reemplazado emoji 🏭
     commonTools: [
       { name: "Microsoft 365", category: "Ofimática", description: "Gestión administrativa", priority: 4 },
       { name: "Salesforce", category: "CRM", description: "Gestión de clientes", priority: 4 },

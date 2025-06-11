@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Code, Github, Terminal, Heart, ExternalLink } from 'lucide-react';
+import { Code, Github, Terminal, Heart, ExternalLink, Lock, Gauge, ShieldCheck, BadgeDollarSign, Globe, Zap, Wrench, Handshake, CheckCircle, Target } from 'lucide-react';
 
 const OpenSource = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,19 +46,19 @@ const OpenSource = () => {
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`}>
             <Heart size={16} className="text-red-500 animate-pulse" />
-            <span>💻 Construido con Amor por el Software Libre</span>
+            <span>Construido con Software Libre</span>
           </div>
           
           <h2 className={`text-4xl md:text-5xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-6 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '100ms' }}>
-            🚀 Potenciados por Open Source
+            Potenciados por Open Source
           </h2>
           
           <p className={`text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '200ms' }}>
-            <strong>🏠 Auto-hospedamos</strong> y <strong>🔧 personalizamos</strong> tecnologías de código abierto de clase empresarial.
+            <strong>Auto-hospedamos</strong> y <strong>personalizamos</strong> tecnologías de código abierto de clase empresarial.
             Porque creemos que la <span className="text-costwise-blue dark:text-costwise-teal font-semibold">libertad digital</span> y 
             el <span className="text-costwise-blue dark:text-costwise-teal font-semibold">control total</span> de tus datos no deberían ser un lujo.
           </p>
@@ -83,7 +83,7 @@ const OpenSource = () => {
                       <Code size={20} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-md">
-                      <span className="text-white text-xs font-bold">✓</span>
+                      <CheckCircle size={12} className="text-white" />
                     </div>
                     <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-costwise-blue/80 dark:bg-costwise-teal/80 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <ExternalLink size={10} className="text-white" />
@@ -117,7 +117,7 @@ const OpenSource = () => {
                       <Code size={20} className="text-costwise-blue dark:text-costwise-teal" />
                     </div>
                     <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-md">
-                      <span className="text-white text-xs font-bold">✓</span>
+                      <CheckCircle size={12} className="text-white" />
                     </div>
                     <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-costwise-blue/80 dark:bg-costwise-teal/80 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <ExternalLink size={10} className="text-white" />
@@ -144,31 +144,34 @@ const OpenSource = () => {
             <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
               <div className="inline-flex items-center gap-3 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-6 py-3 rounded-full text-sm font-medium border border-costwise-blue/30 dark:border-costwise-teal/40">
                 <Github size={16} />
-                <span>🌟 Filosofía Open Source</span>
+                <span>Filosofía Open Source</span>
               </div>
               
               <h3 className="text-3xl font-bold bg-gradient-to-r from-costwise-navy to-costwise-blue bg-clip-text text-transparent dark:from-white dark:to-costwise-teal">
-                🏠 Auto-hospedamos por Principio
+                Auto-hospedamos por Principio
               </h3>
               
               <div className="space-y-4">
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  <strong>💪 Independencia tecnológica:</strong> No dependemos de gigantes tecnológicos. 
-                  Nuestros servidores, nuestras reglas, tus datos seguros.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
+                  <Zap size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
+                  <span><strong>Independencia tecnológica:</strong> No dependemos de gigantes tecnológicos. 
+                  Nuestros servidores, nuestras reglas, tus datos seguros.</span>
                 </p>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  <strong>🔧 Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
-                  porque creemos que no hay soluciones universales.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
+                  <Wrench size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
+                  <span><strong>Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
+                  porque creemos que no hay soluciones universales.</span>
                 </p>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  <strong>🤝 Retribuimos a la comunidad:</strong> El 5% de nuestros ingresos se destinan a 
-                  contribuir y mantener proyectos de software libre.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed flex items-start">
+                  <Handshake size={20} className="text-costwise-blue dark:text-costwise-teal mr-2 mt-1 flex-shrink-0" />
+                  <span><strong>Retribuimos a la comunidad:</strong> El 5% de nuestros ingresos se destinan a 
+                  contribuir y mantener proyectos de software libre.</span>
                 </p>
               </div>
               
               <div className="pt-4">
                 <a href="#contacto" className="inline-flex items-center gap-2 bg-gradient-to-r from-costwise-blue to-costwise-teal text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <Heart size={16} className="text-red-200" />
+                  <Code size={16} />
                   Ve nuestras contribuciones
                 </a>
               </div>
@@ -181,7 +184,10 @@ const OpenSource = () => {
                     <Terminal size={24} className="text-costwise-blue dark:text-costwise-teal" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-costwise-navy dark:text-white">🎯 Ventajas del Auto-hospedaje</h4>
+                    <h4 className="flex items-center text-xl font-bold text-costwise-navy dark:text-white">
+                      <Target size={20} className="mr-2 text-costwise-blue dark:text-costwise-teal" /> 
+                      Ventajas del Auto-hospedaje
+                    </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300">Más allá del ahorro económico</p>
                   </div>
                 </div>
@@ -189,7 +195,7 @@ const OpenSource = () => {
                 <ul className="space-y-4">
                   <li className="flex items-start gap-4">
                     <div className="mt-1 w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <span className="text-white text-sm font-bold">🔐</span>
+                      <Lock size={16} className="text-white" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-800 dark:text-gray-200">Control total de tus datos</span>
@@ -198,7 +204,7 @@ const OpenSource = () => {
                   </li>
                   <li className="flex items-start gap-4">
                     <div className="mt-1 w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <span className="text-white text-sm font-bold">🚀</span>
+                      <Gauge size={16} className="text-white" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-800 dark:text-gray-200">Rendimiento optimizado</span>
@@ -207,7 +213,7 @@ const OpenSource = () => {
                   </li>
                   <li className="flex items-start gap-4">
                     <div className="mt-1 w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <span className="text-white text-sm font-bold">🛡️</span>
+                      <ShieldCheck size={16} className="text-white" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-800 dark:text-gray-200">Seguridad por diseño</span>
@@ -216,7 +222,7 @@ const OpenSource = () => {
                   </li>
                   <li className="flex items-start gap-4">
                     <div className="mt-1 w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <span className="text-white text-sm font-bold">💰</span>
+                      <BadgeDollarSign size={16} className="text-white" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-800 dark:text-gray-200">Costos predecibles</span>
@@ -225,7 +231,7 @@ const OpenSource = () => {
                   </li>
                   <li className="flex items-start gap-4">
                     <div className="mt-1 w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <span className="text-white text-sm font-bold">🌍</span>
+                      <Globe size={16} className="text-white" />
                     </div>
                     <div>
                       <span className="font-semibold text-gray-800 dark:text-gray-200">Comunidad global</span>

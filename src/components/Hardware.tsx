@@ -172,7 +172,7 @@ const Hardware = () => {
                 </div>
               )}
               <div>
-                <div className={`p-3 rounded-full inline-block mb-4 ${option.recommended ? 'bg-costwise-blue/10 dark:bg-costwise-teal/20' : 'bg-gray-100 dark:bg-slate-700'}`}>
+                <div className={`p-3 rounded-full inline-block mb-4 ${option.recommended ? 'bg-costwise-blue/10 dark:bg-costwise-teal/20' : 'bg-gray-100 dark:bg-slate-700'}`}>                  
                   <option.icon size={28} className={option.recommended ? 'text-costwise-blue dark:text-costwise-teal' : 'text-costwise-navy dark:text-gray-300'} />
                 </div>
                 <h3 className="text-xl font-semibold text-costwise-navy dark:text-white mb-2">{option.name}</h3>
@@ -237,7 +237,7 @@ const Hardware = () => {
                       <a 
                         href="#contacto" 
                         className={`card-button ${option.recommended ? 'primary' : 'secondary'}`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()} // Evitar que el click en el botón active el onClick de la tarjeta
                       >
                         Solicitar cotización
                       </a>

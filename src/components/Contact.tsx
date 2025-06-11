@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -202,13 +202,13 @@ ${message}`;
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Enviando...
                     </>
                   ) : (
                     <>
-                      <Send size={18} />
-                      Enviar mensaje vía WhatsApp
+                      <Send size={18} className="mr-2"/>
+                      Enviar Mensaje
                     </>
                   )}
                 </button>

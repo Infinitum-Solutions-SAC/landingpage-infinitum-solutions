@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronRight, ExternalLink, Building2, Users, Zap } from "lucide-react";
+import { ChevronRight, ExternalLink, Building2, Users, Zap, ArrowLeft, ListChecks, Replace, LayoutGrid } from "lucide-react";
+import * as LucideIcons from "lucide-react"; // Importar todos los iconos
 import { industriesData, getIndustryOpenSourceAlternatives, type Industry } from "@/data/industriesData";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -75,7 +76,9 @@ const IndustrySelector = () => {
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                          <span className="text-2xl">{industry.icon}</span>
+                          <span className="text-2xl">
+                            {React.createElement(LucideIcons[industry.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
+                          </span>
                           <div>
                             <h3 className="font-semibold text-gray-900 dark:text-white">
                               {industry.name}
@@ -97,9 +100,13 @@ const IndustrySelector = () => {
                   {/* Header con botón de regreso */}
                   <div className="flex items-center space-x-2 mb-4">
                     <Button variant="ghost" size="sm" onClick={handleBackToIndustries}>
-                      ← Volver
+                      <ArrowLeft className="h-5 w-5 mr-1" /> Volver
                     </Button>
-                    <span className="text-2xl">{selectedIndustryData.icon}</span>
+                    {selectedIndustryData.icon && 
+                      <span className="text-2xl">
+                        {React.createElement(LucideIcons[selectedIndustryData.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
+                      </span>
+                    }
                     <h3 className="font-bold text-xl">{selectedIndustryData.name}</h3>
                   </div>
 
@@ -197,7 +204,7 @@ const IndustrySelector = () => {
             <Card className="sticky top-20 lg:top-24">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Building2 className="h-5 w-5" />
+                  <LayoutGrid className="h-5 w-5" />
                   <span>Selecciona tu Industria</span>
                 </CardTitle>
                 <CardDescription>
@@ -216,7 +223,9 @@ const IndustrySelector = () => {
                     } border`}
                   >
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl">{industry.icon}</span>
+                      <span className="text-2xl">
+                        {React.createElement(LucideIcons[industry.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
+                      </span>
                       <div>
                         <h3 className="font-semibold text-gray-900 dark:text-white">
                           {industry.name}
@@ -240,7 +249,9 @@ const IndustrySelector = () => {
                 <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-4 mb-4">
-                      <span className="text-4xl">{selectedIndustryData.icon}</span>
+                      <span className="text-4xl">
+                        {React.createElement(LucideIcons[selectedIndustryData.icon] || LucideIcons.Circle)} {/* Renderizar icono dinámicamente */}
+                      </span>
                       <div>
                         <h2 className="text-2xl font-bold">{selectedIndustryData.name}</h2>
                         <p className="text-blue-100">{selectedIndustryData.description}</p>
@@ -270,8 +281,14 @@ const IndustrySelector = () => {
                 {/* Pestañas para herramientas y alternativas */}
                 <Tabs defaultValue="overview" className="w-full">
                   <TabsList className="w-full">
-                    <TabsTrigger value="overview" className="flex-1">Vista General</TabsTrigger>
-                    <TabsTrigger value="alternatives" className="flex-1">Alternativas Open Source</TabsTrigger>
+                    <TabsTrigger value="overview" className="flex-1">
+                      <ListChecks className="h-4 w-4 mr-2" />
+                      Vista General
+                    </TabsTrigger>
+                    <TabsTrigger value="alternatives" className="flex-1">
+                      <Replace className="h-4 w-4 mr-2" />
+                      Alternativas Open Source
+                    </TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="overview" className="mt-6">
@@ -373,3 +390,17 @@ const IndustrySelector = () => {
 };
 
 export default IndustrySelector;
+
+// Helper para obtener el componente de icono basado en el string
+// Esta función debería estar en un archivo de utilidades o datos si es más compleja
+// o si los iconos son dinámicos y vienen de una fuente de datos.
+// Por ahora, la mantendré simple aquí como ejemplo si fuera necesario.
+// const getIconComponent = (iconName: string) => {
+//   switch (iconName) {
+//     case "Building2":
+//       return Building2;
+//     // Añadir más casos según sea necesario
+//     default:
+//       return Circle; // Un icono por defecto
+//   }
+// };
