@@ -99,54 +99,54 @@ const OpenSource = () => {
               </p>
               
               <div className="pt-4">
-                <a href="#contacto" className="btn-secondary">
+                <a href="#contacto" className="btn-secondary dark:bg-slate-700 dark:text-white dark:border-slate-600 dark:hover:bg-slate-600">
                   Conoce nuestras contribuciones
                 </a>
               </div>
             </div>
             
             <div className={`relative ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1000ms' }}>
-              <div className="glass-card p-6 rounded-xl">
+              <div className="glass-card dark:bg-slate-800/90 dark:border-slate-700/50 p-6 rounded-xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 bg-costwise-blue/10 rounded-full">
-                    <Terminal size={20} className="text-costwise-blue" />
+                  <div className="p-3 bg-costwise-blue/10 dark:bg-costwise-teal/20 rounded-full">
+                    <Terminal size={20} className="text-costwise-blue dark:text-costwise-teal" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-costwise-navy">Beneficios del Open Source</h4>
-                    <p className="text-sm text-gray-600">Más allá del ahorro económico</p>
+                    <h4 className="font-medium text-costwise-navy dark:text-white">Beneficios del Open Source</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Más allá del ahorro económico</p>
                   </div>
                 </div>
                 
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <div className="mt-1 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 text-xs">✓</span>
+                    <div className="mt-1 w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-600 dark:text-green-400 text-xs">✓</span>
                     </div>
-                    <span className="text-sm text-gray-700">Mayor control sobre tus sistemas</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Mayor control sobre tus sistemas</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="mt-1 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 text-xs">✓</span>
+                    <div className="mt-1 w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-600 dark:text-green-400 text-xs">✓</span>
                     </div>
-                    <span className="text-sm text-gray-700">Sin dependencia de proveedores específicos</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Sin dependencia de proveedores específicos</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="mt-1 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 text-xs">✓</span>
+                    <div className="mt-1 w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-600 dark:text-green-400 text-xs">✓</span>
                     </div>
-                    <span className="text-sm text-gray-700">Comunidad global de soporte y desarrollo</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Comunidad global de soporte y desarrollo</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="mt-1 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 text-xs">✓</span>
+                    <div className="mt-1 w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-600 dark:text-green-400 text-xs">✓</span>
                     </div>
-                    <span className="text-sm text-gray-700">Actualizaciones frecuentes y mejoras continuas</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Actualizaciones frecuentes y mejoras continuas</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="mt-1 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 text-xs">✓</span>
+                    <div className="mt-1 w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-600 dark:text-green-400 text-xs">✓</span>
                     </div>
-                    <span className="text-sm text-gray-700">Mayor seguridad gracias a la transparencia del código</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Mayor seguridad gracias a la transparencia del código</span>
                   </li>
                 </ul>
               </div>
