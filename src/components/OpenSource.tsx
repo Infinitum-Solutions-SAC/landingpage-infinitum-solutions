@@ -286,12 +286,6 @@ const OpenSource = () => {
                   <span className="hidden sm:inline"><strong>Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
                   porque creemos que no hay soluciones universales.</span>
                 </div>
-                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
-                  <Handshake size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
-                  <span className="sm:hidden"><strong>Comunidad</strong> • 5% a open source</span>
-                  <span className="hidden sm:inline"><strong>Retribuimos a la comunidad:</strong> El 5% de nuestros ingresos se destinan a 
-                  contribuir y mantener proyectos de software libre.</span>
-                </div>
               </div>
             </div>
             
