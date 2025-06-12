@@ -1,0 +1,189 @@
+/* Optimizaciones específicas para reducir Cumulative Layout Shift (CLS) */
+
+/* 1. Prevenir layout shifts en imágenes */
+.cls-image-container {
+  position: relative;
+  overflow: hidden;
+  /* Asegurar que el contenedor mantenga sus dimensiones */
+  contain: layout style paint;
+}
+
+.cls-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 2. Optimizar animaciones para no causar reflows */
+.cls-transform-only {
+  /* Solo animar propiedades que no afecten el layout */
+  will-change: transform, opacity;
+  contain: layout;
+}
+
+/* 3. Placeholder para componentes lazy-loaded */
+.cls-component-placeholder {
+  /* Altura mínima para reservar espacio */
+  min-height: var(--placeholder-height, 200px);
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: cls-loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes cls-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 4. Floating icons con posiciones fijas iniciales */
+.cls-floating-container {
+  position: relative;
+  /* Altura fija para prevenir cambios de layout */
+  height: 120px;
+  overflow: hidden;
+  contain: layout style paint;
+}
+
+.cls-floating-icon {
+  position: absolute;
+  /* Usar transform3d para GPU acceleration */
+  transform: translate3d(var(--x, 0), var(--y, 0), 0);
+  will-change: transform;
+  /* Evitar que afecte el layout de otros elementos */
+  contain: layout style;
+}
+
+/* 5. Hardware cards con dimensiones fijas */
+.cls-hardware-card {
+  /* Altura fija para prevenir CLS */
+  min-height: 480px;
+  max-height: 480px;
+  contain: layout style;
+}
+
+/* 6. Skeleton loaders con dimensiones específicas */
+.cls-skeleton-hero {
+  min-height: 500px;
+}
+
+.cls-skeleton-hardware {
+  min-height: 600px;
+}
+
+.cls-skeleton-opensource {
+  min-height: 500px;
+}
+
+.cls-skeleton-services {
+  min-height: 400px;
+}
+
+/* 7. Aspect ratio containers */
+.cls-aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.cls-aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.cls-aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+/* 8. Grid containers con dimensiones fijas */
+.cls-grid-fixed {
+  /* Usar grid-template-rows para fijar alturas */
+  display: grid;
+  grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* 9. Optimizar animaciones de entrada */
+.cls-animate-fade-in {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  animation: cls-fade-in-up 0.6s ease-out forwards;
+  /* Evitar que la animación afecte el layout */
+  contain: layout style;
+}
+
+@keyframes cls-fade-in-up {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* 10. Contenedores de componentes críticos */
+.cls-above-the-fold {
+  /* Elementos above-the-fold deben tener dimensiones estables */
+  contain: layout style;
+  min-height: 100vh;
+}
+
+.cls-below-the-fold {
+  /* Elementos below-the-fold pueden lazy-load pero con espacio reservado */
+  contain: layout;
+}
+
+/* 11. Mejoras específicas para mobile */
+@media (max-width: 767px) {
+  .cls-mobile-fixed-height {
+    /* Alturas fijas en mobile para prevenir CLS durante scroll */
+    min-height: var(--mobile-height, 300px);
+  }
+  
+  .cls-card-deck-container {
+    /* Altura fija para el container de cartas en mobile */
+    min-height: 450px;
+    contain: layout style;
+  }
+}
+
+/* 12. Optimizaciones para fuentes */
+.cls-font-display {
+  /* Prevenir layout shifts por carga de fuentes */
+  font-display: swap;
+}
+
+/* 13. Contenido que puede cambiar dinámicamente */
+.cls-dynamic-content {
+  /* Altura mínima para contenido que puede cambiar */
+  min-height: var(--content-height, 100px);
+  transition: none; /* Evitar transitions que puedan causar CLS */
+}
+
+/* 14. Componentes con lazy loading */
+.cls-lazy-component {
+  /* Contenedor para componentes lazy-loaded */
+  position: relative;
+  min-height: var(--component-height, 400px);
+}
+
+.cls-lazy-component::before {
+  /* Placeholder visual mientras carga */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: cls-loading 1.5s infinite;
+  border-radius: 8px;
+  opacity: var(--loading-opacity, 1);
+}
+
+/* 15. Mejoras para reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .cls-animate-fade-in,
+  .cls-floating-icon,
+  .cls-transform-only {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -1,13 +1,13 @@
 /* Estilos específicos para las tarjetas de hardware con animación garantizada */
 
 @keyframes cardGrow {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.1); }
+  0% { transform: scale3d(1, 1, 1) translateZ(0); }
+  100% { transform: scale3d(1.1, 1.1, 1) translateZ(0); }
 }
 
 @keyframes cardShrink {
-  0% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% { transform: scale3d(1.1, 1.1, 1) translateZ(0); }
+  100% { transform: scale3d(1, 1, 1) translateZ(0); }
 }
 
 .hw-card-container {
@@ -25,17 +25,23 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  transform: scale(1);
+  transform: scale3d(1, 1, 1) translateZ(0);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
               box-shadow 0.3s ease;
+  /* Optimización: forzar composite layer */
+  will-change: auto;
+  contain: layout style paint;
 }
 
 /* Hover effects only on non-touch devices (desktop) */
 @media (hover: hover) and (pointer: fine) {
   .hw-card:hover {
-    transform: scale(1.07);
+    /* Usar transform3d para forzar aceleración por GPU y evitar reflows */
+    transform: scale3d(1.07, 1.07, 1) translateZ(0);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     z-index: 10;
+    /* Optimización: solo animar transform y z-index */
+    will-change: transform, z-index;
   }
 }
 
@@ -44,6 +50,7 @@
   animation: cardGrow 0.3s forwards;
   z-index: 10;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  will-change: transform;
 }
 
 /* Usamos una clase específica para la animación inversa */
@@ -51,6 +58,7 @@
   animation: cardShrink 0.3s forwards;
   z-index: 1;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  will-change: transform;
 }
 
 /* Tarjeta recomendada */

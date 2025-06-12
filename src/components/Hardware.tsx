@@ -163,8 +163,12 @@ const Hardware = () => {
           {hardwareOptions.map((option, index) => (
             <div 
               key={index} 
-              className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1 flex flex-col justify-between animate-fade-in-up bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl flex flex-col justify-between animate-fade-in-up bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}
+              style={{ 
+                animationDelay: `${index * 100}ms`,
+                minHeight: '480px', // Altura fija para prevenir CLS
+                maxHeight: '480px'
+              }}
             >
               {option.recommended && (
                 <div className="absolute top-0 right-0 bg-costwise-blue dark:bg-costwise-teal text-white text-xs font-semibold px-3 py-1 rounded-bl-lg rounded-tr-lg">
@@ -198,7 +202,7 @@ const Hardware = () => {
 
         {/* Efecto de cartas de naipes para móviles */}
         <div className="md:hidden">
-          <div className="card-deck-container">
+          <div className="card-deck-container" style={{ minHeight: '450px' }}>
             <div className="card-deck">
               {hardwareOptions.map((option, index) => (
                 <div 
@@ -208,6 +212,10 @@ const Hardware = () => {
                   onTouchStart={onTouchStart}
                   onTouchMove={onTouchMove}
                   onTouchEnd={onTouchEnd}
+                  style={{ 
+                    willChange: currentIndex === index ? 'transform' : 'auto',
+                    contain: 'layout style paint'
+                  }}
                 >
                   {option.recommended && (
                     <div className="card-recommended-badge">

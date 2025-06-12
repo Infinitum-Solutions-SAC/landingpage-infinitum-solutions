@@ -39,16 +39,18 @@ const FloatingIcons = ({ tools }: FloatingIconsProps) => {
   });
 
   return (
-    <div ref={containerRef} className="relative h-32 w-full overflow-hidden my-6">
+    <div ref={containerRef} className="cls-floating-container relative w-full overflow-hidden my-6">
       {icons.map((item, index) => (
         <motion.div
           key={index}
-          className="absolute inline-flex items-center justify-center bg-white rounded-full p-2 shadow-md"
+          className="cls-floating-icon absolute inline-flex items-center justify-center bg-white rounded-full p-2 shadow-md"
           initial={{ scale: 0.8 }}
           animate={item.animationProps}
           style={{
             left: `${20 + (index * 60 / icons.length)}%`,
             top: '50%',
+            willChange: 'transform',
+            contain: 'layout style'
           }}
         >
           {item.tool.icon ? (

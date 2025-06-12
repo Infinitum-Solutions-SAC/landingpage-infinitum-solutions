@@ -45,11 +45,11 @@ const Services = () => {
         <div className="grid grid-cols-1 gap-12 items-center relative">
           {activeCase === 'emprendedor' ? (
             <>
-              {/* Imagen decorativa cluster solo para emprendedores en escritorio */}
+              {/* Imagen decorativa cluster ajustada para móvil */}
               <img
                 src="/assets/images/hardware/cluster.webp"
                 alt="Cluster hardware"
-                className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-40 max-w-xs hidden lg:block drop-shadow-xl rotate-6"
+                className="absolute right-0 top-[85%] -translate-y-1/2 pointer-events-none opacity-40 max-w-[200px] sm:max-w-xs block drop-shadow-xl rotate-6"
                 style={{ zIndex: 0 }}
               />
               <div className="space-y-6 animate-fade-in max-w-3xl mx-auto relative z-10">

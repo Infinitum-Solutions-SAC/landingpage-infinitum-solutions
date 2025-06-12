@@ -8,6 +8,9 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   placeholder?: string;
   className?: string;
   sizes?: string;
+  aspectRatio?: string;
+  width?: string | number;
+  height?: string | number;
 }
 
 const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -17,6 +20,9 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   placeholder,
   className = '',
   sizes,
+  aspectRatio,
+  width,
+  height,
   ...props
 }) => {
   const { imageProps, isLoaded, error, placeholder: defaultPlaceholder } = useOptimizedImage(src, {
@@ -27,14 +33,21 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
   if (error) {
     return (
-      <div className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}>
+      <div className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}
+           style={aspectRatio ? { aspectRatio } : {}}>
         Error al cargar imagen
       </div>
     );
   }
 
+  const containerStyle = {
+    ...(aspectRatio && { aspectRatio }),
+    ...(width && { width }),
+    ...(height && { height }),
+  };
+
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden ${className}`} style={containerStyle}>
       {/* Placeholder mientras carga */}
       {!isLoaded && (
         <img
@@ -50,7 +63,9 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         {...imageProps}
         {...props}
         alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
+        width={width}
+        height={height}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         onLoad={(e) => {

@@ -1,12 +1,13 @@
 import { ArrowRight, Server, Database, Shield } from 'lucide-react';
 import { usePreloadCriticalResources } from '@/hooks/useOptimizedResources';
+// import CLSOptimizedImage from '@/components/ui/cls-optimized-image';
 
 const Hero = () => {
   // Precargar recursos críticos para mejorar LCP
   usePreloadCriticalResources();
 
   return (
-    <section className="pt-20 md:pt-28 pb-12 md:pb-16 lg:pt-36 lg:pb-24 overflow-hidden bg-white dark:bg-slate-900">
+    <section className="pt-20 md:pt-28 pb-12 md:pb-16 lg:pt-36 lg:pb-24 overflow-hidden bg-white dark:bg-slate-900 cls-above-the-fold">
       <div className="container-custom px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="space-y-4 md:space-y-6 animate-fade-in text-center lg:text-left">
@@ -61,15 +62,22 @@ const Hero = () => {
           </div>
           
           <div className="relative lg:h-[500px] animate-fade-in mt-8 lg:mt-0">
-            <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-costwise-blue/5 rounded-full -z-10 animate-float"></div>
-            <div className="absolute bottom-0 left-0 w-36 h-36 md:w-48 md:h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-costwise-blue/5 rounded-full -z-10 animate-float will-change-transform"></div>
+            <div className="absolute bottom-0 left-0 w-36 h-36 md:w-48 md:h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float will-change-transform" style={{ animationDelay: '1s' }}></div>
             
+            {/* Contenedor con dimensiones explícitas para prevenir CLS */}
             <div className="h-full flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
-              <img 
-                src="/assets/images/hardware/firewall.webp" 
-                alt="Firewall Hardware Infinitum Solutions" 
-                className="object-contain w-auto h-auto max-w-full max-h-[300px] md:max-h-[350px] lg:max-h-[400px] mx-auto" 
-              />
+              <div className="relative w-full max-w-[400px] mx-auto" style={{ aspectRatio: '16/9' }}>
+                <img 
+                  src="/assets/images/hardware/firewall.webp" 
+                  alt="Firewall Hardware Infinitum Solutions" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                  loading="eager"
+                  fetchPriority="high"
+                  width="400"
+                  height="225"
+                />
+              </div>
             </div>
           </div>
         </div>
