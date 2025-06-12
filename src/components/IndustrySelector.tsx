@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ChevronRight, 
   ExternalLink, 
@@ -127,75 +126,52 @@ const IndustrySelector = () => {
             ) : (
               selectedIndustryData && (
                 <div className="space-y-4">
-                  {/* Header con botón de regreso */}
-                  <div className="flex items-center space-x-2 mb-4">
-                    <Button variant="ghost" size="sm" onClick={handleBackToIndustries}>
-                      <ArrowLeft className="h-5 w-5 mr-1" /> Volver
-                    </Button>
-                    {selectedIndustryData.icon && 
-                      React.createElement(getIconComponent(selectedIndustryData.icon), { size: 24 })
-                    }
-                    <h3 className="font-bold text-xl">{selectedIndustryData.name}</h3>
+                  {/* Header compacto con icono, nombre y volver */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <Button variant="ghost" size="icon" onClick={handleBackToIndustries} className="p-1">
+                        <ArrowLeft className="h-5 w-5 text-costwise-blue dark:text-costwise-teal" />
+                      </Button>
+                      {selectedIndustryData.icon && React.createElement(getIconComponent(selectedIndustryData.icon), { size: 22, className: "text-costwise-blue dark:text-costwise-teal" })}
+                      <span className="font-bold text-base text-costwise-navy dark:text-costwise-teal">{selectedIndustryData.name}</span>
+                    </div>
                   </div>
 
-                  {/* Ahorro estimado */}
-                  <Card className="bg-green-50 dark:bg-green-900/20 border-green-200">
-                    <CardContent className="p-4 text-center">
-                      <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
-                        Ahorro Estimado
-                      </h4>
-                      <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                        ${estimatedSavings.monthly}/mes
-                      </div>
-                      <div className="text-sm text-green-700 dark:text-green-300">
-                        ${estimatedSavings.yearly}/año
-                      </div>
-                    </CardContent>
-                  </Card>
+                  {/* Resumen visual ahorro */}
+                  <div className="flex items-center space-x-3 bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-3 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
+                    <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
+                    <div className="text-costwise-teal dark:text-costwise-blue text-sm font-semibold">Ahorro estimado:</div>
+                    <div className="text-costwise-navy dark:text-costwise-teal font-bold text-base">${estimatedSavings.monthly}/mes</div>
+                    <div className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</div>
+                  </div>
 
-                  {/* Lista de herramientas y alternativas */}
-                  <div className="space-y-3">
+                  {/* Explicación breve */}
+                  <div className="text-xs text-costwise-navy dark:text-costwise-teal mb-1">
+                    Estas son las herramientas SaaS más usadas y sus alternativas open source.
+                  </div>
+
+                  {/* Lista de herramientas y alternativas compacta */}
+                  <div className="space-y-2">
                     {alternatives.map((item, index) => (
-                      <Card key={index} className="border-l-4 border-l-orange-500">
-                        <CardContent className="p-4">
-                          <div className="mb-3">
-                            <div className="flex items-center justify-between mb-1">
-                              <h4 className="font-semibold text-gray-900 dark:text-white">
-                                {item.saas.name}
-                              </h4>
-                              <Badge variant="secondary" className="text-xs">
-                                {item.saas.category}
-                              </Badge>
+                      <Card key={index} className="border-l-4 border-l-costwise-blue dark:border-l-costwise-teal bg-white/90 dark:bg-slate-900/80">
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <div>
+                              <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-sm">{item.saas.name}</span>
+                              <Badge variant="secondary" className="ml-2 text-xs bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal border-none">{item.saas.category}</Badge>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {item.saas.description}
-                            </p>
                           </div>
-                          
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.saas.description}</p>
                           <div className="space-y-2">
-                            <h5 className="text-sm font-medium text-green-700 dark:text-green-300">
-                              Alternativas Open Source:
-                            </h5>
                             {item.alternatives.map((alt, altIndex) => (
-                              <div key={altIndex} className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <span className="font-medium text-green-800 dark:text-green-200">
-                                      {alt.name}
-                                    </span>
-                                    <p className="text-xs text-green-700 dark:text-green-300">
-                                      {alt.description}
-                                    </p>
-                                  </div>
-                                  <a 
-                                    href={alt.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-green-600 hover:text-green-800"
-                                  >
+                              <div key={altIndex} className="bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded-lg px-3 py-2 border border-costwise-teal/20 dark:border-costwise-blue/20">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="font-semibold text-costwise-teal dark:text-costwise-blue text-sm">{alt.name}</span>
+                                  <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue hover:underline">
                                     <ExternalLink className="h-4 w-4" />
                                   </a>
                                 </div>
+                                <p className="text-xs text-gray-700 dark:text-gray-300">{alt.description}</p>
                               </div>
                             ))}
                           </div>
@@ -271,127 +247,51 @@ const IndustrySelector = () => {
           <div className="lg:col-span-8">
             {selectedIndustryData ? (
               <div className="space-y-6">
-                {/* Header de la industria seleccionada */}
-                <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-                  <CardContent className="p-6">
-                    <div className="flex items-center space-x-4 mb-4">
-                      {React.createElement(getIconComponent(selectedIndustryData.icon), { size: 36 })}
-                      <div>
-                        <h2 className="text-2xl font-bold">{selectedIndustryData.name}</h2>
-                        <p className="text-blue-100">{selectedIndustryData.description}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                      <div className="text-center">
-                        <Users className="h-6 w-6 mx-auto mb-1" />
-                        <div className="text-sm text-blue-100">Herramientas</div>
-                        <div className="font-bold">{selectedIndustryData.commonTools.length}</div>
-                      </div>
-                      <div className="text-center">
-                        <Zap className="h-6 w-6 mx-auto mb-1" />
-                        <div className="text-sm text-blue-100">Ahorro/mes</div>
-                        <div className="font-bold">${estimatedSavings.monthly}</div>
-                      </div>
-                      <div className="text-center">
-                        <Building2 className="h-6 w-6 mx-auto mb-1" />
-                        <div className="text-sm text-blue-100">Ahorro/año</div>
-                        <div className="font-bold">${estimatedSavings.yearly}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Header de la industria seleccionada y ahorro compacto */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-2">
+                  <div className="flex items-center space-x-3">
+                    {React.createElement(getIconComponent(selectedIndustryData.icon), { size: 32, className: "text-costwise-blue dark:text-costwise-teal" })}
+                    <span className="font-bold text-2xl text-costwise-navy dark:text-costwise-teal">{selectedIndustryData.name}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-4 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
+                    <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
+                    <span className="text-costwise-teal dark:text-costwise-blue font-semibold">Ahorro estimado:</span>
+                    <span className="text-costwise-navy dark:text-costwise-teal font-bold">${estimatedSavings.monthly}/mes</span>
+                    <span className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</span>
+                  </div>
+                </div>
+
+                {/* Explicación breve */}
+                <div className="bg-costwise-blue/10 dark:bg-costwise-teal/10 rounded p-3 text-sm text-costwise-navy dark:text-costwise-teal mb-2">
+                  Consulta el ahorro estimado y las herramientas SaaS más usadas en este sector, junto con sus alternativas open source.
+                </div>
 
                 {/* Pestañas para herramientas y alternativas */}
-                <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="w-full">
-                    <TabsTrigger value="overview" className="flex-1">
-                      <ListChecks className="h-4 w-4 mr-2" />
-                      Vista General
-                    </TabsTrigger>
-                    <TabsTrigger value="alternatives" className="flex-1">
-                      <Replace className="h-4 w-4 mr-2" />
-                      Alternativas Open Source
-                    </TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="overview" className="mt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {selectedIndustryData.commonTools.map((tool, index) => (
-                        <Card key={index} className="border-l-4 border-l-blue-500">
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-semibold text-gray-900 dark:text-white">
-                                {tool.name}
-                              </h4>
-                              <div className="flex space-x-1">
-                                {[...Array(tool.priority)].map((_, i) => (
-                                  <div key={i} className="w-2 h-2 bg-yellow-400 rounded-full" />
-                                ))}
+                <div className="mt-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {alternatives.map((item, index) => (
+                      <Card key={index} className="border-l-4 border-l-costwise-teal dark:border-l-costwise-blue bg-white/90 dark:bg-slate-900/80">
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-sm">{item.saas.name}</span>
+                            <Badge variant="outline" className="text-xs bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue border-none">{item.saas.category}</Badge>
+                          </div>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-1 line-clamp-2">{item.saas.description}</p>
+                          <div className="flex flex-col gap-1">
+                            {item.alternatives.map((alt, altIndex) => (
+                              <div key={altIndex} className="flex items-center justify-between bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded px-2 py-1 border border-costwise-teal/10 dark:border-costwise-blue/10">
+                                <span className="font-medium text-costwise-teal dark:text-costwise-blue text-xs truncate">{alt.name}</span>
+                                <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue ml-2">
+                                  <ExternalLink className="h-3 w-3" />
+                                </a>
                               </div>
-                            </div>
-                            <Badge variant="secondary" className="text-xs mb-2">
-                              {tool.category}
-                            </Badge>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {tool.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="alternatives" className="mt-6">
-                    <div className="space-y-6">
-                      {alternatives.map((item, index) => (
-                        <Card key={index} className="border-l-4 border-l-green-500">
-                          <CardContent className="p-6">
-                            <div className="mb-4">
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                  {item.saas.name}
-                                </h4>
-                                <Badge variant="outline">{item.saas.category}</Badge>
-                              </div>
-                              <p className="text-gray-600 dark:text-gray-400">
-                                {item.saas.description}
-                              </p>
-                            </div>
-                            
-                            <div>
-                              <h5 className="font-medium text-green-700 dark:text-green-300 mb-3">
-                                Alternativas Open Source:
-                              </h5>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                {item.alternatives.map((alt, altIndex) => (
-                                  <div key={altIndex} className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                                    <div className="flex items-center justify-between mb-2">
-                                      <h6 className="font-medium text-green-800 dark:text-green-200">
-                                        {alt.name}
-                                      </h6>
-                                      <a 
-                                        href={alt.url} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="text-green-600 hover:text-green-800 transition-colors"
-                                      >
-                                        <ExternalLink className="h-4 w-4" />
-                                      </a>
-                                    </div>
-                                    <p className="text-sm text-green-700 dark:text-green-300">
-                                      {alt.description}
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               </div>
             ) : (
               <Card className="h-96 flex items-center justify-center">
