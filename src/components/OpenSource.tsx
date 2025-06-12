@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Heart, Lock, DollarSign, Star, CheckCircle } from 'lucide-react';
+import { Heart, Lock, DollarSign, Star, CheckCircle, Search, Server, Code, Shield } from 'lucide-react';
 
 const OpenSource = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -69,7 +69,7 @@ const OpenSource = () => {
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '200ms' }}>
             Utilizamos software libre y de código abierto para reemplazar servicios de suscripción caros.
-            Mayor privacidad, control y ahorro sin sacrificar calidad.
+            Son completamente auditables, sin restricciones de licencias y pueden funcionar en tu hardware existente.
           </p>
         </div>
 
@@ -113,11 +113,20 @@ const OpenSource = () => {
           ))}
         </div>
 
-        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-xl">
+        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-xl mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-2xl font-bold text-costwise-navy dark:text-white mb-4">¿Por qué elegir software libre?</h3>
               <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
+                    <Search size={18} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">100% Auditable</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">El código fuente está disponible para inspección, asegurando transparencia total y cumplimiento normativo.</p>
+                  </div>
+                </li>
                 <li className="flex items-start gap-3">
                   <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
                     <Lock size={18} className="text-costwise-blue dark:text-costwise-teal" />
@@ -134,15 +143,6 @@ const OpenSource = () => {
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white">Sin costos recurrentes</h4>
                     <p className="text-gray-600 dark:text-gray-300 text-sm">Elimina suscripciones mensuales que aumentan cada año.</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
-                    <Star size={18} className="text-costwise-blue dark:text-costwise-teal" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Funcionalidad completa</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">Todas las herramientas que necesitas sin funciones bloqueadas por niveles de pago.</p>
                   </div>
                 </li>
               </ul>
@@ -168,6 +168,58 @@ const OpenSource = () => {
                     <line x1="16" x2="16" y1="17" y2="17"/>
                   </svg>
                 </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Nueva sección sobre reutilización de hardware */}
+        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/5 p-6 md:p-8 rounded-2xl border border-costwise-blue/20 dark:border-costwise-teal/20">
+          <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
+            <div className="md:w-7/12">
+              <h3 className="text-2xl font-bold text-costwise-navy dark:text-white mb-3">¿Ya tienes equipos? ¡Aprovéchalos!</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                No siempre necesitas invertir en hardware nuevo. Evaluamos tus equipos existentes para 
+                transformarlos en servidores productivos y reducir aún más tus costos.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2">
+                  <CheckCircle size={16} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300">Evaluación técnica sin costo</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle size={16} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300">Optimización para máximo rendimiento</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle size={16} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300">Recomendaciones de actualización si es necesario</span>
+                </li>
+              </ul>
+              <div className="mt-6">
+                <a href="#contacto" className="inline-flex items-center gap-2 text-costwise-blue dark:text-costwise-teal hover:underline">
+                  Solicitar evaluación de equipos
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div className="md:w-5/12 flex justify-center">
+              <div className="grid grid-cols-2 gap-3 relative">
+                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[-3deg]">
+                  <Server size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-sm mt-2">PC convertida a servidor</p>
+                </div>
+                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[3deg]">
+                  <Shield size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-sm mt-2">Firewall dedicado</p>
+                </div>
+                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[3deg] col-span-2">
+                  <Code size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-sm mt-2">Software optimizado para tu hardware</p>
+                </div>
               </div>
             </div>
           </div>

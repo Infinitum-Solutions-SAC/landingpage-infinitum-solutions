@@ -1,4 +1,4 @@
-import { Server, Cpu, HardDrive, Check, ShieldAlert, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Server, Cpu, HardDrive, Check, ShieldAlert, ChevronLeft, ChevronRight, Recycle, ArrowRight } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import '../styles/hardware-animation.css';
 import '../styles/card-deck.css';
@@ -8,6 +8,20 @@ const Hardware = () => {
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
   const hardwareOptions = [
+    {
+      name: "Reutilización de Equipos",
+      icon: Recycle,
+      price: "Ahorra en costos",
+      description: "Evaluamos y optimizamos tu hardware existente para convertirlo en infraestructura productiva.",
+      features: [
+        "Auditoría técnica de equipos actuales",
+        "Optimización de rendimiento",
+        "Recomendaciones de actualización",
+        "Aprovechamiento máximo de recursos",
+        "Software 100% auditable sin licencias"
+      ],
+      recommended: true
+    },
     {
       name: "Configuración Inicial",
       icon: Server,
@@ -33,7 +47,7 @@ const Hardware = () => {
         "Backup gestionado",
         "Soporte estándar"
       ],
-      recommended: true
+      recommended: false
     },
     {
       name: "Alta Disponibilidad",
@@ -172,12 +186,20 @@ const Hardware = () => {
     <section id="hardware" className="section bg-gradient-to-b from-costwise-gray to-white dark:from-slate-800 dark:to-slate-900">
       <div className="container-custom">
         <div className="text-center mb-12 md:mb-16 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold text-costwise-navy dark:text-white mb-4">
-            Hardware Optimizado para tus Necesidades
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-6 py-3 rounded-full text-sm font-medium mb-6 border border-costwise-blue/20 dark:border-costwise-teal/30">
+            <Recycle size={18} className="text-green-500" />
+            <span>Reutilización y optimización</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-4">
+            Aprovecha tu Hardware Existente
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Ofrecemos configuraciones de hardware flexibles, desde soluciones básicas hasta sistemas de alta disponibilidad, adaptadas a tu presupuesto y requerimientos.
+            Evaluamos tus equipos actuales para transformarlos en servidores productivos y también ofrecemos configuraciones nuevas según tus necesidades, todas con software libre 100% auditable.
           </p>
+          <a href="#contacto" className="inline-flex items-center gap-2 mt-4 btn-secondary">
+            <span>Solicitar evaluación de equipos</span>
+            <ArrowRight size={16} />
+          </a>
         </div>
 
         {/* Vista de cuadrícula tradicional para escritorio */}
@@ -185,7 +207,7 @@ const Hardware = () => {
           {hardwareOptions.map((option, index) => (
             <div 
               key={index} 
-              className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl flex flex-col justify-between animate-fade-in-up bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}
+              className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl flex flex-col justify-between animate-fade-in bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}
               style={{ 
                 animationDelay: `${index * 100}ms`,
                 minHeight: '520px', // Aumentar altura mínima

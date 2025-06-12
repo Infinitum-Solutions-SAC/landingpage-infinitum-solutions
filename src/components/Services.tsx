@@ -12,8 +12,8 @@ const Services = () => {
             Soluciones adaptadas a tus necesidades
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Ofrecemos servicios personalizados según el tamaño y necesidades de cada cliente,
-            desde emprendedores hasta empresas ya establecidas.
+            Ofrecemos servicios personalizados con software 100% auditable y sin problemas de licencias.
+            Reutilizamos tu hardware existente o implementamos equipos nuevos según tu presupuesto.
           </p>
         </div>
         
@@ -156,6 +156,30 @@ const Services = () => {
                       <h4 className="font-medium text-gray-800 dark:text-gray-100">Capacitación completa y soporte</h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         Entrenamos a tu equipo y ofrecemos soporte continuo para asegurar operaciones fluidas.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Sistemas 100% auditables</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Software libre cuyo código fuente puede ser revisado por tu equipo o auditores externos.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full">
+                      <Check size={16} className="text-costwise-blue dark:text-costwise-teal" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">Aprovechamiento de hardware</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Evaluamos tus equipos actuales para reutilizarlos como servidores y reducir la inversión.
                       </p>
                     </div>
                   </div>
