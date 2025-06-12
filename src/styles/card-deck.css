@@ -8,18 +8,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 580px;
-    padding: 3rem 0 1rem 0;
-    margin-top: 2rem;
+    min-height: 480px;
+    padding: 2.5rem 0 1rem 0;
+    margin-top: 1.5rem;
     /* Remover fondo visible y bordes */
     background: transparent;
     border: none;
+    /* Permitir solo scroll vertical, manejar horizontal con JS */
+    touch-action: pan-y;
   }
 
   .card-deck {
     position: relative;
-    width: 280px;
-    height: 520px;
+    width: 300px;
+    height: 390px;
     margin: 0 auto;
     background: transparent;
   }
@@ -28,22 +30,24 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 
+                0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                 opacity 0.5s ease,
                 box-shadow 0.3s ease;
     transform-origin: center bottom;
     cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     overflow: visible;
     backface-visibility: hidden;
+    touch-action: pan-y;
   }
 
   /* Dark mode styles */
   .dark .deck-card {
-    background: rgb(30, 41, 59); /* slate-800 */
+    background: linear-gradient(145deg, rgb(30, 41, 59) 0%, rgb(15, 23, 42) 100%);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   }
@@ -59,6 +63,7 @@
 
   /* Estado activo - simplificado ya que se maneja via JS */
   .deck-card.active {
+    z-index: 15 !important;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25) !important;
   }
 
@@ -66,9 +71,19 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
   }
 
+  /* Efecto hover para mejor interactividad */
+  .deck-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .dark .deck-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
+  }
+
   /* Contenido de la carta */
   .card-content {
-    padding: 1rem;
+    padding: 1.25rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -77,21 +92,31 @@
 
   .card-header {
     position: relative;
+    overflow: visible;
   }
 
   .card-recommended-badge {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -16px;
+    right: -16px;
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0 16px 0 12px;
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    transform: translateX(0) translateY(0);
+    font-weight: 700;
+    padding: 0.5rem 0.8rem;
+    border-radius: 20px;
+    z-index: 50;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    animation: pulse 2s infinite;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transform: translateZ(20px);
+    pointer-events: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
   }
 
   .dark .card-recommended-badge {
@@ -107,8 +132,9 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
     color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
   }
 
   .dark .card-icon {
@@ -140,7 +166,7 @@
 
   .card-description {
     color: #64748b;
-    font-size: 0.825rem;
+    font-size: 0.875rem;
     line-height: 1.4;
     margin-bottom: 0.75rem;
     height: 2.5rem;
@@ -160,7 +186,7 @@
     padding: 0;
     margin: 0 0 1rem 0;
     flex-grow: 1;
-    max-height: 140px;
+    max-height: 120px;
     overflow-y: auto;
   }
 
@@ -169,7 +195,7 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.3rem;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #475569;
     line-height: 1.2;
   }
@@ -200,15 +226,17 @@
 
   .card-button {
     width: 100%;
-    padding: 0.65rem 1.25rem;
-    border-radius: 8px;
-    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
     text-align: center;
     text-decoration: none;
     transition: all 0.2s ease;
     border: none;
     cursor: pointer;
     font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .card-button.primary {

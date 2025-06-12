@@ -144,16 +144,6 @@ const Hardware = () => {
       x: e.targetTouches[0].clientX,
       y: e.targetTouches[0].clientY
     });
-    
-    // Prevenir scroll vertical si hay movimiento horizontal
-    if (touchStart) {
-      const distanceX = Math.abs(touchStart.x - e.targetTouches[0].clientX);
-      const distanceY = Math.abs(touchStart.y - e.targetTouches[0].clientY);
-      
-      if (distanceX > distanceY && distanceX > 10) {
-        e.preventDefault();
-      }
-    }
   };
 
   const onTouchEnd = () => {
@@ -254,13 +244,13 @@ const Hardware = () => {
                       contain: 'layout style paint'
                     }}
                   >
-                    {option.recommended && (
-                      <div className="card-recommended-badge">
-                        Recomendado
-                      </div>
-                    )}
                     <div className="card-content">
                       <div className="card-header">
+                        {option.recommended && (
+                          <div className="card-recommended-badge">
+                            Recomendado
+                          </div>
+                        )}
                         <div className={`card-icon ${option.recommended ? 'recommended' : ''}`}>
                           <option.icon size={24} />
                         </div>
