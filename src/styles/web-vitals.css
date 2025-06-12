@@ -1,0 +1,167 @@
+/* Optimizaciones críticas para Web Vitals */
+
+/* LCP (Largest Contentful Paint) Optimizations */
+.lcp-critical {
+  /* Elementos críticos para LCP */
+  contain: layout style paint;
+  will-change: auto;
+}
+
+.lcp-image-container {
+  /* Contenedor de imágenes LCP */
+  position: relative;
+  overflow: hidden;
+  contain: layout style paint;
+}
+
+.lcp-image-container img {
+  /* Imágenes LCP optimizadas */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lcp-above-fold {
+  /* Contenido above-the-fold */
+  min-height: 100vh;
+  contain: layout style;
+}
+
+/* CLS (Cumulative Layout Shift) Optimizations */
+.cls-stable-container {
+  /* Contenedores con dimensiones estables */
+  contain: layout style paint;
+  min-height: var(--stable-height, auto);
+}
+
+.cls-fixed-aspect {
+  /* Elementos con aspect ratio fijo */
+  aspect-ratio: var(--aspect-ratio, 16/9);
+  overflow: hidden;
+}
+
+.cls-no-layout-shift {
+  /* Elementos que no deben causar layout shifts */
+  contain: layout;
+  will-change: transform, opacity;
+}
+
+.cls-mobile-optimized {
+  /* Optimizaciones específicas para móvil */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Skeleton loaders para prevenir CLS */
+.skeleton-loader {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* FID (First Input Delay) Optimizations */
+.fid-optimized {
+  /* Optimizar para primera interacción */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fid-button {
+  /* Botones optimizados para FID */
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.fid-button:active {
+  transform: scale(0.98);
+}
+
+/* Optimizaciones específicas por viewport */
+@media (max-width: 767px) {
+  .mobile-cls-optimized {
+    /* Cards móviles sin layout shift */
+    min-height: 450px;
+    contain: layout style paint;
+  }
+  
+  .mobile-touch-optimized {
+    /* Mejor respuesta táctil */
+    touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (min-width: 768px) {
+  .desktop-performance {
+    /* Optimizaciones de escritorio */
+    contain: layout style;
+  }
+}
+
+/* Optimizaciones para animaciones */
+.animate-performance {
+  /* Solo animar propiedades seguras */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animate-performance:not(.animating) {
+  /* Limpiar will-change cuando no se anima */
+  will-change: auto;
+}
+
+/* Optimizaciones para fuentes */
+.font-display-swap {
+  font-display: swap;
+}
+
+/* Preload optimizations */
+.preload-critical {
+  /* Elementos críticos para preload */
+  content-visibility: auto;
+  contain-intrinsic-size: var(--intrinsic-size, 300px);
+}
+
+/* Intersección observer optimizations */
+.lazy-load-container {
+  /* Contenedores para lazy loading */
+  min-height: var(--lazy-height, 200px);
+  contain: layout style;
+}
+
+/* Evitar reflows */
+.no-reflow {
+  /* Elementos que no deben causar reflows */
+  position: relative;
+  contain: layout style paint;
+}
+
+/* Grid/Flexbox optimizado */
+.layout-stable {
+  /* Layouts estables */
+  contain: layout;
+  min-height: var(--grid-height, auto);
+}
+
+/* Reducir motion para usuarios que lo prefieren */
+@media (prefers-reduced-motion: reduce) {
+  .animate-performance,
+  .skeleton-loader,
+  .cls-no-layout-shift {
+    animation: none !important;
+    transition: none !important;
+  }
+}

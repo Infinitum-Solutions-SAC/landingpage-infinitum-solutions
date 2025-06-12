@@ -202,7 +202,7 @@ const Hardware = () => {
 
         {/* Efecto de cartas de naipes para móviles */}
         <div className="md:hidden">
-          <div className="card-deck-container" style={{ minHeight: '450px' }}>
+          <div className="card-deck-container cls-card-deck-container" style={{ minHeight: '450px' }}>
             <div className="card-deck">
               {hardwareOptions.map((option, index) => (
                 <div 

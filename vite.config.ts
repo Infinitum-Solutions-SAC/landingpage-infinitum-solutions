@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Optimizaciones para mejorar LCP
+    // Optimizaciones para mejorar LCP y Web Vitals
     rollupOptions: {
       output: {
         manualChunks: {
@@ -36,7 +36,17 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 1000,
     // Optimizar para navegadores modernos
     target: 'esnext',
-    minify: 'esbuild',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production', // Remover console.logs solo en producción
+        drop_debugger: true,
+        pure_funcs: mode === 'production' ? ['console.log', 'console.warn'] : []
+      }
+    },
+    // Mejorar caching con nombres de archivo estables
+    cssCodeSplit: true,
+    sourcemap: mode === 'development'
   },
   optimizeDeps: {
     // Pre-bundle dependencias críticas
