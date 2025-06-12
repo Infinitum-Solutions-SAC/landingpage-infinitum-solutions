@@ -1,8 +1,10 @@
-import { ArrowUp, Github, Linkedin, Twitter, BookOpen, MessageCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Twitter, Linkedin, Github, ArrowUp, MessageCircle } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Footer = () => {
   const isMobile = useIsMobile();
+  const currentYear = new Date().getFullYear();
   
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -21,13 +23,13 @@ const Footer = () => {
               Soluciones IT económicas y efectivas para empresas de todos los tamaños.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              <a href="#" aria-label="Twitter" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              <a href="https://www.linkedin.com/company/infinitum-solutions-sac" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Linkedin size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              <a href="https://github.com/infinitum-solutions" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Github size={18} />
               </a>
             </div>
@@ -36,36 +38,61 @@ const Footer = () => {
           <div className="col-span-1">
             <h4 className="font-semibold text-costwise-navy dark:text-white mb-4">Servicios</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Servidores locales</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Migración Open Source</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Consultoría IT</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Desarrollo personalizado</a></li>
+              <li>
+                <a href="#servicios" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Servidores locales
+                </a>
+              </li>
+              <li>
+                <a href="#beneficios" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Software libre
+                </a>
+              </li>
+              <li>
+                <a href="#hardware" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Hardware certificado
+                </a>
+              </li>
+              <li>
+                <a href="#contacto" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Consultoría IT
+                </a>
+              </li>
             </ul>
           </div>
           
           <div className="col-span-1">
             <h4 className="font-semibold text-costwise-navy dark:text-white mb-4">Empresa</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Sobre nosotros</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Contacto</a></li>
+              <li>
+                <a href="#testimonios" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Casos de éxito
+                </a>
+              </li>
+              <li>
+                <a href="#contacto" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Contacto
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Nosotros
+                </a>
+              </li>
             </ul>
           </div>
           
           <div className="col-span-1">
             <h4 className="font-semibold text-costwise-navy dark:text-white mb-4">Legal</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Términos y condiciones</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Privacidad</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">Cookies</a></li>
               <li>
-                <a 
-                  href="#" 
-                  className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors"
-                >
-                  <BookOpen size={16} />
-                  <span>Libro de reclamaciones</span>
-                  {/* <span className="bg-gray-100 dark:bg-slate-700 text-xs px-2 py-1 rounded-full text-gray-700 dark:text-gray-300">Implementación</span> */}
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Política de privacidad
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-costwise-blue dark:hover:text-costwise-teal transition-colors">
+                  Términos y condiciones
                 </a>
               </li>
             </ul>
@@ -74,7 +101,7 @@ const Footer = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-100 dark:border-slate-800">
           <div className="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Infinitum Solutions. Todos los derechos reservados.
+            © {currentYear} Infinitum Solutions. Todos los derechos reservados.
           </div>
           
           <div className="flex items-center gap-2">
@@ -82,6 +109,7 @@ const Footer = () => {
             <button 
               onClick={scrollToTop}
               className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all ml-4"
+              aria-label="Volver arriba"
             >
               <ArrowUp size={18} />
             </button>

@@ -2,9 +2,10 @@ import { Suspense, lazy } from "react";
 import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import Benefits from "@/components/Benefits";
 
 // Lazy loading para componentes below-the-fold
-const CostCalculator = lazy(() => import("@/components/CostCalculator"));
+const Testimonials = lazy(() => import("@/components/Testimonials"));
 const IndustrySelector = lazy(() => import("@/components/IndustrySelector"));
 const Hardware = lazy(() => import("@/components/Hardware"));
 const OpenSource = lazy(() => import("@/components/OpenSource"));
@@ -42,31 +43,49 @@ const OpenSourceSkeleton = () => (
   </div>
 );
 
+const TestimonialsSkeleton = () => (
+  <div className="animate-pulse" style={{ minHeight: '400px' }}>
+    <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+      ))}
+    </div>
+  </div>
+);
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Componentes críticos above-the-fold - cargar inmediatamente */}
       <NavBar />
       <Hero />
+      
+      {/* Beneficios emocionales - immediate load */}
+      <Benefits />
+      
+      {/* Testimonios para aumentar la confianza - lazy loading */}
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><TestimonialsSkeleton /></div>}>
+        <Testimonials />
+      </Suspense>
+      
+      {/* Servicios - después de construir confianza */}
       <Services />
       
-      {/* Componentes below-the-fold - cargar con lazy loading */}
-      {/* <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
-        <CostCalculator />
-      </Suspense> */}
-      
-      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
-        <IndustrySelector />
+      {/* Componentes técnicos below-the-fold - cargar con lazy loading */}
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><OpenSourceSkeleton /></div>}>
+        <OpenSource />
       </Suspense>
       
       <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><HardwareSkeleton /></div>}>
         <Hardware />
       </Suspense>
       
-      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><OpenSourceSkeleton /></div>}>
-        <OpenSource />
+      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
+        <IndustrySelector />
       </Suspense>
       
+      {/* Contacto - call to action principal */}
       <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><ComponentSkeleton /></div>}>
         <Contact />
       </Suspense>

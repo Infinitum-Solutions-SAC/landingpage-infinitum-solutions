@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Code, Github, Terminal, Heart, ExternalLink, Lock, Gauge, ShieldCheck, BadgeDollarSign, Globe, Zap, Wrench, Handshake, CheckCircle, Target } from 'lucide-react';
+import { Heart, Lock, DollarSign, Star, CheckCircle } from 'lucide-react';
 
 const OpenSource = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,330 +26,148 @@ const OpenSource = () => {
     };
   }, []);
   
-  const tools = [
-    { name: "OPNsense", description: "Firewall & Router", category: "Security", url: "https://opnsense.org/" },
-    { name: "Suricata", description: "Network IDS/IPS", category: "Security", url: "https://suricata.io/" },
-    { name: "Proxmox", description: "Virtualización", category: "Infrastructure", url: "https://www.proxmox.com/" },
-    { name: "Podman", description: "Contenedores", category: "Infrastructure", url: "https://podman.io/" },
-    { name: "Nextcloud", description: "Nube Privada", category: "Productivity", url: "https://nextcloud.com/" },
-    { name: "OpenProject", description: "Gestión de Proyectos", category: "Productivity", url: "https://www.openproject.org/" },
-    { name: "Grafana", description: "Monitoreo & Analytics", category: "Monitoring", url: "https://grafana.com/" },
-    { name: "Coolify", description: "PaaS Auto-hospedado", category: "DevOps", url: "https://coolify.io/" },
-    { name: "Pangolin Proxy", description: "Proxy Inteligente", category: "Network", url: "https://github.com/fossorial/pangolin-proxy" }
+  // Alternativas simplificadas de software comercial a open source
+  const alternativas = [
+    { 
+      saasTool: "Microsoft Office 365", 
+      openSource: "LibreOffice / OnlyOffice", 
+      savings: "Hasta $150 por usuario al año",
+      benefits: ["Sin suscripciones", "Funcionalidad similar", "Compatible con archivos de Office"]
+    },
+    { 
+      saasTool: "Dropbox Business", 
+      openSource: "Nextcloud", 
+      savings: "Hasta $180 por usuario al año",
+      benefits: ["Control total de tus archivos", "Sin límites de almacenamiento", "Más funcionalidades"]
+    },
+    { 
+      saasTool: "Slack", 
+      openSource: "Mattermost", 
+      savings: "Hasta $96 por usuario al año",
+      benefits: ["Comunicación segura", "Personalizable", "Control de datos"]
+    }
   ];
   
   return (
     <section id="beneficios" className="section bg-gradient-to-b from-costwise-gray to-white dark:from-slate-800 dark:to-slate-900">
       <div className="container-custom" id="opensource-section">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <div className={`inline-flex items-center gap-2 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-6 py-3 rounded-full text-sm font-medium mb-6 border border-costwise-blue/20 dark:border-costwise-teal/30 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`}>
             <Heart size={16} className="text-red-500 animate-pulse" />
-            <span>Construido con Software Libre</span>
+            <span>Software que te da libertad</span>
           </div>
           
-          <h2 className={`text-4xl md:text-5xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-6 ${
+          <h2 className={`text-3xl md:text-4xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue mb-6 ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '100ms' }}>
-            Potenciados por Open Source
+            Alternativas libres a servicios costosos
           </h2>
           
           <p className={`text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '200ms' }}>
-            <strong>Auto-hospedamos</strong> y <strong>personalizamos</strong> tecnologías de código abierto de clase empresarial.
-            Porque creemos que la <span className="text-costwise-blue dark:text-costwise-teal font-semibold">libertad digital</span> y 
-            el <span className="text-costwise-blue dark:text-costwise-teal font-semibold">control total</span> de tus datos no deberían ser un lujo.
+            Utilizamos software libre y de código abierto para reemplazar servicios de suscripción caros.
+            Mayor privacidad, control y ahorro sin sacrificar calidad.
           </p>
         </div>
-      </div>
 
-      {/* Cinta transportadora a ancho completo sin fondo */}
-      <div className={`w-full overflow-hidden mb-8 md:mb-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '300ms' }}>
-        {/* Desktop: Una sola fila */}
-        <div className="hidden md:flex animate-scroll-left-slow space-x-6 py-8">
-          {/* Primera iteración de herramientas */}
-          {tools.map((tool, index) => (
-              <a
-                key={`desktop-first-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/50 dark:hover:border-costwise-teal/50 hover:scale-105 min-w-[200px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-12 h-12 mx-auto mb-3">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <Code size={20} className="text-costwise-blue dark:text-costwise-teal" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-md">
-                      <CheckCircle size={12} className="text-white" />
-                    </div>
-                    <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-costwise-blue/80 dark:bg-costwise-teal/80 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ExternalLink size={10} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors">
-                    {tool.name}
+        {/* Comparativa simplificada de costos */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {alternativas.map((item, index) => (
+            <div 
+              key={index}
+              className={`bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 ${
+                isVisible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${300 + index * 100}ms` }}
+            >
+              <div className="flex flex-col h-full">
+                <div className="mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-xl mb-1">
+                    {item.saasTool}
                   </h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    {tool.description}
+                  <p className="text-costwise-blue dark:text-costwise-teal">
+                    Reemplazado por: <span className="font-semibold">{item.openSource}</span>
                   </p>
-                  <span className="inline-block px-2 py-1 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-          ))}
-          
-          {/* Segunda iteración para continuidad */}
-          {tools.map((tool, index) => (
-              <a
-                key={`desktop-second-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/50 dark:hover:border-costwise-teal/50 hover:scale-105 min-w-[200px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-12 h-12 mx-auto mb-3">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <Code size={20} className="text-costwise-blue dark:text-costwise-teal" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-md">
-                      <CheckCircle size={12} className="text-white" />
-                    </div>
-                    <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-costwise-blue/80 dark:bg-costwise-teal/80 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ExternalLink size={10} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors">
-                    {tool.name}
-                  </h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    {tool.description}
-                  </p>
-                  <span className="inline-block px-2 py-1 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-          ))}
-        </div>
-
-        {/* Mobile: Dos filas con movimiento en direcciones opuestas */}
-        <div className="md:hidden space-y-4 py-4">
-          {/* Primera fila - moviéndose hacia la izquierda */}
-          <div className="flex animate-scroll-left space-x-3">
-            {tools.slice(0, 5).map((tool, index) => (
-              <a
-                key={`mobile-row1-first-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-6 h-6 mx-auto mb-1.5">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                      <Code size={12} className="text-costwise-blue dark:text-costwise-teal" />
-                    </div>
-                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
-                      <CheckCircle size={6} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors leading-tight">
-                    {tool.name}
-                  </h3>
-                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-            ))}
-            
-            {/* Duplicar para continuidad */}
-            {tools.slice(0, 5).map((tool, index) => (
-              <a
-                key={`mobile-row1-second-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-6 h-6 mx-auto mb-1.5">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                      <Code size={12} className="text-costwise-blue dark:text-costwise-teal" />
-                    </div>
-                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
-                      <CheckCircle size={6} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors leading-tight">
-                    {tool.name}
-                  </h3>
-                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-
-          {/* Segunda fila - moviéndose hacia la derecha */}
-          <div className="flex animate-scroll-right space-x-3">
-            {tools.slice(4).map((tool, index) => (
-              <a
-                key={`mobile-row2-first-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-6 h-6 mx-auto mb-1.5">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-teal/20 to-costwise-blue/20 dark:from-costwise-blue/30 dark:to-costwise-teal/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                      <Code size={12} className="text-costwise-teal dark:text-costwise-blue" />
-                    </div>
-                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
-                      <CheckCircle size={6} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-teal dark:group-hover:text-costwise-blue transition-colors leading-tight">
-                    {tool.name}
-                  </h3>
-                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-            ))}
-            
-            {/* Duplicar para continuidad */}
-            {tools.slice(4).map((tool, index) => (
-              <a
-                key={`mobile-row2-second-${tool.name}`}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="relative w-6 h-6 mx-auto mb-1.5">
-                    <div className="w-full h-full bg-gradient-to-br from-costwise-teal/20 to-costwise-blue/20 dark:from-costwise-blue/30 dark:to-costwise-teal/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                      <Code size={12} className="text-costwise-teal dark:text-costwise-blue" />
-                    </div>
-                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
-                      <CheckCircle size={6} className="text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-teal dark:group-hover:text-costwise-blue transition-colors leading-tight">
-                    {tool.name}
-                  </h3>
-                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue rounded-full">
-                    {tool.category}
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="container-custom">
-        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-3 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">
-            <div className={`space-y-3 md:space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
-              <div className="inline-flex items-center gap-1.5 md:gap-3 bg-gradient-to-r from-costwise-blue/10 to-costwise-teal/10 dark:from-costwise-teal/20 dark:to-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-3 md:px-6 py-1 md:py-3 rounded-full text-xs md:text-sm font-medium border border-costwise-blue/30 dark:border-costwise-teal/40">
-                <Github size={12} className="md:w-4 md:h-4" />
-                <span className="hidden sm:inline">Filosofía Open Source</span>
-                <span className="sm:hidden">Open Source</span>
-              </div>
-              
-              <h3 className="text-lg md:text-3xl font-bold bg-gradient-to-r from-costwise-navy to-costwise-blue bg-clip-text text-transparent dark:from-white dark:to-costwise-teal leading-tight">
-                <span className="hidden sm:inline">Auto-hospedamos por Principio</span>
-                <span className="sm:hidden">Soberanía Digital</span>
-              </h3>
-              
-              <div className="space-y-2 md:space-y-4">
-                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
-                  <Zap size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
-                  <span className="sm:hidden"><strong>Independencia</strong> • Tus datos seguros</span>
-                  <span className="hidden sm:inline"><strong>Independencia tecnológica:</strong> No dependemos de gigantes tecnológicos. 
-                  Nuestros servidores, nuestras reglas, tus datos seguros.</span>
-                </div>
-                <div className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed flex items-center sm:items-start">
-                  <Wrench size={14} className="text-costwise-blue dark:text-costwise-teal mr-2 flex-shrink-0 md:w-5 md:h-5 md:mr-2 md:mt-0.5" />
-                  <span className="sm:hidden"><strong>Personalización</strong> • A tu medida</span>
-                  <span className="hidden sm:inline"><strong>Personalización total:</strong> Adaptamos cada herramienta a tus necesidades específicas, 
-                  porque creemos que no hay soluciones universales.</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className={`relative ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1000ms' }}>
-              <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm border border-costwise-blue/20 dark:border-costwise-teal/30 p-4 md:p-8 rounded-2xl shadow-xl">
-                <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                  <div className="p-3 md:p-4 bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-2xl">
-                    <Terminal size={20} className="text-costwise-blue dark:text-costwise-teal md:w-6 md:h-6" />
-                  </div>
-                  <div>
-                    <h4 className="flex items-center text-lg md:text-xl font-bold text-costwise-navy dark:text-white">
-                      Ventajas del Auto-hospedaje
-                    </h4>
-                    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300">Más allá del ahorro económico</p>
-                  </div>
                 </div>
                 
-                <ul className="space-y-3 md:space-y-4">
-                  <li className="flex items-start gap-3 md:gap-4">
-                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Lock size={14} className="text-white md:w-4 md:h-4" />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Control total de tus datos</span>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Tus datos nunca salen de tu infraestructura</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 md:gap-4">
-                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Gauge size={14} className="text-white md:w-4 md:h-4" />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Rendimiento optimizado</span>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Hardware dedicado, latencia mínima</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 md:gap-4">
-                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <ShieldCheck size={14} className="text-white md:w-4 md:h-4" />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Seguridad por diseño</span>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Auditabilidad completa del código</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 md:gap-4">
-                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <BadgeDollarSign size={14} className="text-white md:w-4 md:h-4" />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Costos predecibles</span>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Sin licencias por usuario ni límites artificiales</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 md:gap-4">
-                    <div className="mt-1 w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <Globe size={14} className="text-white md:w-4 md:h-4" />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200 text-sm md:text-base">Comunidad global</span>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Soporte y mejoras continuas</p>
-                    </div>
-                  </li>
+                <div className="flex items-center gap-2 mb-4">
+                  <DollarSign size={20} className="text-green-500" />
+                  <span className="text-lg font-semibold text-green-600 dark:text-green-400">
+                    {item.savings}
+                  </span>
+                </div>
+                
+                <ul className="space-y-2 mb-4 flex-grow">
+                  {item.benefits.map((benefit, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle size={18} className="text-costwise-blue dark:text-costwise-teal mt-0.5" />
+                      <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
+                    </li>
+                  ))}
                 </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="text-2xl font-bold text-costwise-navy dark:text-white mb-4">¿Por qué elegir software libre?</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
+                    <Lock size={18} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Mayor privacidad y seguridad</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Tus datos permanecen en tu infraestructura, no en servidores de terceros.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
+                    <DollarSign size={18} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Sin costos recurrentes</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Elimina suscripciones mensuales que aumentan cada año.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
+                    <Star size={18} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Funcionalidad completa</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Todas las herramientas que necesitas sin funciones bloqueadas por niveles de pago.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-100 dark:border-gray-700 shadow-md">
+              <h3 className="text-xl font-semibold text-costwise-navy dark:text-white mb-4 text-center">¿Cuánto puedes ahorrar?</h3>
+              <div className="space-y-4">
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Para una empresa de 25 empleados</span>
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400 my-2">$10,700+ al año</div>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">de ahorro promedio</span>
+                  </div>
+                </div>
+                <a href="#contacto" className="btn-primary w-full py-3 text-center flex items-center justify-center gap-2">
+                  Calcular mi ahorro personalizado
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calculator">
+                    <rect x="4" y="3" width="16" height="18" rx="2"/>
+                    <line x1="8" x2="16" y1="7" y2="7"/>
+                    <line x1="8" x2="9" y1="12" y2="12"/>
+                    <line x1="16" x2="16" y1="12" y2="12"/>
+                    <line x1="8" x2="9" y1="17" y2="17"/>
+                    <line x1="16" x2="16" y1="17" y2="17"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
