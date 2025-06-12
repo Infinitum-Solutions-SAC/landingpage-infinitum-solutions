@@ -152,8 +152,8 @@ const OpenSource = () => {
               <div className="space-y-4">
                 <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                   <div className="text-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Para una empresa de 25 empleados</span>
-                    <div className="text-3xl font-bold text-green-600 dark:text-green-400 my-2">$10,700+ al año</div>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Para una empresa de 10 empleados</span>
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400 my-2">$4,280+ al año</div>
                     <span className="text-sm text-gray-500 dark:text-gray-400">de ahorro promedio</span>
                   </div>
                 </div>

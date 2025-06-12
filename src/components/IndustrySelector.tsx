@@ -60,10 +60,11 @@ const IndustrySelector = () => {
   const estimatedSavings = useMemo(() => {
     if (!selectedIndustryData) return { monthly: 0, yearly: 0 };
     
-    // Estimación basada en prioridad de herramientas (más básica)
+    // Estimación basada en prioridad de herramientas (para 10 usuarios)
     const totalPriority = selectedIndustryData.commonTools.reduce((sum, tool) => sum + tool.priority, 0);
     const avgCostPerPriority = 15; // $15 promedio por punto de prioridad
-    const monthly = totalPriority * avgCostPerPriority;
+    const userCount = 10; // Base de cálculo: 10 empleados
+    const monthly = totalPriority * avgCostPerPriority * userCount / 10; // Normalizado para 10 usuarios
     
     return {
       monthly,
@@ -138,16 +139,21 @@ const IndustrySelector = () => {
                   </div>
 
                   {/* Resumen visual ahorro */}
-                  <div className="flex items-center space-x-3 bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-3 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
-                    <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
-                    <div className="text-costwise-teal dark:text-costwise-blue text-sm font-semibold">Ahorro estimado:</div>
-                    <div className="text-costwise-navy dark:text-costwise-teal font-bold text-base">${estimatedSavings.monthly}/mes</div>
-                    <div className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</div>
+                  <div className="flex flex-col space-y-1 bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-3 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
+                    <div className="flex items-center space-x-3">
+                      <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
+                      <div className="text-costwise-teal dark:text-costwise-blue text-sm font-semibold">Ahorro estimado:</div>
+                      <Badge className="bg-costwise-navy dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
+                    </div>
+                    <div className="flex justify-between items-center pl-8">
+                      <div className="text-costwise-navy dark:text-costwise-teal font-bold text-base">${estimatedSavings.monthly}/mes</div>
+                      <div className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</div>
+                    </div>
                   </div>
 
                   {/* Explicación breve */}
                   <div className="text-xs text-costwise-navy dark:text-costwise-teal mb-1">
-                    Estas son las herramientas SaaS más usadas y sus alternativas open source.
+                    Estas son las herramientas SaaS más usadas en empresas de 10 empleados y sus alternativas open source.
                   </div>
 
                   {/* Lista de herramientas y alternativas compacta */}
@@ -253,17 +259,22 @@ const IndustrySelector = () => {
                     {React.createElement(getIconComponent(selectedIndustryData.icon), { size: 32, className: "text-costwise-blue dark:text-costwise-teal" })}
                     <span className="font-bold text-2xl text-costwise-navy dark:text-costwise-teal">{selectedIndustryData.name}</span>
                   </div>
-                  <div className="flex items-center space-x-2 bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-4 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
-                    <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
-                    <span className="text-costwise-teal dark:text-costwise-blue font-semibold">Ahorro estimado:</span>
-                    <span className="text-costwise-navy dark:text-costwise-teal font-bold">${estimatedSavings.monthly}/mes</span>
-                    <span className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</span>
+                  <div className="flex flex-col bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-4 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
+                    <div className="flex items-center space-x-2">
+                      <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
+                      <span className="text-costwise-teal dark:text-costwise-blue font-semibold">Ahorro estimado:</span>
+                      <Badge className="bg-costwise-navy dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
+                    </div>
+                    <div className="flex items-center space-x-2 pl-7 mt-1">
+                      <span className="text-costwise-navy dark:text-costwise-teal font-bold">${estimatedSavings.monthly}/mes</span>
+                      <span className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Explicación breve */}
                 <div className="bg-costwise-blue/10 dark:bg-costwise-teal/10 rounded p-3 text-sm text-costwise-navy dark:text-costwise-teal mb-2">
-                  Consulta el ahorro estimado y las herramientas SaaS más usadas en este sector, junto con sus alternativas open source.
+                  Consulta el ahorro estimado para empresas de 10 empleados y las herramientas SaaS más usadas en este sector, junto con sus alternativas open source.
                 </div>
 
                 {/* Pestañas para herramientas y alternativas */}

@@ -22,20 +22,20 @@ const Hardware = () => {
       ],
       recommended: true
     },
-    {
-      name: "Configuración Inicial",
-      icon: Server,
-      price: "Consultar", // Precio actualizado
-      description: "Ideal para iniciar con infraestructura local, enfocada en servicios básicos.",
-      features: [
-        "Nodo único con Proxmox VE",
-        "Virtualización de servicios",
-        "Hardware simulado: 16GB RAM",
-        "Almacenamiento SSD",
-        "Soporte básico"
-      ],
-      recommended: false
-    },
+    // {
+    //   name: "Configuración Inicial",
+    //   icon: Server,
+    //   price: "Consultar", // Precio actualizado
+    //   description: "Ideal para iniciar con infraestructura local, enfocada en servicios básicos.",
+    //   features: [
+    //     "Nodo único con Proxmox VE",
+    //     "Virtualización de servicios",
+    //     "Hardware simulado: 16GB RAM",
+    //     "Almacenamiento SSD",
+    //     "Soporte básico"
+    //   ],
+    //   recommended: false
+    // },
     {
       name: "Configuración Segura",
       icon: Cpu, // Podríamos cambiar el icono si es necesario
