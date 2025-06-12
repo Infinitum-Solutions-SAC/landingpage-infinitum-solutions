@@ -49,8 +49,12 @@ const Services = () => {
               <img
                 src="/assets/images/hardware/cluster.webp"
                 alt="Cluster hardware"
-                className="absolute right-0 top-[85%] -translate-y-1/2 pointer-events-none opacity-40 max-w-[200px] sm:max-w-xs block drop-shadow-xl rotate-6"
-                style={{ zIndex: 0 }}
+                className="absolute pointer-events-none opacity-50 max-w-[150px] sm:max-w-xs block drop-shadow-xl rotate-2 sm:rotate-[10deg]"
+                style={{ 
+                  zIndex: 0,
+                  right: '-15px',
+                  bottom: '-35px'
+                }}
               />
               <div className="space-y-6 animate-fade-in max-w-3xl mx-auto relative z-10">
                 <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-costwise-navy via-costwise-blue to-costwise-teal bg-clip-text text-transparent dark:from-white dark:via-costwise-teal dark:to-costwise-blue">
