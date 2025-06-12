@@ -66,12 +66,13 @@ const OpenSource = () => {
       </div>
 
       {/* Cinta transportadora a ancho completo sin fondo */}
-      <div className={`w-full overflow-hidden mb-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '300ms' }}>
-        <div className="flex animate-scroll-left space-x-6 py-8">
+      <div className={`w-full overflow-hidden mb-8 md:mb-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '300ms' }}>
+        {/* Desktop: Una sola fila */}
+        <div className="hidden md:flex animate-scroll-left-slow space-x-6 py-8">
           {/* Primera iteración de herramientas */}
           {tools.map((tool, index) => (
               <a
-                key={`first-${tool.name}`}
+                key={`desktop-first-${tool.name}`}
                 href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -105,7 +106,7 @@ const OpenSource = () => {
           {/* Segunda iteración para continuidad */}
           {tools.map((tool, index) => (
               <a
-                key={`second-${tool.name}`}
+                key={`desktop-second-${tool.name}`}
                 href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -135,6 +136,125 @@ const OpenSource = () => {
                 </div>
               </a>
           ))}
+        </div>
+
+        {/* Mobile: Dos filas con movimiento en direcciones opuestas */}
+        <div className="md:hidden space-y-4 py-4">
+          {/* Primera fila - moviéndose hacia la izquierda */}
+          <div className="flex animate-scroll-left space-x-3">
+            {tools.slice(0, 5).map((tool, index) => (
+              <a
+                key={`mobile-row1-first-${tool.name}`}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
+              >
+                <div className="text-center">
+                  <div className="relative w-6 h-6 mx-auto mb-1.5">
+                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Code size={12} className="text-costwise-blue dark:text-costwise-teal" />
+                    </div>
+                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle size={6} className="text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors leading-tight">
+                    {tool.name}
+                  </h3>
+                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
+                    {tool.category}
+                  </span>
+                </div>
+              </a>
+            ))}
+            
+            {/* Duplicar para continuidad */}
+            {tools.slice(0, 5).map((tool, index) => (
+              <a
+                key={`mobile-row1-second-${tool.name}`}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
+              >
+                <div className="text-center">
+                  <div className="relative w-6 h-6 mx-auto mb-1.5">
+                    <div className="w-full h-full bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-teal/30 dark:to-costwise-blue/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Code size={12} className="text-costwise-blue dark:text-costwise-teal" />
+                    </div>
+                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle size={6} className="text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-blue dark:group-hover:text-costwise-teal transition-colors leading-tight">
+                    {tool.name}
+                  </h3>
+                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal rounded-full">
+                    {tool.category}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Segunda fila - moviéndose hacia la derecha */}
+          <div className="flex animate-scroll-right space-x-3">
+            {tools.slice(4).map((tool, index) => (
+              <a
+                key={`mobile-row2-first-${tool.name}`}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
+              >
+                <div className="text-center">
+                  <div className="relative w-6 h-6 mx-auto mb-1.5">
+                    <div className="w-full h-full bg-gradient-to-br from-costwise-teal/20 to-costwise-blue/20 dark:from-costwise-blue/30 dark:to-costwise-teal/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Code size={12} className="text-costwise-teal dark:text-costwise-blue" />
+                    </div>
+                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle size={6} className="text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-teal dark:group-hover:text-costwise-blue transition-colors leading-tight">
+                    {tool.name}
+                  </h3>
+                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue rounded-full">
+                    {tool.category}
+                  </span>
+                </div>
+              </a>
+            ))}
+            
+            {/* Duplicar para continuidad */}
+            {tools.slice(4).map((tool, index) => (
+              <a
+                key={`mobile-row2-second-${tool.name}`}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex-shrink-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-costwise-blue/20 dark:border-costwise-teal/20 hover:border-costwise-blue/40 dark:hover:border-costwise-teal/40 hover:scale-102 min-w-[110px] cursor-pointer"
+              >
+                <div className="text-center">
+                  <div className="relative w-6 h-6 mx-auto mb-1.5">
+                    <div className="w-full h-full bg-gradient-to-br from-costwise-teal/20 to-costwise-blue/20 dark:from-costwise-blue/30 dark:to-costwise-teal/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Code size={12} className="text-costwise-teal dark:text-costwise-blue" />
+                    </div>
+                    <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
+                      <CheckCircle size={6} className="text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-costwise-teal dark:group-hover:text-costwise-blue transition-colors leading-tight">
+                    {tool.name}
+                  </h3>
+                  <span className="inline-block px-1.5 py-0.5 text-xs font-medium bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue rounded-full">
+                    {tool.category}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
