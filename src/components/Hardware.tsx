@@ -65,6 +65,40 @@ const Hardware = () => {
     }
   ];
 
+  // Función para calcular la posición de cada carta
+  const getCardPosition = (index: number, currentIndex: number, totalCards: number) => {
+    const diff = index - currentIndex;
+    const absDistance = Math.abs(diff);
+    
+    // Carta activa
+    if (diff === 0) {
+      return {
+        transform: 'translateX(0) translateY(-10px) rotate(0deg) scale(1.05)',
+        zIndex: 10,
+        opacity: 1
+      };
+    }
+    
+    // Cartas visibles a los lados
+    if (absDistance <= 2) {
+      const side = diff > 0 ? 1 : -1; // derecha o izquierda
+      const distance = absDistance;
+      
+      return {
+        transform: `translateX(${side * distance * 8}px) translateY(${distance * 4}px) rotate(${side * distance * 3}deg) scale(${1 - distance * 0.02})`,
+        zIndex: 10 - distance,
+        opacity: 1 - distance * 0.15
+      };
+    }
+    
+    // Cartas ocultas
+    return {
+      transform: 'translateX(0) translateY(0) rotate(0deg) scale(0.9)',
+      zIndex: 1,
+      opacity: 0.3
+    };
+  };
+
   const nextCard = () => {
     setCurrentIndex((prev) => (prev + 1) % hardwareOptions.length);
   };
@@ -76,8 +110,6 @@ const Hardware = () => {
   const goToCard = (index: number) => {
     setCurrentIndex(index);
   };
-
-  // Navegación con teclado
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
@@ -166,8 +198,8 @@ const Hardware = () => {
               className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl flex flex-col justify-between animate-fade-in-up bg-white dark:bg-slate-800 ${option.recommended ? 'border-2 border-costwise-blue dark:border-costwise-teal' : 'border border-gray-200 dark:border-slate-700'}`}
               style={{ 
                 animationDelay: `${index * 100}ms`,
-                minHeight: '480px', // Altura fija para prevenir CLS
-                maxHeight: '480px'
+                minHeight: '520px', // Aumentar altura mínima
+                maxHeight: 'none' // Quitar altura máxima para permitir contenido dinámico
               }}
             >
               {option.recommended && (
@@ -180,11 +212,11 @@ const Hardware = () => {
                   <option.icon size={28} className={option.recommended ? 'text-costwise-blue dark:text-costwise-teal' : 'text-costwise-navy dark:text-gray-300'} />
                 </div>
                 <h3 className="text-xl font-semibold text-costwise-navy dark:text-white mb-2">{option.name}</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 h-20 overflow-hidden">{option.description}</p>
-                <ul className="space-y-2 mb-6">
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 h-16 overflow-hidden">{option.description}</p>
+                <ul className="space-y-1 mb-4 flex-grow">
                   {option.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                      <Check size={16} className="text-green-500 flex-shrink-0" />
+                    <li key={i} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+                      <Check size={14} className="text-green-500 flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -202,57 +234,63 @@ const Hardware = () => {
 
         {/* Efecto de cartas de naipes para móviles */}
         <div className="md:hidden">
-          <div className="card-deck-container cls-card-deck-container" style={{ minHeight: '450px' }}>
+          <div className="card-deck-container">
             <div className="card-deck">
-              {hardwareOptions.map((option, index) => (
-                <div 
-                  key={index} 
-                  className={`deck-card ${currentIndex === index ? 'active' : ''}`}
-                  onClick={() => setCurrentIndex(index)}
-                  onTouchStart={onTouchStart}
-                  onTouchMove={onTouchMove}
-                  onTouchEnd={onTouchEnd}
-                  style={{ 
-                    willChange: currentIndex === index ? 'transform' : 'auto',
-                    contain: 'layout style paint'
-                  }}
-                >
-                  {option.recommended && (
-                    <div className="card-recommended-badge">
-                      Recomendado
-                    </div>
-                  )}
-                  <div className="card-content">
-                    <div className="card-header">
-                      <div className={`card-icon ${option.recommended ? 'recommended' : ''}`}>
-                        <option.icon size={24} />
+              {hardwareOptions.map((option, index) => {
+                const position = getCardPosition(index, currentIndex, hardwareOptions.length);
+                return (
+                  <div 
+                    key={index} 
+                    className={`deck-card ${currentIndex === index ? 'active' : ''}`}
+                    onClick={() => setCurrentIndex(index)}
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                    style={{ 
+                      transform: position.transform,
+                      zIndex: position.zIndex,
+                      opacity: position.opacity,
+                      willChange: currentIndex === index ? 'transform' : 'auto',
+                      contain: 'layout style paint'
+                    }}
+                  >
+                    {option.recommended && (
+                      <div className="card-recommended-badge">
+                        Recomendado
                       </div>
-                      <h3 className="card-title">{option.name}</h3>
-                      <p className="card-description">{option.description}</p>
-                    </div>
-                    
-                    <ul className="card-features">
-                      {option.features.map((feature, i) => (
-                        <li key={i} className="card-feature">
-                          <Check size={16} className="card-feature-icon" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <div className="card-footer">
-                      <p className="card-price">{option.price}</p>
-                      <a 
-                        href="#contacto" 
-                        className={`card-button ${option.recommended ? 'primary' : 'secondary'}`}
-                        onClick={(e) => e.stopPropagation()} // Evitar que el click en el botón active el onClick de la tarjeta
-                      >
-                        Solicitar cotización
-                      </a>
+                    )}
+                    <div className="card-content">
+                      <div className="card-header">
+                        <div className={`card-icon ${option.recommended ? 'recommended' : ''}`}>
+                          <option.icon size={24} />
+                        </div>
+                        <h3 className="card-title">{option.name}</h3>
+                        <p className="card-description">{option.description}</p>
+                      </div>
+                      
+                      <ul className="card-features">
+                        {option.features.map((feature, i) => (
+                          <li key={i} className="card-feature">
+                            <Check size={16} className="card-feature-icon" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <div className="card-footer">
+                        <p className="card-price">{option.price}</p>
+                        <a 
+                          href="#contacto" 
+                          className={`card-button ${option.recommended ? 'primary' : 'secondary'}`}
+                          onClick={(e) => e.stopPropagation()} // Evitar que el click en el botón active el onClick de la tarjeta
+                        >
+                          Solicitar cotización
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
