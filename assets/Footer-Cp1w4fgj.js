@@ -1,4 +1,4 @@
-import{j as e}from"./ui-vendor-loNNfqvF.js";import{u as t}from"./use-mobile-mKUVh9XM.js";import{c as s}from"./index-DdUNAOk_.js";import"./react-vendor-BmwZABpM.js";import"./query-vendor-D4dEEMG5.js";
+import{j as e}from"./ui-vendor-loNNfqvF.js";import{u as t}from"./use-mobile-mKUVh9XM.js";import{c as s}from"./index-DmU057Xl.js";import"./react-vendor-BmwZABpM.js";import"./query-vendor-D4dEEMG5.js";
 /**
  * @license lucide-react v0.462.0 - ISC
  *
