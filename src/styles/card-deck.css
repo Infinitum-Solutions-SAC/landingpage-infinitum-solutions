@@ -11,6 +11,9 @@
     min-height: 480px;
     padding: 2.5rem 0 1rem 0;
     margin-top: 1.5rem;
+    /* Ocupar todo el ancho y ocultar overflow */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     /* Remover fondo visible y bordes */
     background: transparent;
     border: none;
@@ -353,6 +356,10 @@
   .card-deck-container {
     padding: 2.5rem 0 1.5rem 0;
     min-height: 480px;
+    /* Mantener el ancho completo y overflow hidden */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
   }
   
   .card-deck {
