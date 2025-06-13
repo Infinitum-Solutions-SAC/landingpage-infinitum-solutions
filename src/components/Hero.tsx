@@ -61,9 +61,9 @@ const Hero = () => {
             <div className="absolute bottom-0 left-0 w-36 h-36 md:w-48 md:h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float will-change-transform" style={{ animationDelay: '1s' }}></div>
             
             {/* Banner destacando ahorro */}
-            <div className="absolute -top-4 right-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-20 animate-bounce-slow">
+            {/* <div className="absolute -top-4 right-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-20 animate-bounce-slow">
               ¡Ahorra miles al año!
-            </div>
+            </div> */}
             
             {/* Contenedor con dimensiones explícitas */}
             <div className="h-full flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
