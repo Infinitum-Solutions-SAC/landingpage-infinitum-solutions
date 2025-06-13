@@ -1,6 +1,6 @@
 /* Estilos avanzados para animaciones de Benefits */
 
-/* Configuración base para animaciones más suaves y optimizadas */
+/* Configuración base para animaciones más suaves y responsivas */
 .benefit-card {
   position: relative;
   will-change: transform, box-shadow, border-color, background-color;
@@ -9,31 +9,31 @@
   -webkit-font-smoothing: antialiased;
   transform: scaleY(1) translateY(0px) translateZ(0);
   transition:
-    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    border-color 0.5s ease-out,
-    background-color 0.6s ease-out,
-    backdrop-filter 0.6s ease-out;
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s ease-out,
+    background-color 0.3s ease-out,
+    backdrop-filter 0.3s ease-out;
   overflow: hidden;
   z-index: 1;
 }
 
-/* Sistema de animación mejorado para móviles con transiciones más largas */
+/* Sistema de animación optimizado para scroll rápido en móviles */
 @media (max-width: 767px) {
   .benefit-card {
     min-height: 140px;
     max-height: 180px;
     transition:
-      transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      box-shadow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      border-color 0.6s ease-out,
-      background-color 0.7s ease-out,
-      backdrop-filter 0.7s ease-out,
-      min-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.3s ease-out,
+      background-color 0.3s ease-out,
+      backdrop-filter 0.3s ease-out,
+      min-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Estado central mejorado con transiciones más suaves para evitar parpadeo */
+  /* Estado central optimizado para respuesta rápida */
   .benefit-card-center {
     background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(16px) saturate(180%);
@@ -50,16 +50,16 @@
     z-index: 10;
     animation: cardPulse 3s ease-in-out infinite;
     transition:
-      transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      box-shadow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      border-color 0.6s ease-out,
-      background-color 0.7s ease-out,
-      backdrop-filter 0.7s ease-out,
-      min-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.3s ease-out,
+      background-color 0.3s ease-out,
+      backdrop-filter 0.3s ease-out,
+      min-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Modo oscuro mejorado */
+  /* Modo oscuro optimizado */
   .dark .benefit-card-center {
     background: rgba(30, 41, 59, 0.98) !important;
     border: 1px solid rgba(16, 185, 129, 0.25);
@@ -70,7 +70,50 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  /* Animación más lenta de respiración para evitar distracciones */
+  /* Transiciones más rápidas para elementos internos durante scroll */
+  .benefit-card .icon-container {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .benefit-card h3 {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .benefit-card .benefit-description {
+    transition: 
+      max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 0.3s ease-out,
+      transform 0.3s ease-out;
+  }
+
+  /* Clase especial para scroll rápido */
+  .benefit-card.fast-scroll {
+    transition:
+      transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      box-shadow 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.15s ease-out,
+      background-color 0.15s ease-out,
+      backdrop-filter 0.15s ease-out,
+      min-height 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      max-height 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .benefit-card.fast-scroll .icon-container {
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .benefit-card.fast-scroll h3 {
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .benefit-card.fast-scroll .benefit-description {
+    transition: 
+      max-height 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 0.15s ease-out,
+      transform 0.15s ease-out;
+  }
+
+  /* Animaciones de respiración optimizadas */
   @keyframes cardPulse {
     0%, 100% { 
       box-shadow: 
@@ -107,22 +150,6 @@
         0 0 40px rgba(16, 185, 129, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
-  }
-
-  /* Transiciones más suaves para elementos internos */
-  .benefit-card .icon-container {
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .benefit-card h3 {
-    transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .benefit-card .benefit-description {
-    transition: 
-      max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 0.6s ease-out,
-      transform 0.5s ease-out;
   }
 
   /* Animación del icono mejorada */
@@ -321,9 +348,10 @@
   transform: translateZ(0);
 }
 
-/* Indicador visual sutil de scroll en móviles */
+/* Indicador visual sutil de scroll en móviles - OCULTO */
 @media (max-width: 767px) {
   .benefits-container::before {
+    display: none; /* Ocultar completamente el indicador */
     content: '';
     position: fixed;
     top: 50%;
@@ -339,18 +367,19 @@
       transparent 100%
     );
     border-radius: 2px;
-    opacity: 0.4;
+    opacity: 0;
     pointer-events: none;
     z-index: 5;
     animation: centerIndicator 2s ease-in-out infinite;
   }
 
   @keyframes centerIndicator {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.6; }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0; }
   }
 
   .dark .benefits-container::before {
+    display: none; /* Ocultar en modo oscuro también */
     background: linear-gradient(to bottom, 
       transparent 0%, 
       rgba(16, 185, 129, 0.3) 20%, 

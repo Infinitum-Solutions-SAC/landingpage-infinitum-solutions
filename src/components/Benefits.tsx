@@ -5,6 +5,7 @@ import '../styles/benefits-animation.css';
 const Benefits = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [centerCards, setCenterCards] = useState<Set<number>>(new Set());
+  const [isFastScrolling, setIsFastScrolling] = useState(false);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
    const benefits = [
     {
@@ -67,7 +68,7 @@ const Benefits = () => {
     };
   }, []);
 
-  // Nuevo sistema de detección de centro basado en scroll (solo móviles)
+  // Sistema mejorado de detección que funciona con scroll rápido
   useEffect(() => {
     if (!isVisible) return;
 
@@ -78,16 +79,16 @@ const Benefits = () => {
       return;
     }
 
-    let ticking = false;
-    let lastScrollY = window.scrollY;
-    let debounceTimeout: NodeJS.Timeout | null = null;
-    let currentActiveRow = -1; // Para rastrear la fila activa actual
+    let animationFrameId: number | null = null;
+    let currentActiveRow = -1;
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout | null = null;
+    let lastScrollTime = Date.now();
+    let scrollVelocity = 0;
 
     const updateCenterCards = () => {
       const viewportHeight = window.innerHeight;
       const centerY = window.scrollY + (viewportHeight / 2);
-      
-      // Encontrar la fila más cercana al centro
       const cardsPerRow = 2;
       
       // Calcular distancias por fila
@@ -129,13 +130,13 @@ const Benefits = () => {
           prev.distance < current.distance ? prev : current
         );
         
-        // Tolerancia base
-        const baseTolerance = viewportHeight * 0.3;
+        // Tolerancia más amplia durante scroll rápido
+        const baseTolerance = viewportHeight * (isScrolling ? 0.4 : 0.3);
         
-        // Histéresis: si hay una fila activa, requerimos más distancia para cambiar
+        // Histéresis reducida durante scroll rápido para cambios más responsivos
         let tolerance = baseTolerance;
         if (currentActiveRow !== -1 && currentActiveRow !== closestRowData.row) {
-          tolerance = baseTolerance * 0.7; // Requiere estar más cerca para cambiar de fila
+          tolerance = baseTolerance * (isScrolling ? 0.85 : 0.7);
         }
         
         const newCenterCards = new Set<number>();
@@ -153,41 +154,78 @@ const Benefits = () => {
         
         setCenterCards(newCenterCards);
       }
+    };
+
+    const handleScrollFrame = () => {
+      updateCenterCards();
       
-      ticking = false;
+      // Continuar actualizando mientras se hace scroll
+      if (isScrolling) {
+        animationFrameId = requestAnimationFrame(handleScrollFrame);
+      }
     };
 
     const handleScroll = () => {
+      const now = Date.now();
+      const timeDelta = now - lastScrollTime;
       const currentScrollY = window.scrollY;
-      const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
-      lastScrollY = currentScrollY;
-
-      // Limpiar debounce anterior
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
+      
+      // Calcular velocidad de scroll
+      if (timeDelta > 0) {
+        const lastScrollY = window.scrollY;
+        scrollVelocity = Math.abs(currentScrollY - lastScrollY) / timeDelta;
       }
-
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          // Agregar pequeño debounce para evitar cambios muy rápidos
-          debounceTimeout = setTimeout(updateCenterCards, 50);
-          ticking = false;
-        });
-        ticking = true;
+      
+      // Detectar scroll rápido (más de 2 píxeles por milisegundo)
+      const isFastScroll = scrollVelocity > 2;
+      setIsFastScrolling(isFastScroll);
+      
+      lastScrollTime = now;
+      
+      // Marcar que estamos haciendo scroll
+      isScrolling = true;
+      
+      // Limpiar timeout anterior
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
       }
+      
+      // Si no hay animación en curso, iniciar una
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(handleScrollFrame);
+      }
+      
+      // Marcar fin del scroll después de 150ms de inactividad
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        setIsFastScrolling(false);
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        // Actualización final cuando el scroll termina
+        updateCenterCards();
+      }, 150);
     };
 
     const handleResize = () => {
       if (!isMobile()) {
         setCenterCards(new Set());
         window.removeEventListener('scroll', handleScroll);
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
       } else {
         // Recalcular inmediatamente en cambio de tamaño
         updateCenterCards();
       }
     };
 
-    // Configuración inicial con debounce
+    // Configuración inicial
     const timeoutId = setTimeout(() => {
       if (isMobile()) {
         updateCenterCards();
@@ -199,8 +237,11 @@ const Benefits = () => {
 
     return () => {
       clearTimeout(timeoutId);
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
@@ -249,6 +290,7 @@ const Benefits = () => {
                   cursor-pointer group
                   ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}
                   ${isInCenter ? 'benefit-card-center benefit-card-expanded' : ''}
+                  ${isFastScrolling ? 'fast-scroll' : ''}
                 `}
                 style={{ 
                   animationDelay: `${benefit.delay}ms`,
