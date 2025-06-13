@@ -219,3 +219,27 @@
 .hover\:scale-102:hover {
   transform: scale(1.02);
 }
+
+/* Estilos para las tarjetas de beneficios con efecto centro */
+.benefit-card {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.benefit-card-center {
+  transform: scale(1.1) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border-color: rgb(59 130 246 / 0.5) !important;
+  z-index: 20 !important;
+  position: relative !important;
+}
+
+@media (min-width: 640px) {
+  .benefit-card-center {
+    transform: scale(1.15) !important;
+  }
+}
+
+.text-shadow {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
