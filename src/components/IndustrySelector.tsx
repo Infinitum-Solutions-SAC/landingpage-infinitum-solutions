@@ -116,7 +116,9 @@ const IndustrySelector = () => {
                             {industry.description}
                           </p>
                         </div>
-                        <ChevronRight className="h-4 w-4 text-costwise-blue dark:text-costwise-teal opacity-60" />
+                        <div className="text-xs text-costwise-blue dark:text-costwise-teal font-medium opacity-75">
+                          Toca para seleccionar
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
