@@ -5,7 +5,7 @@ import Services from "@/components/Services";
 import Benefits from "@/components/Benefits";
 
 // Lazy loading para componentes below-the-fold
-const Testimonials = lazy(() => import("@/components/Testimonials"));
+// const Testimonials = lazy(() => import("@/components/Testimonials"));
 const IndustrySelector = lazy(() => import("@/components/IndustrySelector"));
 const Hardware = lazy(() => import("@/components/Hardware"));
 const OpenSource = lazy(() => import("@/components/OpenSource"));
@@ -65,9 +65,9 @@ const Index = () => {
       <Benefits />
       
       {/* Testimonios para aumentar la confianza - lazy loading */}
-      <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><TestimonialsSkeleton /></div>}>
+      {/* <Suspense fallback={<div className="container-custom py-16 bg-white dark:bg-slate-950"><TestimonialsSkeleton /></div>}>
         <Testimonials />
-      </Suspense>
+      </Suspense> */}
       
       {/* Servicios - después de construir confianza */}
       <Services />
