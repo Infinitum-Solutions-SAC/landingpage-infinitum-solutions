@@ -67,94 +67,143 @@ const Benefits = () => {
     };
   }, []);
 
-  // Observer para detectar tarjetas en el centro de la pantalla (solo en móviles)
+  // Nuevo sistema de detección de centro basado en scroll (solo móviles)
   useEffect(() => {
     if (!isVisible) return;
 
-    // Solo activar el efecto en móviles
     const isMobile = () => window.innerWidth < 768;
     
     if (!isMobile()) {
-      // En desktop/tablet, limpiar cualquier estado de centro
       setCenterCards(new Set());
       return;
     }
 
-    const centerObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          const cardIndex = parseInt(entry.target.getAttribute('data-card-index') || '0');
-          setCenterCards(prev => {
-            const newSet = new Set(prev);
-            if (entry.isIntersecting) {
-              // Limpiar otras filas cuando una nueva está en el centro
-              newSet.clear();
-              
-              // En móviles siempre son 2 cards por fila
-              const cardsPerRow = 2;
-              const currentRow = Math.floor(cardIndex / cardsPerRow);
-              const startIndex = currentRow * cardsPerRow;
-              const endIndex = Math.min(startIndex + cardsPerRow, benefits.length);
-              
-              // Agregar todas las tarjetas de la fila actual
-              for (let i = startIndex; i < endIndex; i++) {
-                newSet.add(i);
-              }
-            } else {
-              newSet.delete(cardIndex);
-            }
-            return newSet;
-          });
-        });
-      },
-      {
-        // Zona central más amplia para mejor detección
-        rootMargin: '-30% 0px -30% 0px',
-        threshold: 0.5
-      }
-    );
+    let ticking = false;
+    let lastScrollY = window.scrollY;
+    let debounceTimeout: NodeJS.Timeout | null = null;
+    let currentActiveRow = -1; // Para rastrear la fila activa actual
 
-    // Función para manejar cambios de tamaño de pantalla
-    const handleResize = () => {
-      if (!isMobile()) {
-        setCenterCards(new Set());
-        cardRefs.current.forEach(ref => {
+    const updateCenterCards = () => {
+      const viewportHeight = window.innerHeight;
+      const centerY = window.scrollY + (viewportHeight / 2);
+      
+      // Encontrar la fila más cercana al centro
+      const cardsPerRow = 2;
+      
+      // Calcular distancias por fila
+      const rowDistances: { row: number; distance: number; cards: number[] }[] = [];
+      
+      for (let index = 0; index < cardRefs.current.length; index += cardsPerRow) {
+        const rowCards = [];
+        let rowCenterY = 0;
+        let validCards = 0;
+        
+        // Calcular el centro promedio de la fila
+        for (let i = index; i < Math.min(index + cardsPerRow, cardRefs.current.length); i++) {
+          const ref = cardRefs.current[i];
           if (ref) {
-            centerObserver.unobserve(ref);
+            const rect = ref.getBoundingClientRect();
+            const elementCenterY = window.scrollY + rect.top + (rect.height / 2);
+            rowCenterY += elementCenterY;
+            validCards++;
+            rowCards.push(i);
           }
+        }
+        
+        if (validCards > 0) {
+          rowCenterY = rowCenterY / validCards;
+          const distance = Math.abs(rowCenterY - centerY);
+          const currentRow = Math.floor(index / cardsPerRow);
+          
+          rowDistances.push({
+            row: currentRow,
+            distance: distance,
+            cards: rowCards
+          });
+        }
+      }
+      
+      // Encontrar la fila más cercana al centro
+      if (rowDistances.length > 0) {
+        const closestRowData = rowDistances.reduce((prev, current) => 
+          prev.distance < current.distance ? prev : current
+        );
+        
+        // Tolerancia base
+        const baseTolerance = viewportHeight * 0.3;
+        
+        // Histéresis: si hay una fila activa, requerimos más distancia para cambiar
+        let tolerance = baseTolerance;
+        if (currentActiveRow !== -1 && currentActiveRow !== closestRowData.row) {
+          tolerance = baseTolerance * 0.7; // Requiere estar más cerca para cambiar de fila
+        }
+        
+        const newCenterCards = new Set<number>();
+        
+        if (closestRowData.distance <= tolerance) {
+          // Agregar todas las cards de la fila más cercana
+          closestRowData.cards.forEach(cardIndex => {
+            newCenterCards.add(cardIndex);
+          });
+          currentActiveRow = closestRowData.row;
+        } else {
+          // Si ninguna fila está suficientemente cerca, limpiar estado
+          currentActiveRow = -1;
+        }
+        
+        setCenterCards(newCenterCards);
+      }
+      
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+      lastScrollY = currentScrollY;
+
+      // Limpiar debounce anterior
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          // Agregar pequeño debounce para evitar cambios muy rápidos
+          debounceTimeout = setTimeout(updateCenterCards, 50);
+          ticking = false;
         });
-      } else {
-        // Reactiva el observer en móviles
-        cardRefs.current.forEach((ref, index) => {
-          if (ref) {
-            centerObserver.observe(ref);
-          }
-        });
+        ticking = true;
       }
     };
 
-    // Esperar para que las animaciones iniciales terminen
+    const handleResize = () => {
+      if (!isMobile()) {
+        setCenterCards(new Set());
+        window.removeEventListener('scroll', handleScroll);
+      } else {
+        // Recalcular inmediatamente en cambio de tamaño
+        updateCenterCards();
+      }
+    };
+
+    // Configuración inicial con debounce
     const timeoutId = setTimeout(() => {
       if (isMobile()) {
-        cardRefs.current.forEach((ref, index) => {
-          if (ref) {
-            centerObserver.observe(ref);
-          }
-        });
+        updateCenterCards();
+        window.addEventListener('scroll', handleScroll, { passive: true });
       }
-    }, 800);
+    }, 300);
 
-    // Agregar listener para cambios de tamaño
     window.addEventListener('resize', handleResize);
 
     return () => {
       clearTimeout(timeoutId);
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      cardRefs.current.forEach(ref => {
-        if (ref) {
-          centerObserver.unobserve(ref);
-        }
-      });
     };
   }, [isVisible, benefits.length]);
 
@@ -183,7 +232,7 @@ const Benefits = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-8 mt-10">
+        <div className="benefits-container grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-8 mt-10 relative">
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             const isInCenter = centerCards.has(index);
@@ -205,13 +254,14 @@ const Benefits = () => {
                   animationDelay: `${benefit.delay}ms`,
                 }}
               >
-                <div className="relative z-10">
+                <div className="benefit-content relative z-10">
                   <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-4">
                     <div 
                       className={`
                         icon-container relative rounded-full flex items-center justify-center
                         p-1.5 sm:p-2 md:p-3 
                         w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14
+                        transition-all duration-500 ease-out
                         ${isInCenter 
                           ? 'bg-gradient-to-br from-costwise-blue to-costwise-teal shadow-xl' 
                           : 'bg-gradient-to-br from-costwise-blue/20 to-costwise-teal/20 dark:from-costwise-blue/30 dark:to-costwise-teal/30'
@@ -242,6 +292,7 @@ const Benefits = () => {
                     </div>
                     <h3 className={`
                       text-base sm:text-lg md:text-xl font-semibold line-clamp-2 sm:hidden
+                      transition-all duration-500
                       ${isInCenter ? 'font-bold' : 'text-gray-900 dark:text-white'}
                     `}>
                       {benefit.title}
@@ -249,13 +300,14 @@ const Benefits = () => {
                   </div>
                   <h3 className={`
                     hidden sm:block text-lg md:text-xl font-semibold mb-1 sm:mb-3 line-clamp-2
+                    transition-all duration-500
                     ${isInCenter ? 'font-bold' : 'text-gray-900 dark:text-white'}
                   `}>
                     {benefit.title}
                   </h3>
                   <div className={`benefit-description-wrapper ${isInCenter ? 'expanded' : ''}`}>
                     <p className={`
-                      text-xs sm:text-sm md:text-base transition-all duration-500
+                      benefit-description text-xs sm:text-sm md:text-base
                       ${isInCenter 
                         ? 'text-gray-800 dark:text-gray-100 font-medium benefit-description-expanded' 
                         : 'text-gray-600 dark:text-gray-300 line-clamp-2 sm:line-clamp-3 md:line-clamp-none benefit-description-collapsed'
