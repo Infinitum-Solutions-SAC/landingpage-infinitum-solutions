@@ -37,7 +37,7 @@ const Hardware = () => {
     //   recommended: false
     // },
     {
-      name: "Configuración Segura",
+      name: "Configuración Básica",
       icon: Cpu, // Podríamos cambiar el icono si es necesario
       price: "Consultar", // Precio actualizado
       description: "Para empresas que requieren mayor seguridad y rendimiento.",
@@ -206,16 +206,10 @@ const Hardware = () => {
             Aprovecha tu Hardware Existente
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Evaluamos tus equipos actuales para transformarlos en servidores productivos y también ofrecemos configuraciones nuevas según tus necesidades, todas con software libre 100% auditable.
+            <span className="font-semibold text-costwise-blue dark:text-costwise-teal">Convierte tus equipos en servidores productivos</span>
+            {" o te ofrecemos configuraciones nuevas con "}
+            <span className="font-semibold text-costwise-blue dark:text-costwise-teal">software 100% libre y auditable</span>.
           </p>
-          {/* <a
-            href="#contacto"
-            className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-lg font-semibold shadow-lg bg-gradient-to-r from-costwise-blue to-costwise-teal text-white border-0 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-costwise-blue/60 focus:ring-offset-2 hover:from-costwise-teal hover:to-costwise-blue hover:scale-[1.04] active:scale-95 dark:from-costwise-teal dark:to-costwise-blue dark:text-white"
-            style={{ boxShadow: '0 4px 18px 0 rgba(0, 120, 212, 0.10)' }}
-          >
-            <span>Solicitar evaluación de equipos</span>
-            <ArrowRight size={16} />
-          </a> */}
         </div>
 
         {/* Vista de cuadrícula tradicional para escritorio */}

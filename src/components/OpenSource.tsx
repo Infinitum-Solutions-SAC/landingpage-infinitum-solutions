@@ -189,9 +189,7 @@ const OpenSource = () => {
           <p className={`text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed ${
             isVisible ? 'animate-fade-in' : 'opacity-0'
           }`} style={{ animationDelay: '200ms' }}>
-            Utilizamos software libre y de código abierto para reemplazar servicios de suscripción caros.
-            Son completamente auditables, sin restricciones de licencias y pueden funcionar en tu hardware existente.
-          </p>
+            Libérate de suscripciones caras: software libre, auditable y adaptable a tu hardware.</p>
         </div>
 
         {/* Comparativa simplificada de costos */}

@@ -9,7 +9,7 @@ const Benefits = () => {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
    const benefits = [
     {
-      title: "Ahorra hasta un 70%",
+      title: "Ahorra",
       description: "Reduce drásticamente tu gasto mensual en servicios cloud sin perder funcionalidades",
       icon: Coins,
       delay: 100
@@ -27,19 +27,19 @@ const Benefits = () => {
       delay: 300
     },
     {
-      title: "Mayor seguridad",
+      title: "Seguro",
       description: "Soluciones robustas que protegen tu empresa de amenazas externas",
       icon: Shield,
       delay: 400
     },
     {
-      title: "Mejor rendimiento",
+      title: "Rendimiento",
       description: "Velocidad superior sin depender de conexiones a internet lentas",
       icon: Zap,
       delay: 500
     },
     {
-      title: "Disponibilidad 24/7",
+      title: "Alta disponibilidad",
       description: "Tu infraestructura siempre funciona, incluso sin internet",
       icon: Clock,
       delay: 600

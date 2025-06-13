@@ -63,7 +63,7 @@ ${message}`;
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             <BadgePercent size={40} className="animate-pulse" />
             <h3 className="text-xl md:text-2xl font-bold">
-              Ahoraa en tus costos de IT
+              Ahora en costos de IT
             </h3>
           </div>
         </div>
