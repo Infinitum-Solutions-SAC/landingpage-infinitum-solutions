@@ -102,20 +102,21 @@ const IndustrySelector = () => {
                 {industriesData.map((industry) => (
                   <Card 
                     key={industry.id} 
-                    className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-blue-500"
+                    className="cursor-pointer hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border-l-4 border-l-costwise-blue dark:border-l-costwise-teal bg-white dark:bg-slate-800 shadow-md"
                     onClick={() => handleIndustrySelect(industry.id)}
                   >
                     <CardContent className="p-3">
                       <div className="flex flex-col items-center text-center space-y-2">
-                        {React.createElement(getIconComponent(industry.icon), { size: 28, className: "text-blue-600" })}
+                        {React.createElement(getIconComponent(industry.icon), { size: 28, className: "text-costwise-blue dark:text-costwise-teal" })}
                         <div>
-                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
+                          <h3 className="font-semibold text-costwise-blue dark:text-white text-sm">
                             {industry.name}
                           </h3>
                           <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
                             {industry.description}
                           </p>
                         </div>
+                        <ChevronRight className="h-4 w-4 text-costwise-blue dark:text-costwise-teal opacity-60" />
                       </div>
                     </CardContent>
                   </Card>
@@ -131,7 +132,7 @@ const IndustrySelector = () => {
                         <ArrowLeft className="h-5 w-5 text-costwise-blue dark:text-costwise-teal" />
                       </Button>
                       {selectedIndustryData.icon && React.createElement(getIconComponent(selectedIndustryData.icon), { size: 22, className: "text-costwise-blue dark:text-costwise-teal" })}
-                      <span className="font-bold text-base text-costwise-navy dark:text-costwise-teal">{selectedIndustryData.name}</span>
+                      <span className="font-bold text-base text-costwise-blue dark:text-costwise-teal">{selectedIndustryData.name}</span>
                     </div>
                   </div>
 
@@ -140,35 +141,35 @@ const IndustrySelector = () => {
                     <div className="flex items-center space-x-3">
                       <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
                       <div className="text-costwise-teal dark:text-costwise-blue text-sm font-semibold">Ahorro estimado:</div>
-                      <Badge className="bg-costwise-navy dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
+                      <Badge className="bg-costwise-blue dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
                     </div>
                     <div className="flex justify-between items-center pl-8">
-                      <div className="text-costwise-navy dark:text-costwise-teal font-bold text-base">${estimatedSavings.monthly}/mes</div>
+                      <div className="text-costwise-blue dark:text-costwise-teal font-bold text-base">${estimatedSavings.monthly}/mes</div>
                       <div className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</div>
                     </div>
                   </div>
 
                   {/* Explicación breve */}
-                  <div className="text-xs text-costwise-navy dark:text-costwise-teal mb-1">
+                  <div className="text-xs text-costwise-blue dark:text-costwise-teal mb-1">
                     Estas son las herramientas SaaS más usadas en empresas de 10 empleados y sus alternativas open source.
                   </div>
 
                   {/* Lista de herramientas y alternativas compacta */}
                   <div className="grid grid-cols-2 gap-2">
                     {alternatives.map((item, index) => (
-                      <Card key={index} className="border-l-4 border-l-costwise-blue dark:border-l-costwise-teal bg-white/90 dark:bg-slate-900/80">
+                      <Card key={index} className="border-l-4 border-l-costwise-blue dark:border-l-costwise-teal bg-white/95 dark:bg-slate-900/80 shadow-sm">
                         <CardContent className="p-2">
                           <div className="flex flex-col mb-2">
-                            <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-xs">{item.saas.name}</span>
+                            <span className="font-semibold text-costwise-blue dark:text-costwise-teal text-xs">{item.saas.name}</span>
                             <Badge variant="secondary" className="self-start mt-1 text-xs bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal border-none">{item.saas.category}</Badge>
                           </div>
                           <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">{item.saas.description}</p>
                           <div className="space-y-1">
                             {item.alternatives.map((alt, altIndex) => (
-                              <div key={altIndex} className="bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded-lg px-2 py-1 border border-costwise-teal/20 dark:border-costwise-blue/20">
+                              <div key={altIndex} className="bg-costwise-blue/10 dark:bg-costwise-blue/20 rounded-lg px-2 py-1 border border-costwise-blue/20 dark:border-costwise-blue/20">
                                 <div className="flex items-center justify-between">
-                                  <span className="font-semibold text-costwise-teal dark:text-costwise-blue text-xs truncate">{alt.name}</span>
-                                  <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue hover:underline ml-1">
+                                  <span className="font-semibold text-costwise-blue dark:text-costwise-blue text-xs truncate">{alt.name}</span>
+                                  <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-blue dark:text-costwise-blue hover:underline ml-1">
                                     <ExternalLink className="h-3 w-3" />
                                   </a>
                                 </div>
@@ -221,10 +222,10 @@ const IndustrySelector = () => {
                   <button
                     key={industry.id}
                     onClick={() => handleIndustrySelect(industry.id)}
-                    className={`w-full text-left p-3 rounded-lg transition-all ${
+                    className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
                       selectedIndustry === industry.id
-                        ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                        ? 'bg-costwise-blue/10 dark:bg-costwise-teal/20 border-costwise-blue dark:border-costwise-teal shadow-md'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-sm'
                     } border`}
                   >
                     <div className="flex items-center space-x-3">
@@ -252,23 +253,23 @@ const IndustrySelector = () => {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-2">
                   <div className="flex items-center space-x-3">
                     {React.createElement(getIconComponent(selectedIndustryData.icon), { size: 32, className: "text-costwise-blue dark:text-costwise-teal" })}
-                    <span className="font-bold text-2xl text-costwise-navy dark:text-costwise-teal">{selectedIndustryData.name}</span>
+                    <span className="font-bold text-2xl text-costwise-blue dark:text-costwise-teal">{selectedIndustryData.name}</span>
                   </div>
                   <div className="flex flex-col bg-costwise-teal/10 dark:bg-costwise-blue/10 rounded-lg px-4 py-2 border border-costwise-teal/30 dark:border-costwise-blue/30">
                     <div className="flex items-center space-x-2">
                       <Zap className="h-5 w-5 text-costwise-teal dark:text-costwise-blue" />
                       <span className="text-costwise-teal dark:text-costwise-blue font-semibold">Ahorro estimado:</span>
-                      <Badge className="bg-costwise-navy dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
+                      <Badge className="bg-costwise-blue dark:bg-costwise-teal text-white text-xs font-medium">10 empleados</Badge>
                     </div>
                     <div className="flex items-center space-x-2 pl-7 mt-1">
-                      <span className="text-costwise-navy dark:text-costwise-teal font-bold">${estimatedSavings.monthly}/mes</span>
+                      <span className="text-costwise-blue dark:text-costwise-teal font-bold">${estimatedSavings.monthly}/mes</span>
                       <span className="text-xs text-costwise-teal dark:text-costwise-blue">(${estimatedSavings.yearly}/año)</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Explicación breve */}
-                <div className="bg-costwise-blue/10 dark:bg-costwise-teal/10 rounded p-3 text-sm text-costwise-navy dark:text-costwise-teal mb-2">
+                <div className="bg-costwise-blue/10 dark:bg-costwise-teal/10 rounded p-3 text-sm text-costwise-blue dark:text-costwise-teal mb-2">
                   Consulta el ahorro estimado para empresas de 10 empleados y las herramientas SaaS más usadas en este sector, junto con sus alternativas open source.
                 </div>
 
@@ -276,18 +277,18 @@ const IndustrySelector = () => {
                 <div className="mt-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {alternatives.map((item, index) => (
-                      <Card key={index} className="border-l-4 border-l-costwise-teal dark:border-l-costwise-blue bg-white/90 dark:bg-slate-900/80">
+                      <Card key={index} className="border-l-4 border-l-costwise-blue dark:border-l-costwise-blue bg-white/95 dark:bg-slate-900/80 shadow-sm hover:shadow-md transition-shadow">
                         <CardContent className="p-3">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-sm">{item.saas.name}</span>
-                            <Badge variant="outline" className="text-xs bg-costwise-teal/10 dark:bg-costwise-blue/20 text-costwise-teal dark:text-costwise-blue border-none">{item.saas.category}</Badge>
+                            <span className="font-semibold text-costwise-blue dark:text-costwise-teal text-sm">{item.saas.name}</span>
+                            <Badge variant="outline" className="text-xs bg-costwise-blue/10 dark:bg-costwise-blue/20 text-costwise-blue dark:text-costwise-blue border-none">{item.saas.category}</Badge>
                           </div>
                           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1 line-clamp-2">{item.saas.description}</p>
                           <div className="flex flex-col gap-1">
                             {item.alternatives.map((alt, altIndex) => (
-                              <div key={altIndex} className="flex items-center justify-between bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded px-2 py-1 border border-costwise-teal/10 dark:border-costwise-blue/10">
-                                <span className="font-medium text-costwise-teal dark:text-costwise-blue text-xs truncate">{alt.name}</span>
-                                <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue ml-2">
+                              <div key={altIndex} className="flex items-center justify-between bg-costwise-blue/10 dark:bg-costwise-blue/20 rounded px-2 py-1 border border-costwise-blue/20 dark:border-costwise-blue/10">
+                                <span className="font-medium text-costwise-blue dark:text-costwise-blue text-xs truncate">{alt.name}</span>
+                                <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-blue dark:text-costwise-blue ml-2 hover:scale-110 transition-transform">
                                   <ExternalLink className="h-3 w-3" />
                                 </a>
                               </div>
