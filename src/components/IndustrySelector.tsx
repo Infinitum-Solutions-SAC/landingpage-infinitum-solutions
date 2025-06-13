@@ -96,29 +96,26 @@ const IndustrySelector = () => {
             </p>
           </div>
 
-          <div className="max-w-md mx-auto">
+          <div className="max-w-2xl mx-auto">
             {activeView === 'industries' ? (
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
                 {industriesData.map((industry) => (
                   <Card 
                     key={industry.id} 
                     className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-blue-500"
                     onClick={() => handleIndustrySelect(industry.id)}
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          {React.createElement(getIconComponent(industry.icon), { size: 24 })}
-                          <div>
-                            <h3 className="font-semibold text-gray-900 dark:text-white">
-                              {industry.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {industry.description}
-                            </p>
-                          </div>
+                    <CardContent className="p-3">
+                      <div className="flex flex-col items-center text-center space-y-2">
+                        {React.createElement(getIconComponent(industry.icon), { size: 28, className: "text-blue-600" })}
+                        <div>
+                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
+                            {industry.name}
+                          </h3>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                            {industry.description}
+                          </p>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </CardContent>
                   </Card>
@@ -157,27 +154,25 @@ const IndustrySelector = () => {
                   </div>
 
                   {/* Lista de herramientas y alternativas compacta */}
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
                     {alternatives.map((item, index) => (
                       <Card key={index} className="border-l-4 border-l-costwise-blue dark:border-l-costwise-teal bg-white/90 dark:bg-slate-900/80">
-                        <CardContent className="p-3">
-                          <div className="flex items-center justify-between mb-1">
-                            <div>
-                              <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-sm">{item.saas.name}</span>
-                              <Badge variant="secondary" className="ml-2 text-xs bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal border-none">{item.saas.category}</Badge>
-                            </div>
+                        <CardContent className="p-2">
+                          <div className="flex flex-col mb-2">
+                            <span className="font-semibold text-costwise-navy dark:text-costwise-teal text-xs">{item.saas.name}</span>
+                            <Badge variant="secondary" className="self-start mt-1 text-xs bg-costwise-blue/10 dark:bg-costwise-teal/20 text-costwise-blue dark:text-costwise-teal border-none">{item.saas.category}</Badge>
                           </div>
-                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.saas.description}</p>
-                          <div className="space-y-2">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">{item.saas.description}</p>
+                          <div className="space-y-1">
                             {item.alternatives.map((alt, altIndex) => (
-                              <div key={altIndex} className="bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded-lg px-3 py-2 border border-costwise-teal/20 dark:border-costwise-blue/20">
-                                <div className="flex items-center justify-between mb-1">
-                                  <span className="font-semibold text-costwise-teal dark:text-costwise-blue text-sm">{alt.name}</span>
-                                  <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue hover:underline">
-                                    <ExternalLink className="h-4 w-4" />
+                              <div key={altIndex} className="bg-costwise-teal/10 dark:bg-costwise-blue/20 rounded-lg px-2 py-1 border border-costwise-teal/20 dark:border-costwise-blue/20">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-semibold text-costwise-teal dark:text-costwise-blue text-xs truncate">{alt.name}</span>
+                                  <a href={alt.url} target="_blank" rel="noopener noreferrer" className="text-costwise-teal dark:text-costwise-blue hover:underline ml-1">
+                                    <ExternalLink className="h-3 w-3" />
                                   </a>
                                 </div>
-                                <p className="text-xs text-gray-700 dark:text-gray-300">{alt.description}</p>
+                                <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-2 mt-1">{alt.description}</p>
                               </div>
                             ))}
                           </div>
