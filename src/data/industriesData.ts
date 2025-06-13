@@ -131,8 +131,8 @@ export const getIndustryOpenSourceAlternatives = (industryId: string) => {
       { name: "Nextcloud", url: "https://nextcloud.com/", description: "Colaboración en la nube" }
     ],
     "Microsoft 365": [
-      { name: "ONLYOFFICE", url: "https://www.onlyoffice.com/", description: "Suite de oficina" },
-      { name: "Collabora Online", url: "https://www.collaboraoffice.com/", description: "LibreOffice online" }
+      { name: "Collabora Online", url: "https://www.collaboraoffice.com/", description: "LibreOffice online" },
+      { name: "ONLYOFFICE", url: "https://www.onlyoffice.com/", description: "Suite de oficina" }
     ],
     "HubSpot": [
       { name: "SuiteCRM", url: "https://suitecrm.com/", description: "CRM completo" },

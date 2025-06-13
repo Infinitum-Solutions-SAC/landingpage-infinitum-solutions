@@ -151,20 +151,20 @@ const OpenSource = () => {
   const alternativas = [
     { 
       saasTool: "Microsoft Office 365", 
-      openSource: "LibreOffice / OnlyOffice", 
-      savings: "Hasta $150 por usuario al año",
-      benefits: ["Sin suscripciones", "Funcionalidad similar", "Compatible con archivos de Office"]
+      openSource: "Collabora / OnlyOffice", 
+      savings: "Ahorra hasta $150 por usuario al año",
+      benefits: ["Colaboración en tiempo real", "Compatible con archivos de Office"]
     },
     { 
       saasTool: "Dropbox Business", 
       openSource: "Nextcloud", 
-      savings: "Hasta $180 por usuario al año",
+      savings: "Ahorra hasta $180 por usuario al año",
       benefits: ["Control total de tus archivos", "Sin límites de almacenamiento", "Más funcionalidades"]
     },
     { 
       saasTool: "Slack", 
       openSource: "Mattermost", 
-      savings: "Hasta $96 por usuario al año",
+      savings: "Ahorra hasta $96 por usuario al año",
       benefits: ["Comunicación segura", "Personalizable", "Control de datos"]
     }
   ];
@@ -299,11 +299,11 @@ const OpenSource = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-4 md:p-6 rounded-xl md:rounded-2xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-lg mb-8">
+        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-4 md:p-6 rounded-xl md:rounded-2xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-lg mb-8 max-w-4xl mx-auto">
           <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 md:gap-6">
             {/* Sección de beneficios - más compacta */}
             <div className="lg:col-span-3">
-              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-3">¿Por qué elegir software libre?</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-3 max-w-md">¿Por qué elegir software libre?</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3">
                 <div className="flex items-center gap-3 p-2 rounded-lg bg-costwise-blue/5 dark:bg-costwise-teal/10">
                   <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-1.5 rounded-full">
@@ -356,10 +356,10 @@ const OpenSource = () => {
         </div>
 
         {/* Nueva sección sobre reutilización de hardware */}
-        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/5 p-4 md:p-6 rounded-xl border border-costwise-blue/20 dark:border-costwise-teal/20">
+        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/5 p-4 md:p-6 rounded-xl border border-costwise-blue/20 dark:border-costwise-teal/20 max-w-4xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-center">
             <div className="lg:w-2/3">
-              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-2">¿Ya tienes equipos? ¡Aprovéchalos!</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-2 max-w-md">¿Ya tienes equipos? ¡Aprovéchalos!</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
                 Evaluamos tus equipos existentes para transformarlos en servidores productivos.
               </p>
@@ -386,7 +386,7 @@ const OpenSource = () => {
               </a>
             </div>
             <div className="lg:w-1/3 flex justify-center">
-              <div className="grid grid-cols-2 gap-2 max-w-xs">
+              <div className="grid grid-cols-3 gap-2 max-w-xs">
                 <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-md rotate-[-2deg]">
                   <Server size={28} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
                   <p className="text-center text-xs mt-1">PC → Servidor</p>
@@ -394,6 +394,10 @@ const OpenSource = () => {
                 <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-md rotate-[2deg]">
                   <Shield size={28} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
                   <p className="text-center text-xs mt-1">Firewall</p>
+                </div>
+                <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-md rotate-[-1deg]">
+                  <Code size={28} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-xs mt-1">VPS</p>
                 </div>
               </div>
             </div>
