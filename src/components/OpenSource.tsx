@@ -301,60 +301,56 @@ const OpenSource = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-xl mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-costwise-navy dark:text-white mb-4">¿Por qué elegir software libre?</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
-                    <Search size={18} className="text-costwise-blue dark:text-costwise-teal" />
+        <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-4 md:p-6 rounded-xl md:rounded-2xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-lg mb-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 md:gap-6">
+            {/* Sección de beneficios - más compacta */}
+            <div className="lg:col-span-3">
+              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-3">¿Por qué elegir software libre?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3">
+                <div className="flex items-center gap-3 p-2 rounded-lg bg-costwise-blue/5 dark:bg-costwise-teal/10">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-1.5 rounded-full">
+                    <Search size={16} className="text-costwise-blue dark:text-costwise-teal" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">100% Auditable</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">El código fuente está disponible para inspección, asegurando transparencia total y cumplimiento normativo.</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
-                    <Lock size={18} className="text-costwise-blue dark:text-costwise-teal" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Mayor privacidad y seguridad</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">Tus datos permanecen en tu infraestructura, no en servidores de terceros.</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-2 rounded-full mt-1">
-                    <DollarSign size={18} className="text-costwise-blue dark:text-costwise-teal" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Sin costos recurrentes</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">Elimina suscripciones mensuales que aumentan cada año.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-100 dark:border-gray-700 shadow-md">
-              <h3 className="text-xl font-semibold text-costwise-navy dark:text-white mb-4 text-center">¿Cuánto puedes ahorrar?</h3>
-              <div className="space-y-4">
-                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                  <div className="text-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Para una empresa de 10 empleados</span>
-                    <div className="text-3xl font-bold text-green-600 dark:text-green-400 my-2">$4,280+ al año</div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">de ahorro promedio</span>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm">100% Auditable</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">Transparencia total y cumplimiento normativo</p>
                   </div>
                 </div>
-                <a href="#contacto" className="btn-primary w-full py-3 text-center flex items-center justify-center gap-2">
-                  Calcular mi ahorro personalizado
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calculator">
-                    <rect x="4" y="3" width="16" height="18" rx="2"/>
-                    <line x1="8" x2="16" y1="7" y2="7"/>
-                    <line x1="8" x2="9" y1="12" y2="12"/>
-                    <line x1="16" x2="16" y1="12" y2="12"/>
-                    <line x1="8" x2="9" y1="17" y2="17"/>
-                    <line x1="16" x2="16" y1="17" y2="17"/>
-                  </svg>
+                <div className="flex items-center gap-3 p-2 rounded-lg bg-costwise-blue/5 dark:bg-costwise-teal/10">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-1.5 rounded-full">
+                    <Lock size={16} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Mayor privacidad</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">Tus datos en tu infraestructura</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg bg-costwise-blue/5 dark:bg-costwise-teal/10">
+                  <div className="bg-costwise-blue/20 dark:bg-costwise-teal/30 p-1.5 rounded-full">
+                    <DollarSign size={16} className="text-costwise-blue dark:text-costwise-teal" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Sin costos recurrentes</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">Elimina suscripciones mensuales</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Sección de ahorro - más compacta */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-md h-fit">
+                <h3 className="text-lg font-semibold text-costwise-navy dark:text-white mb-3 text-center">Ahorro estimado</h3>
+                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg mb-3">
+                  <div className="text-center">
+                    <span className="text-xs text-gray-600 dark:text-gray-300">Para 10 empleados</span>
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400 my-1">$4,280+/año</div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">promedio</span>
+                  </div>
+                </div>
+                <a href="#contacto" className="btn-primary w-full py-2 text-center flex items-center justify-center gap-2 text-sm">
+                  Calcular mi ahorro
+                  <DollarSign size={16} />
                 </a>
               </div>
             </div>
@@ -362,51 +358,44 @@ const OpenSource = () => {
         </div>
 
         {/* Nueva sección sobre reutilización de hardware */}
-        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/5 p-6 md:p-8 rounded-2xl border border-costwise-blue/20 dark:border-costwise-teal/20">
-          <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-            <div className="md:w-7/12">
-              <h3 className="text-2xl font-bold text-costwise-navy dark:text-white mb-3">¿Ya tienes equipos? ¡Aprovéchalos!</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                No siempre necesitas invertir en hardware nuevo. Evaluamos tus equipos existentes para 
-                transformarlos en servidores productivos y reducir aún más tus costos.
+        <div className="bg-costwise-blue/5 dark:bg-costwise-teal/5 p-4 md:p-6 rounded-xl border border-costwise-blue/20 dark:border-costwise-teal/20">
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-center">
+            <div className="lg:w-2/3">
+              <h3 className="text-xl md:text-2xl font-bold text-costwise-navy dark:text-white mb-2">¿Ya tienes equipos? ¡Aprovéchalos!</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
+                Evaluamos tus equipos existentes para transformarlos en servidores productivos.
               </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">Evaluación técnica sin costo</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">Optimización para máximo rendimiento</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">Recomendaciones de actualización si es necesario</span>
-                </li>
-              </ul>
-              <div className="mt-6">
-                <a href="#contacto" className="inline-flex items-center gap-2 text-costwise-blue dark:text-costwise-teal hover:underline">
-                  Solicitar evaluación de equipos
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide">
-                    <path d="M5 12h14"></path>
-                    <path d="m12 5 7 7-7 7"></path>
-                  </svg>
-                </a>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle size={14} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300 text-sm">Evaluación sin costo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle size={14} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300 text-sm">Optimización máxima</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle size={14} className="text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300 text-sm">Recomendaciones</span>
+                </div>
               </div>
+              <a href="#contacto" className="inline-flex items-center gap-2 text-costwise-blue dark:text-costwise-teal hover:underline text-sm">
+                Solicitar evaluación
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </a>
             </div>
-            <div className="md:w-5/12 flex justify-center">
-              <div className="grid grid-cols-2 gap-3 relative">
-                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[-3deg]">
-                  <Server size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
-                  <p className="text-center text-sm mt-2">PC convertida a servidor</p>
+            <div className="lg:w-1/3 flex justify-center">
+              <div className="grid grid-cols-2 gap-2 max-w-xs">
+                <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-md rotate-[-2deg]">
+                  <Server size={28} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-xs mt-1">PC → Servidor</p>
                 </div>
-                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[3deg]">
-                  <Shield size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
-                  <p className="text-center text-sm mt-2">Firewall dedicado</p>
-                </div>
-                <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-md rotate-[3deg] col-span-2">
-                  <Code size={40} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
-                  <p className="text-center text-sm mt-2">Software optimizado para tu hardware</p>
+                <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-md rotate-[2deg]">
+                  <Shield size={28} className="text-costwise-blue dark:text-costwise-teal mx-auto" />
+                  <p className="text-center text-xs mt-1">Firewall</p>
                 </div>
               </div>
             </div>
