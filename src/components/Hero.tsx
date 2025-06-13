@@ -8,7 +8,7 @@ const Hero = () => {
           <div className="space-y-4 md:space-y-6 animate-fade-in text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-costwise-blue/10 dark:bg-costwise-blue/20 text-costwise-blue dark:text-costwise-teal px-3 py-1.5 rounded-full text-sm font-medium">
               <Coins size={16} />
-              <span>Ahorra hasta un 70% en tus gastos IT</span>
+              <span>Ahorra en tus gastos IT</span>
             </div>
             
             {/* Elemento LCP optimizado con prioridad de carga */}
@@ -27,36 +27,34 @@ const Hero = () => {
                 Consulta gratis ahora
                 <ArrowRight size={18} />
               </a>
-              <a href="#testimonios" className="btn-secondary flex items-center justify-center gap-2 px-6 py-3 text-lg">
+              {/* <a href="#testimonios" className="btn-secondary flex items-center justify-center gap-2 px-6 py-3 text-lg">
                 Ver casos de éxito
-              </a>
+              </a> */}
             </div>
             
-            <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto lg:mx-0">
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-2 rounded-full">
-                  <Coins size={18} className="text-costwise-blue dark:text-costwise-teal" />
+            <div className="pt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:gap-6 max-w-xs sm:max-w-3xl mx-auto lg:mx-0">
+              <div className="flex items-center gap-2 justify-center lg:justify-start bg-costwise-blue/5 dark:bg-costwise-blue/10 p-2 rounded-lg sm:bg-transparent sm:p-0">
+                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full flex-shrink-0">
+                  <Coins size={14} className="text-costwise-blue dark:text-costwise-teal" />
                 </div>
-                <span className="text-gray-700 dark:text-gray-300 font-medium">Ahorro garantizado</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium text-xs sm:text-sm">Ahorro garantizado</span>
               </div>
-              
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-2 rounded-full">
-                  <Shield size={18} className="text-costwise-blue dark:text-costwise-teal" />
+              <div className="flex items-center gap-2 justify-center lg:justify-start bg-costwise-blue/5 dark:bg-costwise-blue/10 p-2 rounded-lg sm:bg-transparent sm:p-0">
+                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full flex-shrink-0">
+                  <Shield size={14} className="text-costwise-blue dark:text-costwise-teal" />
                 </div>
-                <span className="text-gray-700 dark:text-gray-300 font-medium">Mayor seguridad</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium text-xs sm:text-sm">Mayor seguridad</span>
               </div>
-              
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-2 rounded-full">
-                  <Server size={18} className="text-costwise-blue dark:text-costwise-teal" />
+              <div className="flex items-center gap-2 justify-center lg:justify-start bg-costwise-blue/5 dark:bg-costwise-blue/10 p-2 rounded-lg sm:bg-transparent sm:p-0 col-span-2 sm:col-span-1">
+                <div className="bg-costwise-blue/10 dark:bg-costwise-blue/20 p-1 rounded-full flex-shrink-0">
+                  <Server size={14} className="text-costwise-blue dark:text-costwise-teal" />
                 </div>
-                <span className="text-gray-700 dark:text-gray-300 font-medium">Control total</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium text-xs sm:text-sm">Control total</span>
               </div>
             </div>
           </div>
           
-          <div className="relative lg:h-[500px] animate-fade-in mt-8 lg:mt-0">
+          <div className="relative lg:h-[500px] animate-fade-in mt-2 lg:mt-0">
             <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-costwise-blue/5 rounded-full -z-10 animate-float will-change-transform"></div>
             <div className="absolute bottom-0 left-0 w-36 h-36 md:w-48 md:h-48 bg-costwise-teal/5 rounded-full -z-10 animate-float will-change-transform" style={{ animationDelay: '1s' }}></div>
             
