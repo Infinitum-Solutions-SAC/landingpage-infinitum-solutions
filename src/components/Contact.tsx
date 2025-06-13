@@ -63,7 +63,7 @@ ${message}`;
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             <BadgePercent size={40} className="animate-pulse" />
             <h3 className="text-xl md:text-2xl font-bold">
-              Las empresas que trabajan con nosotros ahorran un promedio del 65% en sus costos de IT
+              Ahoraa en tus costos de IT
             </h3>
           </div>
         </div>
