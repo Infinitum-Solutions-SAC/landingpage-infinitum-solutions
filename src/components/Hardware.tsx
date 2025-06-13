@@ -84,11 +84,17 @@ const Hardware = () => {
     const diff = index - currentIndex;
     const absDistance = Math.abs(diff);
     
+    // Variaciones aleatorias basadas en el índice para consistencia
+    const randomSeed = index * 31; // Usar el índice como semilla para consistencia
+    const randomX = ((randomSeed * 13) % 41) - 20; // -20 a 20
+    const randomY = ((randomSeed * 17) % 31) - 15; // -15 a 15
+    const randomRotation = ((randomSeed * 7) % 21) - 10; // -10 a 10
+    
     // Carta activa
     if (diff === 0) {
       return {
-        transform: 'translateX(0) translateY(-10px) rotate(0deg) scale(1.05)',
-        zIndex: 10,
+        transform: `translateX(${randomX * 0.3}px) translateY(-15px) rotate(${randomRotation * 0.5}deg) scale(1.08)`,
+        zIndex: 15,
         opacity: 1
       };
     }
@@ -98,18 +104,24 @@ const Hardware = () => {
       const side = diff > 0 ? 1 : -1; // derecha o izquierda
       const distance = absDistance;
       
+      // Más variación en posicionamiento
+      const offsetX = side * distance * 12 + randomX * 0.8;
+      const offsetY = distance * 8 + randomY * 0.6;
+      const rotation = side * distance * 8 + randomRotation;
+      const scale = 1 - distance * 0.05 + ((randomSeed % 7) - 3) * 0.01; // Más variación en escala
+      
       return {
-        transform: `translateX(${side * distance * 8}px) translateY(${distance * 4}px) rotate(${side * distance * 3}deg) scale(${1 - distance * 0.02})`,
+        transform: `translateX(${offsetX}px) translateY(${offsetY}px) rotate(${rotation}deg) scale(${scale})`,
         zIndex: 10 - distance,
-        opacity: 1 - distance * 0.15
+        opacity: 1 - distance * 0.2
       };
     }
     
-    // Cartas ocultas
+    // Cartas ocultas (más desordenadas)
     return {
-      transform: 'translateX(0) translateY(0) rotate(0deg) scale(0.9)',
+      transform: `translateX(${randomX * 0.5}px) translateY(${randomY * 0.4}px) rotate(${randomRotation * 1.2}deg) scale(0.85)`,
       zIndex: 1,
-      opacity: 0.3
+      opacity: 0.25
     };
   };
 
@@ -304,38 +316,6 @@ const Hardware = () => {
                 );
               })}
             </div>
-          </div>
-          
-          {/* Navegación del deck móvil - Fuera del contenedor de cartas */}
-          <div className="deck-navigation">
-            <button 
-              onClick={prevCard} 
-              disabled={false}
-              className="nav-button"
-              aria-label="Anterior"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            
-            <div className="deck-indicators">
-              {hardwareOptions.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`deck-indicator ${currentIndex === index ? 'active' : ''}`}
-                  aria-label={`Ver configuración ${index + 1}`}
-                />
-              ))}
-            </div>
-            
-            <button 
-              onClick={nextCard} 
-              disabled={false}
-              className="nav-button"
-              aria-label="Siguiente"
-            >
-              <ChevronRight size={20} />
-            </button>
           </div>
         </div>
       </div>

@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Heart, Lock, DollarSign, Star, CheckCircle, Search, Server, Code, Shield } from 'lucide-react';
+import { Heart, Lock, DollarSign, Star, CheckCircle, Search, Server, Code, Shield, ChevronLeft, ChevronRight } from 'lucide-react';
+import '../styles/card-deck.css';
 
 const OpenSource = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,6 +29,123 @@ const OpenSource = () => {
       }
     };
   }, []);
+  
+  // Función para calcular la posición de cada carta
+  const getCardPosition = (index: number, currentIndex: number, totalCards: number) => {
+    const diff = index - currentIndex;
+    const absDistance = Math.abs(diff);
+    
+    // Variaciones aleatorias basadas en el índice para consistencia
+    const randomSeed = index * 31; // Usar el índice como semilla para consistencia
+    const randomX = ((randomSeed * 13) % 41) - 20; // -20 a 20
+    const randomY = ((randomSeed * 17) % 31) - 15; // -15 a 15
+    const randomRotation = ((randomSeed * 7) % 21) - 10; // -10 a 10
+    
+    // Carta activa
+    if (diff === 0) {
+      return {
+        transform: `translateX(${randomX * 0.3}px) translateY(-15px) rotate(${randomRotation * 0.5}deg) scale(1.08)`,
+        zIndex: 15,
+        opacity: 1
+      };
+    }
+    
+    // Cartas visibles a los lados
+    if (absDistance <= 2) {
+      const side = diff > 0 ? 1 : -1; // derecha o izquierda
+      const distance = absDistance;
+      
+      // Más variación en posicionamiento
+      const offsetX = side * distance * 12 + randomX * 0.8;
+      const offsetY = distance * 8 + randomY * 0.6;
+      const rotation = side * distance * 8 + randomRotation;
+      const scale = 1 - distance * 0.05 + ((randomSeed % 7) - 3) * 0.01; // Más variación en escala
+      
+      return {
+        transform: `translateX(${offsetX}px) translateY(${offsetY}px) rotate(${rotation}deg) scale(${scale})`,
+        zIndex: 10 - distance,
+        opacity: 1 - distance * 0.2
+      };
+    }
+    
+    // Cartas ocultas (más desordenadas)
+    return {
+      transform: `translateX(${randomX * 0.5}px) translateY(${randomY * 0.4}px) rotate(${randomRotation * 1.2}deg) scale(0.85)`,
+      zIndex: 1,
+      opacity: 0.25
+    };
+  };
+
+  const nextCard = () => {
+    setCurrentIndex((prev) => (prev + 1) % alternativas.length);
+  };
+
+  const prevCard = () => {
+    setCurrentIndex((prev) => (prev - 1 + alternativas.length) % alternativas.length);
+  };
+
+  const goToCard = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevCard();
+      } else if (event.key === 'ArrowRight') {
+        nextCard();
+      } else if (event.key >= '1' && event.key <= '3') {
+        const index = parseInt(event.key) - 1;
+        if (index < alternativas.length) {
+          goToCard(index);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Touch handlers for swipe functionality
+  const minSwipeDistance = 30;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart({ 
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY
+    });
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd({ 
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY
+    });
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distanceX = touchStart.x - touchEnd.x;
+    const distanceY = Math.abs(touchStart.y - touchEnd.y);
+    const isLeftSwipe = distanceX > minSwipeDistance;
+    const isRightSwipe = distanceX < -minSwipeDistance;
+    
+    // Solo procesar swipe horizontal si el movimiento es más horizontal que vertical
+    if (Math.abs(distanceX) > distanceY) {
+      if (isLeftSwipe) {
+        nextCard();
+      }
+      if (isRightSwipe) {
+        prevCard();
+      }
+    }
+    
+    // Limpiar valores de touch
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
   
   // Alternativas simplificadas de software comercial a open source
   const alternativas = [
@@ -74,7 +195,8 @@ const OpenSource = () => {
         </div>
 
         {/* Comparativa simplificada de costos */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* Vista de cuadrícula tradicional para escritorio */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6 mb-12">
           {alternativas.map((item, index) => (
             <div 
               key={index}
@@ -111,6 +233,72 @@ const OpenSource = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Efecto de cartas de naipes para móviles */}
+        <div className="md:hidden">
+          <div className="card-deck-container">
+            <div className="card-deck">
+              {alternativas.map((item, index) => {
+                const position = getCardPosition(index, currentIndex, alternativas.length);
+                return (
+                  <div 
+                    key={index} 
+                    className={`deck-card ${currentIndex === index ? 'active' : ''}`}
+                    onClick={() => setCurrentIndex(index)}
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                    style={{ 
+                      transform: position.transform,
+                      zIndex: position.zIndex,
+                      opacity: position.opacity,
+                      willChange: currentIndex === index ? 'transform' : 'auto',
+                      contain: 'layout style paint'
+                    }}
+                  >
+                    <div className="card-content">
+                      <div className="card-header">
+                        <div className="card-icon">
+                          <DollarSign size={24} />
+                        </div>
+                        <h3 className="card-title">{item.saasTool}</h3>
+                        <p className="card-description">
+                          Reemplazado por: <span className="font-semibold">{item.openSource}</span>
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mb-4">
+                        <DollarSign size={16} className="text-green-500" />
+                        <span className="text-sm font-semibold text-green-600 dark:text-green-400">
+                          {item.savings}
+                        </span>
+                      </div>
+                      
+                      <ul className="card-features">
+                        {item.benefits.map((benefit, i) => (
+                          <li key={i} className="card-feature">
+                            <CheckCircle size={16} className="card-feature-icon" />
+                            <span>{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <div className="card-footer">
+                        <a 
+                          href="#contacto" 
+                          className="card-button secondary"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Más información
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         <div className="bg-gradient-to-br from-costwise-blue/5 via-white to-costwise-teal/5 dark:from-costwise-teal/10 dark:via-slate-800 dark:to-costwise-blue/10 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-costwise-blue/20 dark:border-costwise-teal/30 shadow-xl mb-12">
