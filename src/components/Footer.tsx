@@ -23,13 +23,13 @@ const Footer = () => {
               Soluciones IT económicas y efectivas para empresas de todos los tamaños.
             </p>
             <div className="flex gap-4">
-              <a href="#" aria-label="Twitter" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              {/* <a href="#" aria-label="Twitter" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Twitter size={18} />
-              </a>
-              <a href="https://www.linkedin.com/company/infinitum-solutions-sac" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              </a> */}
+              <a href="https://www.linkedin.com/company/infinitum-solutionss" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Linkedin size={18} />
               </a>
-              <a href="https://github.com/infinitum-solutions" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
+              <a href="https://github.com/Infinitum-Solutions-SAC" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-2 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-400 hover:bg-costwise-blue dark:hover:bg-costwise-teal hover:text-white dark:hover:text-slate-900 transition-all">
                 <Github size={18} />
               </a>
             </div>
