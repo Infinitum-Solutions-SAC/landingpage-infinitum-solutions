@@ -61,6 +61,12 @@ jobs:
         git commit -m "Initial production branch"
         git push origin production
 
+    - name: Clean uncommitted changes before switching branch
+      if: steps.check_branch.outputs.exists == 'true'
+      run: |
+        git reset --hard
+        git clean -fd
+
     - name: Switch to production branch
       if: steps.check_branch.outputs.exists == 'true'
       run: |
