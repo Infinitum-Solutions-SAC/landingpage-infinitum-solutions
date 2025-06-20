@@ -1,24 +1,10 @@
-version: "3.8"
-
 services:
-  waf:
-    image: owasp/modsecurity-crs:nginx
+  web:
+    image: nginx:alpine
     ports:
       - "81:80"
     volumes:
-      - ./html:/usr/share/nginx/html:ro
-    environment:
-      - BACKEND=http://web:80
-    restart: unless-stopped
-    mem_limit: 512m
-    cpus: 2
-
-  web:
-    image: nginx:alpine
-    expose:
-      - "80"
-    volumes:
-      - ./html:/usr/share/nginx/html:ro
+      - ./:/usr/share/nginx/html
     restart: unless-stopped
     mem_limit: 512m
     cpus: 2
